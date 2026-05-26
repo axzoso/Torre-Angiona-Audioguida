@@ -1,1 +1,36 @@
 @import "tailwindcss";
+
+@theme {
+  --color-accent: #8B2635;
+  --color-accent-hover: #A02D40;
+  --color-surface: #111111;
+  --font-serif: Georgia, "Times New Roman", serif;
+}
+
+:root {
+  --accent: #8B2635;
+  --accent-hover: #A02D40;
+  --text-primary: #F5F0EB;
+  --text-secondary: #9A8F87;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+html,
+body {
+  background-color: #0A0A0A;
+  color: #F5F0EB;
+  min-height: 100vh;
+}
+
+input[type='range'] {
+  accent-color: var(--accent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
