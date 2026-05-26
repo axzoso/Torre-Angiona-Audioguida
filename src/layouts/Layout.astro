@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import AudioPlayer from '../components/AudioPlayer.astro';
 import '../styles/global.css';
 
@@ -26,7 +26,7 @@ const {
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <title>{title}</title>
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body class="bg-[#0A0A0A] text-[#F5F0EB] min-h-screen antialiased">
     <main class="pb-28">
