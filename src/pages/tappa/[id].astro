@@ -1,0 +1,133 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import audioguides from '../../data/audioguides.json';
+
+export const getStaticPaths = (() => {
+  return audioguides.map((tappa) => ({
+    params: { id: String(tappa.id) },
+    props: { tappa },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  tappa: (typeof audioguides)[0];
+}
+
+const { tappa } = Astro.props;
+
+const currentIndex = audioguides.findIndex((t) => t.id === tappa.id);
+const prev = currentIndex > 0 ? audioguides[currentIndex - 1] : null;
+const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 1] : null;
+---
+
+<Layout
+  title={`${tappa.titolo} — Torre Angioina`}
+  description={tappa.descrizione.slice(0, 160)}
+>
+  <nav class="px-5 pt-10 pb-4">
+    <a
+      href="/"
+      class="inline-flex items-center gap-2 text-sm transition-colors hover:text-white"
+      style="color: var(--text-secondary)"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+        <path fill-rule="evenodd" d="M11.03 3.97a.75.75 0 010 1.06l-6.22 6.22H21a.75.75 0 010 1.5H4.81l6.22 6.22a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z" clip-rule="evenodd"/>
+      </svg>
+      Tutte le tappe
+    </a>
+  </nav>
+
+  <header class="px-5 pb-6 relative overflow-hidden">
+    <div
+      class="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10 blur-3xl pointer-events-none"
+      style="background: radial-gradient(circle, #8B2635, transparent)"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative">
+      <p class="font-mono font-bold text-6xl leading-none mb-4" style="color: var(--accent)">
+        {String(tappa.id).padStart(2, '0')}
+      </p>
+      <h1 class="font-serif text-2xl font-bold leading-snug mb-2" style="color: var(--text-primary)">
+        {tappa.titolo}
+      </h1>
+      <p class="text-xs font-mono" style="color: var(--text-secondary)">{tappa.posizione}</p>
+    </div>
+  </header>
+
+  <div class="px-5 mb-8">
+    <button
+      id="btn-ascolta"
+      class="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-semibold text-white transition-all active:scale-[0.97]"
+      style="background-color: var(--accent)"
+      data-src={tappa.audioSrc}
+      data-titolo={tappa.titolo}
+      data-numero={tappa.id}
+      data-durata={tappa.durata}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+        <polygon points="6,3 20,12 6,21"/>
+      </svg>
+      Ascolta l'audioguida · {tappa.durata}
+    </button>
+  </div>
+
+  <article class="px-5 pb-10">
+    <div
+      class="rounded-2xl p-5 border"
+      style="background-color: var(--glass-bg); border-color: var(--glass-border); backdrop-filter: blur(12px)"
+    >
+      <p class="font-serif text-base leading-relaxed" style="color: var(--text-primary)">
+        {tappa.descrizione}
+      </p>
+    </div>
+  </article>
+
+  <nav class="px-5 pb-6 grid grid-cols-2 gap-3">
+    {prev ? (
+      <a
+        href={`/tappa/${prev.id}`}
+        class="flex flex-col gap-1 p-3 rounded-xl border transition-colors hover:border-accent/40"
+        style="background-color: var(--glass-bg); border-color: var(--glass-border)"
+      >
+        <span class="text-xs" style="color: var(--text-secondary)">← Precedente</span>
+        <span class="text-sm font-medium truncate" style="color: var(--text-primary)">{prev.titolo}</span>
+      </a>
+    ) : <div></div>}
+
+    {next ? (
+      <a
+        href={`/tappa/${next.id}`}
+        class="flex flex-col gap-1 p-3 rounded-xl border text-right transition-colors hover:border-accent/40"
+        style="background-color: var(--glass-bg); border-color: var(--glass-border)"
+      >
+        <span class="text-xs" style="color: var(--text-secondary)">Successiva →</span>
+        <span class="text-sm font-medium truncate" style="color: var(--text-primary)">{next.titolo}</span>
+      </a>
+    ) : <div></div>}
+  </nav>
+</Layout>
+
+<script>
+  import { audioStore } from '../../lib/audioStore';
+
+  function initPlayButton(): void {
+    const btn = document.getElementById('btn-ascolta') as HTMLButtonElement | null;
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      const src = btn.dataset.src!;
+      const titolo = btn.dataset.titolo!;
+      const numero = parseInt(btn.dataset.numero!, 10);
+
+      audioStore.playTappa({ src, titolo, numero });
+    });
+  }
+
+  // Run on initial load
+  initPlayButton();
+
+  // Re-run after each View Transition (page swap)
+  document.addEventListener('astro:page-load', initPlayButton);
+</script>
