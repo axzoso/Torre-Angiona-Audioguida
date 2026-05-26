@@ -141,7 +141,7 @@
     showPlayer();
 
     if (audio.src !== resolvedSrc) {
-      audio.src = src;
+      audio.src = resolvedSrc;
       audio.load();
     }
     audio.play().catch(() => {/* browser may block autoplay */});
@@ -192,6 +192,7 @@
   audio.addEventListener('ended', () => {
     setPlayingUI(false);
     progressBar.value = '0';
+    audio.currentTime = 0;
     audioStore.reportState(false, audio.src);
   });
 

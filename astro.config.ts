@@ -8,8 +8,9 @@ export default defineConfig({
     AstroPWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{html,css,js,ico,png,svg,mp3,webmanifest}'],
+        globPatterns: ['**/*.{html,css,js,ico,png,svg,mp3}'],
         maximumFileSizeToCacheInBytes: 15_000_000,
+        navigateFallback: null,
       },
       manifest: {
         name: 'Torre Angioina — Audioguide',
