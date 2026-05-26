@@ -1,0 +1,67 @@
+---
+// Client-side only component
+---
+
+<div id="pwa-status" class="opacity-0 transition-opacity duration-500">
+  <div id="pwa-badge" class="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full">
+    <span id="pwa-dot" class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
+    <span id="pwa-text" class="font-medium">Caricamento…</span>
+  </div>
+</div>
+
+<script>
+  const statusEl = document.getElementById('pwa-status') as HTMLDivElement;
+  const badgeEl = document.getElementById('pwa-badge') as HTMLDivElement;
+  const dotEl = document.getElementById('pwa-dot') as HTMLSpanElement;
+  const textEl = document.getElementById('pwa-text') as HTMLSpanElement;
+
+  function show(): void {
+    statusEl.classList.remove('opacity-0');
+  }
+
+  function setReady(): void {
+    dotEl.className = 'w-1.5 h-1.5 rounded-full bg-green-500';
+    textEl.textContent = 'Disponibile offline';
+    badgeEl.className =
+      'inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-green-900/30 text-green-400 border border-green-800/40';
+    show();
+  }
+
+  function setUpdating(): void {
+    dotEl.className = 'w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse';
+    textEl.textContent = 'Download in corso…';
+    badgeEl.className =
+      'inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-amber-900/30 text-amber-400 border border-amber-800/40';
+    show();
+  }
+
+  function setOnlineOnly(): void {
+    dotEl.className = 'w-1.5 h-1.5 rounded-full bg-gray-500';
+    textEl.textContent = 'Online richiesto';
+    badgeEl.className =
+      'inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-gray-800/60 text-gray-400 border border-gray-700/40';
+    show();
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .getRegistration()
+      .then((reg) => {
+        if (!reg) {
+          setOnlineOnly();
+          return;
+        }
+        if (reg.installing || reg.waiting) {
+          setUpdating();
+        } else if (reg.active) {
+          setReady();
+        }
+        reg.addEventListener('updatefound', () => setUpdating());
+      })
+      .catch(() => setOnlineOnly());
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => setReady());
+  } else {
+    setOnlineOnly();
+  }
+</script>
