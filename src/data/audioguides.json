@@ -2,7 +2,23 @@
   {
     "id": 1,
     "titolo": "L'Ingresso",
-    "descrizione": "Varcate la soglia della Torre Angioina, edificata per volere di Carlo I d'Angiò nel XIII secolo. Il portale che si apre davanti a voi è uno dei rari esempi di architettura militare normanna sopravvissuti in Calabria. Osservate i conci di pietra calcarea locale, tagliati a regola d'arte dai maestri picapietra al servizio degli Angioini. La forma a tutto sesto dell'arco riflette l'influenza dell'architettura francese portata dagli invasori, che si fuse con le tradizioni costruttive locali ereditate dall'epoca normanna. La soglia che calpestate ha visto passare feudatari, soldati, mercanti e pellegrini nel corso di sette secoli di storia. San Marco Argentano fu per lungo tempo un baluardo strategico a controllo delle vie di comunicazione tra la costa tirrenica e l'entroterra silano.",
+    "descrizione": "Salute a voi, viandante. Io sono Raynaldo di Sancti Marci, fabbro e scutifer della Torre,
+                    uomo d’arme e servitore del regno. Da molti anni veglio su queste mura, conosco le loro
+                    pietre, i silenzi e le storie che custodiscono. Se vorrete seguirmi, sarò io ad
+                    accompagnarvi in questa visita… perché una torre come questa non è fatta soltanto di
+                    muri: è fatta di uomini, di paura, di attese, di fuochi accesi nella notte e di passi consumati
+                    sulla pietra.
+                    Cammineremo insieme dentro quella che per voi diventerà una Torre viva, così che
+                    possiate vederla non come un monumento muto, ma come un luogo ancora abitato dalla
+                    memoria di chi vi ha vissuto e difeso.
+                    Forestiero, fermati un momento qui su questo ponte di legno e guarda bene questo
+                    ingresso. Oggi vi si accede con facilità, ma ai miei tempi non era cosa semplice mettere
+                    piede nella Torre. Quel corpo avanzato che vedi davanti a te, la torretta quadrata, non è
+                    stato costruito per ornamento: era il primo ostacolo per chiunque avesse cattive intenzioni.
+                    Ma la porta d’accesso non era li dove la vedi oggi. Guarda giù dal ponte sulla destra,
+                    quella piccola porta ai piedi della scarpa muraria, conduce entro uno stretto passaggio
+                    angusto e controllato che per mezzo di una scala entrava nelle mura.
+                    Varchiamo ora la porta che ci è dinnanzi, seguimi la visita ha inizio.",
     "audioSrc": "/audio/tappa1.mp3",
     "durata": "1:38",
     "posizione": "Scale in pietra - Ingresso principale"
@@ -10,7 +26,43 @@
   {
     "id": 2,
     "titolo": "Dentro le Mura",
-    "descrizione": "Questa grande sala al piano terra ospitava il corpo di guardia permanente della torre. Le nicchie scavate nello spessore delle mura — osservate quanto sono profonde, quasi due metri — erano destinate a riporre armi, torce e le provviste dei soldati di stanza. Le mura raggiungono qui lo spessore massimo di tre metri e ottanta: una barriera quasi invalicabile per le tecnologie belliche del tempo. Il pavimento originale, in lastre di pietra battuta, è ancora in parte visibile sotto il consolidamento moderno. Immaginatelo percorso giorno e notte dai soldati angioini, che dovevano rispondere a turni di guardia rigidissimi. La fessura verticale nella parete orientale non è una semplice finestra: è una feritoia progettata per permettere il tiro con l'arco o la balestra mantenendo il massimo della protezione per l'arciere.",
+    "descrizione": "Forestiero, siamo finalmente all’interno delle mura. Ai miei tempi non ti sarebbe stato così
+                    semplice entrare: una guardia ti avrebbe trafitto con un colpo secco di balestra ancor
+                    prima di mettere piede nel cortile.
+                    Vieni, affacciamoci. Da quassù voglio mostrarti San Marco.
+                    L’antica civitas medievale si organizzava attorno a due poli distinti, specchio del potere
+                    militare, civile e religioso. A settentrione, sulla collina della motta, sorgeva il cuore del
+                    potere. Fu lì che Roberto il Guiscardo fece edificare il primo castello normanno di Calabria
+                    dopo aver lasciato Scribla, come ricorda il monaco Goffredo Malaterra: “Castrum Sancti
+                    Marci firmavit”.
+                    Ai piedi della motta sorgeva invece la chiesa di San Nicola di Mira, oggi Cattedrale,
+                    edificata iuxta civitatem et extra moenia, accanto alla città ma fuori dalle mura, secondo
+                    l’antico uso.
+                    Verso sud, lungo la direttrice che oggi attraversa Piazza Selvaggi e Piazza Umberto,
+                    l’abitato terminava nel rione Casalicchio, proprio qui sotto di noi. Ed è in questo punto
+                    strategico che venne edificata la Torre: ultimo bastione dell’abitato, presidio difensivo e
+                    luogo privilegiato d’avvistamento.
+                    I registri della cancelleria angioina ci danno indizi sulla costruzione di torri e fortificazioni
+                    che ci fa supporre che questa Torre fu costruita tra la fine del XIII e il XIV secolo, negli anni
+                    della lunga guerra tra Angioini e Aragonesi per il dominio del Regno. Non era un edificio
+                    isolato, ma il cuore di un sistema difensivo fatto di mura, torri minori, magazzini e ambienti
+                    destinati agli uomini d’arme.
+                    Ora volgiti verso la grande Torre. Quando saremo sulla sua sommità ti mostrerò come
+                    questo presidio dialogava, attraverso il paesaggio, con le altre strutture difensive del
+                    Regno.
+                    Osserva la sua forma cilindrica e la poderosa altezza: quasi trenta metri di pietra. Le
+                    aperture sono poche, come si conviene a un edificio nato per resistere agli assedi, e
+                    l’ingresso originario era sopraelevato, così da poter isolare la Torre in caso di attacco.
+                    In alto puoi ancora notare i beccatelli che coronano l’intera circonferenza superiore. Su di
+                    essi poggiavano le caditoie, dispositivi di difesa piombante dai quali si potevano scagliare
+                    pietre, urina e morga bollente sugli assedianti. Se il nemico fosse riuscito a superare le
+                    prime mura, difficilmente avrebbe potuto sperare di andare oltre. Guai a trovarsi qui sotto
+                    durante un assedio.
+                    Anche la scala in muratura che vedi oggi non appartiene al mio tempo: fu aggiunta in età
+                    aragonese, quando queste mura iniziarono lentamente a perdere la loro funzione più
+                    aspra e militare.
+                    Ora seguimi. Saliamo le scale… e portiamoci sul secondo ponte di legno, più in alto. Da lì
+                    entreremo finalmente nella Torre.",
     "audioSrc": "/audio/tappa2.mp3",
     "durata": "3:21",
     "posizione": "Nel Rivellino"
@@ -18,7 +70,30 @@
   {
     "id": 3,
     "titolo": "Sul Ponte Alto",
-    "descrizione": "Uno degli elementi più ingegnosi dell'intera fortezza è questo pozzo, scavato al centro del cortile interno per garantire l'autonomia idrica in caso di assedio prolungato. I costruttori medievali avevano una comprensione sofisticata dell'idrogeologia locale: il pozzo fu posizionato esattamente sopra una falda freatica che ancora oggi mantiene un livello costante. Accanto al pozzo si aprono le bocche delle cisterne sotterranee, capaci di raccogliere l'acqua piovana convogliata dai tetti e dalle terrazze attraverso un sistema di canalette incastonate nei muri perimetrali. Si stima che le cisterne potessero garantire autonomia idrica per un presidio di cinquanta uomini per almeno sei mesi. Una torre che resistesse agli assedi non si poteva concepire senza questa riserva silenziosa.",
+    "descrizione": "Eccoci sul secondo ponte di legno, quello che conduce all’ingresso della Torre. Ma bada
+                    bene, forestiero: ai miei tempi questo ponte non esisteva. Per raggiungere quella porta si
+                    usava soltanto una scala a pioli rimovibile, che veniva ritirata in caso di pericolo. Immagina
+                    la fatica degli uomini d’arme costretti a salire fin quassù con armature, viveri e fascine
+                    sulle spalle.
+                    Ora guarda dritto sopra la porta d’ingresso. Vedi quel blasone scolpito nella pietra? È lo
+                    stemma della famiglia Sangineto. Per molto tempo si credette appartenesse ai
+                    Sanseverino, che divennero signori di San Marco solo molti anni dopo, ma gli studiosi
+                    hanno riconosciuto che fu invece la casata dei Sangineto a volere questa Torre.
+                    Sul cilindro murario vi sono tre scudi identici: questo sopra l’ingresso, uno rivolto verso
+                    Altomonte e un altro orientato verso Sangineto, il feudo d’origine della famiglia. È come se
+                    la pietra stessa dichiarasse il dominio del lignaggio sul territorio. Fu probabilmente Filippo
+                    Sangineto, conte di Altomonte, a completare la costruzione della Torre nella prima metà
+                    del Trecento.
+                    Ora aguzza la vista sulla destra della porta, appena fuori dalla staccionata del ponte… ma
+                    fai attenzione a non sporgerti troppo. Là puoi vedere un concio scolpito dove il tempo non
+                    ha ancora cancellato il segno della maestranza che costruì queste mura.
+                    Accanto alla lettera “F”, iniziale forse del verbo latino facit, cioè “fece”, o del suo benevolo
+                    finanziatore, Filippo Sangineto, compare infatti il simbolo degli scalpellini: una sorta di
+                    doppia X maiuscola con la parte superiore chiusa, stilizzazione delle lame degli scalpelli
+                    usati dai maestri muratori. Era il segno lasciato da chi modellava queste pietre con i propri
+                    scalpelli, quasi una firma affidata alla memoria della Torre.
+                    Ma ora basta sostare all’esterno. Statemi vicino… ed entriamo nella Torre senza
+                    esitazione.",
     "audioSrc": "/audio/tappa3.mp3",
     "durata": "2:15",
     "posizione": "Ponte in legno - l'ingresso della Torre"
@@ -26,7 +101,40 @@
   {
     "id": 4,
     "titolo": "La Vita di Guarnigione",
-    "descrizione": "La scala a chiocciola che sale verso il piano superiore è un capolavoro di geometria applicata. Girate in senso orario salendo: non è una casualità. Questa scelta progettuale, comune a quasi tutte le torri medievali europee, favorisce il difensore che scende respingendo un attaccante che sale. Un soldato destrorso che scende può usare la spada liberamente verso il centro della scala; il soldato che attacca salendo ha il braccio destro ostacolato dal pilastro centrale. Ogni gradino è leggermente irregolare, differenza intenzionale che rallenta il passo di chi non conosce la scala. Al primo piano si apriva il quartiere del castellano, il responsabile militare della torre. Qui la qualità costruttiva è superiore: le pareti riportano tracce di intonaco bianco e, in un angolo, i resti di una decorazione geometrica che doveva rendere l'ambiente più degno del suo occupante.",
+    "descrizione": "Forestiero, sei finalmente all’interno di questo maestoso presidio. In tempo di guerra
+                    pochi uomini poterono vantarsi di essere giunti fin quassù. Sei fortunato.
+                    Questa è la prima delle cinque sale interne della Torre. Ogni ambiente fu progettato per
+                    ospitare stabilmente uomini d’arme e per rispondere alle necessità della guerra. In questo
+                    presidio trovava posto una piccola guarnigione. Sei o dieci uomini erano più che sufficienti
+                    a difendere la Torre nei tempi di guerra; molti meno bastavano nei periodi di pace. Solo il
+                    castellano poteva permettersi di tenere qui dentro anche la propria famiglia.
+                    Osserva questo ambiente d’ingresso. Pur essendo il cuore del complesso, presenta una
+                    volta a crociera insolitamente bassa. La struttura è rinforzata da quattro grandi costoloni
+                    coperti da una controvolta: un accorgimento ingegnoso studiato per distribuire il peso e
+                    dare maggiore stabilità all’intera costruzione.
+                    Lungo le pareti puoi ancora vedere le buche pontaie, i fori dove venivano inserite le travi
+                    delle impalcature lignee durante la costruzione della Torre. Sono tracce silenziose del
+                    lavoro dei maestri muratori che innalzarono questo presidio pietra dopo pietra.
+                    Ma questa sala non era soltanto luogo di difesa: era il centro della vita di guarnigione. Qui
+                    si mangiava, si dormiva, si attendevano ordini e si trascorrevano lunghe notti di guardia.
+                    L’ambiente era riscaldato da un grande camino, rimaneggiato nei tempi più recenti, ed era
+                    dotato di ciò che serviva per resistere anche durante lunghi assedi: un pozzo collegato alla
+                    cisterna sottostante e un sistema di scarico per i rifiuti organici, che in origine defluiva
+                    all’esterno delle mura.
+                    Bene, forestiero… ora puoi scegliere: scendere nei livelli più profondi della Torre, dove il
+                    buio custodiva acqua, viveri e silenzi… oppure salire verso il cielo, fino alla sommità del
+                    presidio.
+                    Qualunque sia la tua scelta, dovrai percorrere la scala elicoidale ricavata nello spessore
+                    stesso delle mura. Più di cento gradini di pietra, consumati nei secoli dal passo di soldati,
+                    castellani e uomini di guardia.
+                    La scala corre lungo il fianco della Torre secondo un modello diffuso nelle tradizioni
+                    costruttive francesi e arabe.
+                    Ma non lasciarti ingannare: non fu progettata per comodità. L’andamento da sinistra verso
+                    destra e la strettezza dei gradini rendevano difficile l’avanzata degli assalitori armati. Il
+                    passaggio angusto e i soffitti ribassati permettevano anche a un solo difensore di
+                    contrastare più nemici contemporaneamente, trasformando la salita in un vero imbuto
+                    difensivo.
+                    Scegli dunque, forestiero: discendere nelle profondità della Torre… o salire verso il cielo.",
     "audioSrc": "/audio/tappa4.mp3",
     "durata": "3:09",
     "posizione": "Nella Sala della Guarnigione"
@@ -34,7 +142,30 @@
   {
     "id": 5,
     "titolo": "L'Armeria",
-    "descrizione": "Questo ambiente al primo piano era il cuore decisionale della torre. Il castellano — di norma un nobile di rango medio nominato direttamente dalla corona angioina — qui amministrava i registri fiscali dei villaggi dipendenti, riceveva i delegati dei feudatari locali e pianificava la difesa del territorio. La finestra con seduta in pietra, che vedete sul lato meridionale, era pensata per lo studio e la lettura: orientata a sud garantisce la massima luce naturale per la maggior parte della giornata. I ganci in ferro ancora infissi nella parete nord servivano per appendere arazzi che isolavano dal freddo e, al tempo stesso, ostentavano il rango del proprietario. Un documento del 1297 conservato nell'Archivio di Stato di Cosenza cita espressamente questa camera come luogo in cui fu siglato un accordo di confine tra il castellano e i monaci del vicino convento.",
+    "descrizione": "Forestiero, benvenuto nell’armeria della Torre.
+                    Ti trovi in uno degli ambienti più importanti del presidio, una sala più ampia della
+                    precedente, coperta da una poderosa volta a crociera costolonata. Anche qui un grande
+                    camino riscaldava l’ambiente, perché il ferro teme l’umidità quasi quanto gli uomini temono
+                    il freddo.
+                    Ma questa non era una sala per il riposo. Questo era il luogo dove si custodivano e si
+                    preparavano le armi della guarnigione.
+                    Le ampie finestre che vedi lungo le pareti servivano a garantire la luce necessaria alla
+                    manutenzione degli equipaggiamenti. Qui si controllavano corde, si riparavano armature e
+                    si preparavano le armi per la difesa della Torre.
+                    Lungo queste mura trovavano posto rastrelliere colme di lance, scudi, ronconi, falcioni. In
+                    grandi casse di legno venivano custodite le cotte di maglia, gli elmi e le protezioni di ferro.
+                    Archi e balestre erano sempre pronti all’uso, perché bastava un segnale dalle mura o il
+                    suono di un corno per correre ai posti di combattimento.
+                    Ed io, che oltre a servire come scutifer sono anche fabbro, ho trascorso molte sere
+                    accanto a questo fuoco a riparare maglie spezzate, raddrizzare punte di lancia e
+                    controllare il filo delle lame. In un presidio come questo ogni arma doveva essere pronta,
+                    giorno e notte.
+                    Da queste finestre i soldati potevano colpire il nemico restando protetti all’interno della
+                    Torre. Guai a farsi trovare impreparati durante un assedio.
+                    Seguimi, forestiero riprendiamo le scale… e bada a dove metti i piedi. Queste scale
+                    consumano il fiato anche agli uomini d’arme più robusti. Altri gradini di pietra ci separano
+                    dai livelli più alti della Torre.
+                    Seguimi… saliamo ancora.",
     "audioSrc": "/audio/tappa5.mp3",
     "durata": "1:56",
     "posizione": "La Sala delle Armi"
@@ -42,7 +173,28 @@
   {
     "id": 6,
     "titolo": "La Cucina",
-    "descrizione": "Siete ora sul camminamento di ronda, il percorso continuo che correva lungo la sommità delle mura e permetteva ai soldati di pattugliare il perimetro della torre. Da qui il controllo visivo era assoluto: nelle giornate limpide si scorgono la catena del Pollino a nord, i contrafforti della Sila a est e, nelle condizioni atmosferiche migliori, una striscia di mare sul versante tirrenico a ovest. Questa visibilità non era un lusso ma una necessità strategica: qualsiasi movimento di truppe nemiche sul territorio poteva essere avvistato con ore di anticipo, dando tempo al presidio di prepararsi o di inviare messaggeri alle fortezze alleate. Le merlature che vedete sono state in parte ricostruite nel restauro del 1987, ma la forma a coda di rondine riprende fedelmente le tracce delle merlature originali documentate negli scavi.",
+    "descrizione": "Forestiero, siamo giunti all’ultima sala interna della Torre: la cucina.
+                    Come accadeva in molti castelli e presìdi del nostro tempo, questo ambiente occupava il
+                    livello più alto degli spazi abitati, così che il fumo del fuoco e gli odori delle pietanze non
+                    impregnassero i piani inferiori dove viveva la guarnigione.
+                    Osserva bene questo ambiente. È più ampio e più alto rispetto alle sale che hai
+                    attraversato poco fa. Non è un caso. Essendo all’ultimo livello coperto della Torre, qui il
+                    peso e le spinte della muratura erano minori, e questo permetteva ai costruttori di creare
+                    uno spazio più grande e arioso.
+                    Alza ora lo sguardo verso la volta. Vedi quella particolare struttura a cerchi concentrici? Fu
+                    realizzata con grande ingegno: pietre più grandi e pesanti alla base per dare stabilità, e
+                    materiali via via più leggeri verso l’alto, così da alleggerire il carico della copertura.
+                    Qui si preparava il cibo per gli uomini della Torre. Nella muratura è ancora visibile il grande
+                    forno dove si panificava. E se chiudi per un momento gli occhi, forse riuscirai ancora a
+                    immaginare il profumo del pane caldo salire insieme al fumo del fuoco.
+                    In questa sala trovavano posto anche una macina manuale, tavoli e banchi per la
+                    preparazione delle pietanze, insieme a una piccola dispensa necessaria a custodire farine,
+                    legumi, sale e viveri per la guarnigione.
+                    Dopo giorni di guardia, vento e ferro, questo era uno dei pochi luoghi della Torre capace di
+                    ricordare agli uomini il calore della casa.
+                    Ma il cammino non è ancora finito, forestiero.
+                    Seguimi ancora una volta lungo la scala. Gli ultimi gradini ci attendono.
+                    E là fuori, oltre questa salita… ti aspetta una sorpresa.",
     "audioSrc": "/audio/tappa6.mp3",
     "durata": "2:03",
     "posizione": "La Sala della Cucina"
@@ -50,7 +202,42 @@
   {
     "id": 7,
     "titolo": "Lo Sguardo sul Territorio e l'eredità Angioina",
-    "descrizione": "Concludete il vostro percorso guardando la torre nella sua interezza, cogliendone la stratificazione storica. Costruita dagli Angioini nel XIII secolo come struttura puramente militare, la torre cambiò funzione più volte nel corso dei secoli. Nel Quattrocento, sotto il dominio aragonese, divenne sede di un piccolo tribunale locale. Nel Seicento fu adibita a carcere mandamentale, funzione che mantenne fino all'Unità d'Italia. Nel 1943 subì danni da un bombardamento alleato che distrusse parte del camminamento di ronda. I restauri del dopoguerra e il consolidamento del 1987 l'hanno restituita alla città come monumento aperto al pubblico. Oggi la Torre Angioina è simbolo identitario di San Marco Argentano: la vedete raffigurata nello stemma comunale e nelle ceramiche artigianali prodotte nel centro storico. Sette secoli di storia racchiusi in mura che, come avete toccato con mano, resistono ancora.",
+    "descrizione": "Forestiero… eccoci finalmente sulla sommità della Torre.
+                    Da quassù lo sguardo corre lontano, in ogni direzione. Oggi come allora, questo luogo
+                    domina il paesaggio della valle del Crati e controlla strade, colline e passaggi. Ma questa
+                    altezza non serviva soltanto ad avvistare il nemico.
+                    La Torre parlava con altre Torri.
+                    Eccola lì, forestiero… se volgi il tuo sguardo verso nord-ovest puoi ancora distinguere la
+                    Torre di Malvito, il presidio “gemello” che dialogava con questo attraverso segnali di fuoco,
+                    fumo e luce. Nei tempi di guerra nessuna Torre era davvero sola.
+                    Nelle giornate limpide gli uomini di guardia potevano comunicare a distanza mantenendo
+                    un contatto costante con gli altri presìdi del territorio. In questo modo castelli e torri
+                    formavano una vera rete di controllo capace di sorvegliare il Regno e difenderne i confini.
+                    Osserva ancora questa architettura. La forma cilindrica del mastio, le poche aperture,
+                    l’accesso sopraelevato, le caditoie e il sistema difensivo che hai attraversato raccontano
+                    chiaramente la sua origine angioina.
+                    Torri simili sorgono in molte terre del Mezzogiorno. La Torre della Bruca a Velia, fondata
+                    nel XIII secolo. Le fortificazioni di Bominaco, ricostruite sotto Carlo II d’Angiò. E ancora i
+                    mastii di Fossa e Trasacco, in Abruzzo, così simili nella forma e nella funzione a questa
+                    che ci ospita.
+                    Comprendere questa Torre significa allora comprendere qualcosa di più grande: un vasto
+                    sistema difensivo che nel Medioevo univa paesi, uomini e territori lontani sotto un’unica
+                    idea di potere, controllo e architettura militare.
+                    Ma vedi, forestiero… le pietre da sole non bastano a custodire la memoria.
+                    Sono gli uomini a dare vita alle Torri.
+                    Gli uomini che le costruiscono. Gli uomini che le difendono. Gli uomini che, secoli dopo,
+                    tornano a salirvi per ascoltarne ancora la voce.
+                    Ed ora che sei giunto fin quassù, anche tu porti con te un frammento di questa storia.
+                    Prima che io ti lasci andare, forestiero, devi sapere un’ultima cosa. Io, Raynaldo lo scutifer,
+                    non sono soltanto una voce evocata da queste mura. Sono esistito davvero.
+                    Nei registri della cancelleria angioina infatti, ancora oggi potete leggere: “Castrum Sancti
+                    Marci custoditur per Raynaldum fabrum scutiferum contergium non habentem terram in
+                    Regno”.
+                    Il castello di San Marco è custodito da Raynaldo fabbro e scutifero, uomo senza terre nel
+                    Regno.
+                    Ed è forse per questo che la Torre è rimasta la mia casa.
+                    Che il vento della Torre accompagni il tuo cammino, forestiero… e che queste mura
+                    possano restare vive ancora a lungo, nel ricordo di chi le attraversa.",
     "audioSrc": "/audio/tappa7.mp3",
     "durata": "3:14",
     "posizione": "Sommità — Punto Panoramico"
@@ -58,7 +245,41 @@
   {
     "id": 8,
     "titolo": "Sussistenza e Stoccaggio delle Merci",
-    "descrizione": "Concludete il vostro percorso guardando la torre nella sua interezza, cogliendone la stratificazione storica. Costruita dagli Angioini nel XIII secolo come struttura puramente militare, la torre cambiò funzione più volte nel corso dei secoli. Nel Quattrocento, sotto il dominio aragonese, divenne sede di un piccolo tribunale locali. Nel Seicento fu adibita a carcere mandamentale, funzione che mantenne fino all'Unità d'Italia. Nel 1943 subì danni da un bombardamento alleato che distrusse parte del camminamento di ronda. I restauri del dopoguerra e il consolidamento del 1987 l'hanno restituita alla città come monumento aperto al pubblico. Oggi la Torre Angioina è simbolo identitario di San Marco Argentano: la vedete raffigurata nello stemma comunale e nelle ceramiche artigianali prodotte nel centro storico. Sette secoli di storia racchiusi in mura che, come avete toccato con mano, resistono ancora.",
+    "descrizione": "Forestiero, stiamo ora scendendo nelle viscere della Torre. Qui sotto si trovavano gli
+                    ambienti più umili e silenziosi del presidio… ma anche quelli più importanti per la
+                    sopravvivenza della guarnigione.
+                    Questo primo ambiente era la dispensa della Torre. Situata in una posizione strategica,
+                    fresca e facilmente raggiungibile, custodiva le riserve necessarie a resistere durante lunghi
+                    periodi d’assedio.
+                    A differenza delle altre sale che hai attraversato, questo spazio non conserva più la sua
+                    copertura originaria. La volta in muratura crollò negli anni Trenta del secolo scorso e fu
+                    sostituita dall’attuale soffitto in travi e tavelloni. Ma nonostante questa perdita, l’ambiente
+                    mantiene ancora molte delle sue caratteristiche antiche.
+                    Osserva l’ampio ingresso e le grandi finestre: non erano soltanto aperture di servizio.
+                    Servivano soprattutto a garantire una costante ventilazione, fondamentale per mantenere
+                    asciutte le scorte alimentari.
+                    Qui venivano conservati cereali, formaggi, carne secca, vino e birra. E probabilmente
+                    trovavano posto anche merci più preziose o ingombranti, come balle di lana destinate agli
+                    scambi commerciali. In un presidio militare come questo, l’umidità poteva essere
+                    pericolosa quanto il nemico, e l’aerazione degli ambienti era essenziale per proteggere
+                    viveri e materiali.
+                    Ma ancora più in profondità, sotto di noi, si trova il vero cuore della sopravvivenza della
+                    Torre: la cisterna.
+                    Quell’ambiente oggi non è accessibile ai visitatori, e dovrete dunque fidarvi delle mie
+                    parole. La cisterna era coperta da una volta a sesto acuto, una soluzione tipica del nostro
+                    tempo, capace di distribuire meglio il peso della struttura e allo stesso tempo lasciare
+                    maggiore spazio utile all’interno.
+                    Le pareti conservano ancora tracce dell’antica malta idraulica, uno speciale rivestimento
+                    impermeabile studiato per evitare dispersioni d’acqua. E sul fondo della vasca esiste
+                    ancora un ingegnoso sistema di filtraggio: una profonda cavità destinata a raccogliere le
+                    impurità e lasciare l’acqua limpida per gli uomini della guarnigione. Voi non potete
+                    vederla… ma dovrete fidarvi di quello che vi dico.
+                    Ora, forestiero, il vostro cammino dipende dalla strada che avete scelto.Se dopo la sala
+                    della guarnigione siete scesi fin qui, allora è tempo di riprendere la lunga salita lungo la
+                    scala elicoidale della Torre.
+                    Se invece questo è l’ultimo ambiente che state visitando… allora la visita termina qui, ed è
+                    tempo di lasciare la Torre, portando con voi il ricordo delle sue pietre e delle storie che
+                    custodisce.",
     "audioSrc": "/audio/tappa8.mp3",
     "durata": "2:58",
     "posizione": "La Sala delle Provvigioni"
