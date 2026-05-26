@@ -1,58 +1,66 @@
 [
   {
     "id": 1,
-    "titolo": "Ingresso e Portale Medievale",
+    "titolo": "L'Ingresso",
     "descrizione": "Varcate la soglia della Torre Angioina, edificata per volere di Carlo I d'Angiò nel XIII secolo. Il portale che si apre davanti a voi è uno dei rari esempi di architettura militare normanna sopravvissuti in Calabria. Osservate i conci di pietra calcarea locale, tagliati a regola d'arte dai maestri picapietra al servizio degli Angioini. La forma a tutto sesto dell'arco riflette l'influenza dell'architettura francese portata dagli invasori, che si fuse con le tradizioni costruttive locali ereditate dall'epoca normanna. La soglia che calpestate ha visto passare feudatari, soldati, mercanti e pellegrini nel corso di sette secoli di storia. San Marco Argentano fu per lungo tempo un baluardo strategico a controllo delle vie di comunicazione tra la costa tirrenica e l'entroterra silano.",
     "audioSrc": "/audio/tappa1.mp3",
-    "durata": "3:24",
-    "posizione": "Piano Terra — Ingresso Nord"
+    "durata": "1:38",
+    "posizione": "Scale in pietra - Ingresso principale"
   },
   {
     "id": 2,
-    "titolo": "La Sala delle Guardie",
+    "titolo": "Dentro le Mura",
     "descrizione": "Questa grande sala al piano terra ospitava il corpo di guardia permanente della torre. Le nicchie scavate nello spessore delle mura — osservate quanto sono profonde, quasi due metri — erano destinate a riporre armi, torce e le provviste dei soldati di stanza. Le mura raggiungono qui lo spessore massimo di tre metri e ottanta: una barriera quasi invalicabile per le tecnologie belliche del tempo. Il pavimento originale, in lastre di pietra battuta, è ancora in parte visibile sotto il consolidamento moderno. Immaginatelo percorso giorno e notte dai soldati angioini, che dovevano rispondere a turni di guardia rigidissimi. La fessura verticale nella parete orientale non è una semplice finestra: è una feritoia progettata per permettere il tiro con l'arco o la balestra mantenendo il massimo della protezione per l'arciere.",
     "audioSrc": "/audio/tappa2.mp3",
-    "durata": "2:58",
-    "posizione": "Piano Terra — Sala Est"
+    "durata": "3:21",
+    "posizione": "Nel Rivellino"
   },
   {
     "id": 3,
-    "titolo": "Il Pozzo Interno e le Cisterne",
+    "titolo": "Sul Ponte Alto",
     "descrizione": "Uno degli elementi più ingegnosi dell'intera fortezza è questo pozzo, scavato al centro del cortile interno per garantire l'autonomia idrica in caso di assedio prolungato. I costruttori medievali avevano una comprensione sofisticata dell'idrogeologia locale: il pozzo fu posizionato esattamente sopra una falda freatica che ancora oggi mantiene un livello costante. Accanto al pozzo si aprono le bocche delle cisterne sotterranee, capaci di raccogliere l'acqua piovana convogliata dai tetti e dalle terrazze attraverso un sistema di canalette incastonate nei muri perimetrali. Si stima che le cisterne potessero garantire autonomia idrica per un presidio di cinquanta uomini per almeno sei mesi. Una torre che resistesse agli assedi non si poteva concepire senza questa riserva silenziosa.",
     "audioSrc": "/audio/tappa3.mp3",
-    "durata": "3:10",
-    "posizione": "Cortile Interno — Centro"
+    "durata": "2:15",
+    "posizione": "Ponte in legno - l'ingresso della Torre"
   },
   {
     "id": 4,
-    "titolo": "La Scala a Chiocciola e il Primo Piano",
+    "titolo": "La Vita di Guarnigione",
     "descrizione": "La scala a chiocciola che sale verso il piano superiore è un capolavoro di geometria applicata. Girate in senso orario salendo: non è una casualità. Questa scelta progettuale, comune a quasi tutte le torri medievali europee, favorisce il difensore che scende respingendo un attaccante che sale. Un soldato destrorso che scende può usare la spada liberamente verso il centro della scala; il soldato che attacca salendo ha il braccio destro ostacolato dal pilastro centrale. Ogni gradino è leggermente irregolare, differenza intenzionale che rallenta il passo di chi non conosce la scala. Al primo piano si apriva il quartiere del castellano, il responsabile militare della torre. Qui la qualità costruttiva è superiore: le pareti riportano tracce di intonaco bianco e, in un angolo, i resti di una decorazione geometrica che doveva rendere l'ambiente più degno del suo occupante.",
     "audioSrc": "/audio/tappa4.mp3",
-    "durata": "3:45",
-    "posizione": "Vano Scale — Lato Ovest"
+    "durata": "3:09",
+    "posizione": "Nella Sala della Guarnigione"
   },
   {
     "id": 5,
-    "titolo": "La Camera del Castellano",
+    "titolo": "L'Armeria",
     "descrizione": "Questo ambiente al primo piano era il cuore decisionale della torre. Il castellano — di norma un nobile di rango medio nominato direttamente dalla corona angioina — qui amministrava i registri fiscali dei villaggi dipendenti, riceveva i delegati dei feudatari locali e pianificava la difesa del territorio. La finestra con seduta in pietra, che vedete sul lato meridionale, era pensata per lo studio e la lettura: orientata a sud garantisce la massima luce naturale per la maggior parte della giornata. I ganci in ferro ancora infissi nella parete nord servivano per appendere arazzi che isolavano dal freddo e, al tempo stesso, ostentavano il rango del proprietario. Un documento del 1297 conservato nell'Archivio di Stato di Cosenza cita espressamente questa camera come luogo in cui fu siglato un accordo di confine tra il castellano e i monaci del vicino convento.",
     "audioSrc": "/audio/tappa5.mp3",
-    "durata": "4:02",
-    "posizione": "Primo Piano — Camera Sud"
+    "durata": "1:56",
+    "posizione": "La Sala delle Armi"
   },
   {
     "id": 6,
-    "titolo": "Il Camminamento di Ronda",
+    "titolo": "La Cucina",
     "descrizione": "Siete ora sul camminamento di ronda, il percorso continuo che correva lungo la sommità delle mura e permetteva ai soldati di pattugliare il perimetro della torre. Da qui il controllo visivo era assoluto: nelle giornate limpide si scorgono la catena del Pollino a nord, i contrafforti della Sila a est e, nelle condizioni atmosferiche migliori, una striscia di mare sul versante tirrenico a ovest. Questa visibilità non era un lusso ma una necessità strategica: qualsiasi movimento di truppe nemiche sul territorio poteva essere avvistato con ore di anticipo, dando tempo al presidio di prepararsi o di inviare messaggeri alle fortezze alleate. Le merlature che vedete sono state in parte ricostruite nel restauro del 1987, ma la forma a coda di rondine riprende fedelmente le tracce delle merlature originali documentate negli scavi.",
     "audioSrc": "/audio/tappa6.mp3",
-    "durata": "3:30",
-    "posizione": "Sommità — Camminamento Perimetrale"
+    "durata": "2:03",
+    "posizione": "La Sala della Cucina"
   },
   {
     "id": 7,
-    "titolo": "La Torre nel Tempo: dal Medioevo a Oggi",
+    "titolo": "Lo Sguardo sul Territorio e l'eredità Angioina",
     "descrizione": "Concludete il vostro percorso guardando la torre nella sua interezza, cogliendone la stratificazione storica. Costruita dagli Angioini nel XIII secolo come struttura puramente militare, la torre cambiò funzione più volte nel corso dei secoli. Nel Quattrocento, sotto il dominio aragonese, divenne sede di un piccolo tribunale locale. Nel Seicento fu adibita a carcere mandamentale, funzione che mantenne fino all'Unità d'Italia. Nel 1943 subì danni da un bombardamento alleato che distrusse parte del camminamento di ronda. I restauri del dopoguerra e il consolidamento del 1987 l'hanno restituita alla città come monumento aperto al pubblico. Oggi la Torre Angioina è simbolo identitario di San Marco Argentano: la vedete raffigurata nello stemma comunale e nelle ceramiche artigianali prodotte nel centro storico. Sette secoli di storia racchiusi in mura che, come avete toccato con mano, resistono ancora.",
     "audioSrc": "/audio/tappa7.mp3",
-    "durata": "4:15",
+    "durata": "3:14",
     "posizione": "Sommità — Punto Panoramico"
+  },
+  {
+    "id": 8,
+    "titolo": "Sussistenza e Stoccaggio delle Merci",
+    "descrizione": "Concludete il vostro percorso guardando la torre nella sua interezza, cogliendone la stratificazione storica. Costruita dagli Angioini nel XIII secolo come struttura puramente militare, la torre cambiò funzione più volte nel corso dei secoli. Nel Quattrocento, sotto il dominio aragonese, divenne sede di un piccolo tribunale locali. Nel Seicento fu adibita a carcere mandamentale, funzione che mantenne fino all'Unità d'Italia. Nel 1943 subì danni da un bombardamento alleato che distrusse parte del camminamento di ronda. I restauri del dopoguerra e il consolidamento del 1987 l'hanno restituita alla città come monumento aperto al pubblico. Oggi la Torre Angioina è simbolo identitario di San Marco Argentano: la vedete raffigurata nello stemma comunale e nelle ceramiche artigianali prodotte nel centro storico. Sette secoli di storia racchiusi in mura che, come avete toccato con mano, resistono ancora.",
+    "audioSrc": "/audio/tappa8.mp3",
+    "durata": "2:58",
+    "posizione": "La Sala delle Provvigioni"
   }
 ]
