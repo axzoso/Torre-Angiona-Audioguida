@@ -104,8 +104,8 @@
   const elDuration = document.getElementById('player-duration') as HTMLSpanElement;
   const elTitolo = document.getElementById('player-titolo') as HTMLSpanElement;
   const elNumero = document.getElementById('player-numero') as HTMLSpanElement;
-  const iconPlay = document.getElementById('icon-play') as SVGElement;
-  const iconPause = document.getElementById('icon-pause') as SVGElement;
+  const iconPlay = document.getElementById('icon-play') as HTMLElement;
+  const iconPause = document.getElementById('icon-pause') as HTMLElement;
 
   function fmt(s: number): string {
     if (isNaN(s) || !isFinite(s)) return '0:00';
