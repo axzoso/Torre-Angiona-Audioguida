@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import TappaCard from '../components/TappaCard.astro';
-import PWAStatus from '../components/PWAStatus.astro';
 import audioguides from '../data/audioguides.json';
 ---
 
@@ -13,21 +12,16 @@ import audioguides from '../data/audioguides.json';
       aria-hidden="true"
     ></div>
 
-    <div class="relative flex items-start justify-between">
-      <div>
-        <p class="text-xs font-mono tracking-widest uppercase mb-2" style="color: var(--accent)">
-          San Marco Argentano · XIII sec.
-        </p>
-        <h1 class="font-serif text-4xl font-bold leading-tight" style="color: var(--text-primary)">
-          Torre<br />Angioina
-        </h1>
-        <p class="mt-3 text-sm leading-relaxed max-w-xs" style="color: var(--text-secondary)">
-          Otto tappe per scoprire otto secoli di storia. Scansiona il codice QR accanto a ogni punto di interesse.
-        </p>
-      </div>
-      <div class="shrink-0 mt-1">
-        <PWAStatus />
-      </div>
+    <div class="relative">
+      <p class="text-xs font-mono tracking-widest uppercase mb-2" style="color: var(--accent)">
+        San Marco Argentano · XIII sec.
+      </p>
+      <h1 class="font-serif text-4xl font-bold leading-tight" style="color: var(--text-primary)">
+        Torre<br />Angioina
+      </h1>
+      <p class="mt-3 text-sm leading-relaxed max-w-xs" style="color: var(--text-secondary)">
+        Otto tappe per scoprire otto secoli di storia. Scansiona il codice QR accanto a ogni punto di interesse.
+      </p>
     </div>
   </header>
 
@@ -48,11 +42,4 @@ import audioguides from '../data/audioguides.json';
       ))}
     </div>
   </section>
-
-  <footer class="px-5 py-6 border-t" style="border-color: var(--glass-border)">
-    <p class="text-xs text-center" style="color: var(--text-secondary)">
-      Torre Angioina di San Marco Argentano<br />
-      <span class="opacity-50">Audioguida · versione digitale</span>
-    </p>
-  </footer>
 </Layout>

@@ -56,13 +56,17 @@ const {
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="bg-[#0A0A0A] text-[#F5F0EB] min-h-screen antialiased">
-    <main class="pb-28">
+  <body class="bg-[#0A0A0A] text-[#F5F0EB] min-h-screen antialiased flex flex-col">
+    <main class="flex-1">
       <slot />
     </main>
-    <footer class="w-full text-center py-6 text-xs text-gray-500 mt-auto">
-      <p>© {new Date().getFullYear()} Associazione Fuori le Mura — Comune di San Marco Argentano</p>
-      <a href="/privacy" class="text-[#E0A96D] hover:underline mt-2 inline-block transition-colors">Informativa sulla Privacy</a>
+    <footer class="px-5 py-6 text-center border-t" style="border-color: var(--glass-border)">
+      <p class="text-xs" style="color: var(--text-secondary)">
+        Torre Angioina di San Marco Argentano<br />
+        <span class="opacity-50">Audioguida · versione digitale</span>
+      </p>
+      <p class="text-xs text-gray-500 mt-4">© {new Date().getFullYear()} Associazione Fuori le Mura — Comune di San Marco Argentano</p>
+      <a href="/privacy" class="text-[#E0A96D] hover:underline mt-2 inline-block text-xs transition-colors">Informativa sulla Privacy</a>
     </footer>
     <AudioPlayer />
   </body>

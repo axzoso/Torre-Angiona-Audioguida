@@ -34,3 +34,8 @@ html {
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* Reserve space for the fixed audio player only while it is visible */
+body.player-active {
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
+}
