@@ -258,20 +258,30 @@ Struttura `src/data/audioguides.json`:
 
 ## 🌐 Deployment
 
-### GitHub Pages + Cloudflare
+### Coolify su VPS (Oracle Cloud Always Free, ARM)
+
+L'app è ospitata su una VPS Oracle Always Free (Ampere A1, architettura ARM) e
+gestita da [Coolify](https://coolify.io). La build avviene con **Nixpacks**, e i
+file statici vengono serviti da un container **nginx:alpine**.
 
 ```bash
-# Build statico
+# Build statico (eseguita da Nixpacks in fase di deploy)
 npm run build
 
-# Output: dist/
+# Output: dist/  → servito da nginx:alpine
 ```
 
-**Deploy:**
-1. Push su `main` branch
-2. GitHub Actions builda automaticamente
-3. Cloudflare CDN distribuisce contenuti
-4. Service worker cache offline-first
+**Flusso di deploy:**
+1. Push su `main`
+2. Il webhook di Coolify avvia il deploy
+3. Nixpacks installa le dipendenze e builda il sito (`npm run build`)
+4. Il container nginx:alpine serve `dist/`
+5. Il service worker aggiorna la cache offline-first lato client
+
+**Tempi:** con il webhook attivo, dal push ai nuovi file online passano circa
+2–4 minuti (build su ARM). Per gli utenti che hanno già aperto la PWA,
+l'aggiornamento effettivo arriva alla successiva apertura online, grazie
+all'auto-update del service worker (`registerType: 'autoUpdate'`).
 
 ---
 
