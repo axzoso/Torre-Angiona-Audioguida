@@ -91,6 +91,7 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
         style="background-color: var(--glass-bg); border-color: var(--glass-border)"
       >
         <span class="text-xs" style="color: var(--text-secondary)">← Precedente</span>
+        <span class="font-mono font-bold text-lg leading-none" style="color: var(--accent)">{String(prev.id).padStart(2, '0')}</span>
         <span class="text-sm font-medium truncate" style="color: var(--text-primary)">{prev.titolo}</span>
       </a>
     ) : <div></div>}
@@ -102,6 +103,7 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
         style="background-color: var(--glass-bg); border-color: var(--glass-border)"
       >
         <span class="text-xs" style="color: var(--text-secondary)">Successiva →</span>
+        <span class="font-mono font-bold text-lg leading-none" style="color: var(--accent)">{String(next.id).padStart(2, '0')}</span>
         <span class="text-sm font-medium truncate" style="color: var(--text-primary)">{next.titolo}</span>
       </a>
     ) : <div></div>}
@@ -124,9 +126,6 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
     });
   }
 
-  // Run on initial load
-  initPlayButton();
-
-  // Re-run after each View Transition (page swap)
+  // astro:page-load fires on the initial load and after every View Transition
   document.addEventListener('astro:page-load', initPlayButton);
 </script>
