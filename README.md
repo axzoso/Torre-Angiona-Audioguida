@@ -12,7 +12,8 @@ Applicazione web interattiva che trasforma la visita al sito storico in un perco
 
 - 🎧 Ascoltare descrizioni audio dettagliate tramite QR code
 - 🗺️ Seguire un percorso strutturato in 8 tappe
-- 📊 Controllare riproduzione, velocità e posizione audio
+- 🎚️ Controllare la riproduzione: play/pausa, skip ±15s, barra di avanzamento
+- 📜 Leggere la trascrizione che scorre in sincrono con l'audio
 - 🔌 Funzionare completamente offline dopo il primo accesso
 - 📱 Accedere da qualsiasi dispositivo mobile
 
@@ -21,6 +22,7 @@ Applicazione web interattiva che trasforma la visita al sito storico in un perco
 ✅ **PWA-Ready**: Installabile su home screen, offline-first  
 ✅ **Responsive Design**: Ottimizzato per tutti gli schermi mobile  
 ✅ **Audio Player Custom**: Controlli intuitivi con skip ±15 secondi  
+✅ **Trascrizione sincronizzata**: Il testo scorre con l'audio e cede il controllo allo scroll manuale  
 ✅ **Privacy-First**: Nessuna raccolta dati identificativi, Google Analytics anonimo  
 ✅ **Accessibilità**: Attributi ARIA, semantica HTML corretta  
 ✅ **Styling Moderno**: Tailwind CSS, glassmorphism, tema scuro  
@@ -53,14 +55,13 @@ audioguida-torre/
 │   ├── pages/
 │   │   ├── index.astro           # Home con griglia 8 tappe
 │   │   ├── tappa/[id].astro      # Pagina dettaglio singola tappa
-│   │   ├── privacy.astro         # Informativa privacy
-│   │   └── [404].astro           # Pagina 404
+│   │   └── privacy.astro         # Informativa privacy
 │   ├── layouts/
-│   │   └── Layout.astro          # Layout principale
+│   │   └── Layout.astro          # Layout principale (header GA4, footer, player)
 │   ├── components/
 │   │   ├── AudioPlayer.astro     # Player audio persistente
 │   │   ├── TappaCard.astro       # Card singola tappa
-│   │   └── PWAStatus.astro       # Indicatore stato PWA
+│   │   └── PWAStatus.astro       # Indicatore stato PWA (non montato nella UI)
 │   ├── lib/
 │   │   └── audioStore.ts         # Event bus per comunicazione audio
 │   ├── data/
@@ -74,8 +75,7 @@ audioguida-torre/
 │   │   └── icon-512.png
 │   └── audio/
 │       └── *.mp3                 # File audio tappe
-├── astro.config.ts              # Config Astro + PWA
-├── tailwind.config.ts           # Config Tailwind (CSS-first)
+├── astro.config.ts              # Config Astro + PWA (Tailwind via @tailwindcss/vite)
 ├── tsconfig.json               # Config TypeScript
 ├── vitest.config.ts            # Config testing
 └── package.json
@@ -128,15 +128,15 @@ Comunicazione centralizzata tra componenti tramite `CustomEvent`:
 
 ```typescript
 // src/lib/audioStore.ts
-audioStore.dispatchEvent(new CustomEvent('play-tappa', {
-  detail: { src: audioUrl, titolo, numero }
-}));
+audioStore.playTappa({ src: audioUrl, titolo, numero, durata });
 ```
 
 **Eventi disponibili:**
-- `play-tappa`: Richiedi riproduzione audio
+- `play-tappa`: Richiedi riproduzione audio (detail: `src`, `titolo`, `numero`, `durata`)
 - `toggle-play`: Play/Pause
 - `seek-relative`: Avanti/Indietro 15 secondi
+- `state-changed`: Notifica play/pausa effettiva del player
+- `progress`: Avanzamento riproduzione (usato per lo scroll sincronizzato del testo)
 
 ### Layout & Persistenza
 
@@ -146,10 +146,12 @@ audioStore.dispatchEvent(new CustomEvent('play-tappa', {
 
 ### Routing
 
+URL con trailing slash obbligatorio (`trailingSlash: 'always'`), così le richieste
+coincidono con le chiavi della cache del service worker e la navigazione funziona offline.
+
 - `/` → Home (grid 8 tappe)
-- `/tappa/1` → Dettaglio Tappa 1
-- `/privacy` → Informativa privacy
-- `/404` → Pagina non trovata
+- `/tappa/1/` → Dettaglio Tappa 1
+- `/privacy/` → Informativa privacy
 
 ---
 
@@ -191,9 +193,11 @@ Vedi [Privacy Policy](src/pages/privacy.astro) per dettagli completi.
 
 ```javascript
 // astro.config.ts
+trailingSlash: 'always',
 workbox: {
   globPatterns: ['**/*.{html,css,js,ico,png,svg,mp3}'],
-  maximumFileSizeToCacheInBytes: 15_000_000,
+  maximumFileSizeToCacheInBytes: 15_000_000, // include gli mp3 (fino a ~5 MB ciascuno)
+  navigateFallback: null,
 }
 ```
 
@@ -238,15 +242,17 @@ Struttura `src/data/audioguides.json`:
 [
   {
     "id": 1,
-    "titolo": "La Fondazione della Torre",
-    "numero": "01",
-    "posizione": "Piazza Castello",
-    "durata": "5:23",
+    "titolo": "L'Ingresso",
     "descrizione": "...",
-    "audioSrc": "/audio/tappa-01.mp3"
+    "audioSrc": "/audio/tappa1.mp3",
+    "durata": "1:38",
+    "posizione": "Scale in pietra - Ingresso principale"
   }
 ]
 ```
+
+> La `durata` è usata anche come fallback dal player quando il browser non riesce
+> a determinare la durata reale dell'mp3 (tipico dei file serviti dalla cache).
 
 ---
 
@@ -271,12 +277,10 @@ npm run build
 
 ## 🎯 Roadmap
 
-- [ ] Geolocalizzazione QR auto-trigger
-- [ ] Lingue multiple (EN, FR)
-- [ ] Transcrizioni testi audio
-- [ ] Dark/Light mode toggle
-- [ ] Analytics dashboard
-- [ ] Feedback visitatori
+- [x] Trascrizione testi sincronizzata con l'audio (scroll proporzionale)
+- [ ] Lingue multiple (EN, FR) — dipende dalla produzione dell'audio tradotto
+- [ ] Feedback visitatori (form esterno)
+- [ ] Analytics dashboard — al momento si usa GA4
 
 ---
 
