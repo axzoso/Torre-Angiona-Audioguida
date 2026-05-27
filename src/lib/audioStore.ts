@@ -33,6 +33,12 @@ class AudioStore extends EventTarget {
     this._playing = playing;
     this.dispatchEvent(new CustomEvent('state-changed', { detail: { playing, src } }));
   }
+
+  reportProgress(currentTime: number, duration: number, src: string): void {
+    this.dispatchEvent(
+      new CustomEvent('progress', { detail: { currentTime, duration, src } }),
+    );
+  }
 }
 
 export const audioStore = new AudioStore();

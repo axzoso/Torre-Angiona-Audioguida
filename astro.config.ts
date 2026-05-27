@@ -4,6 +4,7 @@ import AstroPWA from '@vite-pwa/astro';
 
 export default defineConfig({
   output: 'static',
+  trailingSlash: 'always',
   integrations: [
     AstroPWA({
       registerType: 'autoUpdate',

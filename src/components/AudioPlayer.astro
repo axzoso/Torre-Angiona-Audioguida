@@ -181,6 +181,7 @@
     if (!isNaN(audio.duration) && audio.duration > 0) {
       progressBar.value = String((audio.currentTime / audio.duration) * 100);
       elCurrent.textContent = fmt(audio.currentTime);
+      audioStore.reportProgress(audio.currentTime, audio.duration, audio.src);
     }
   });
 

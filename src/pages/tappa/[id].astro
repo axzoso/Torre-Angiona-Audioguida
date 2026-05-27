@@ -72,7 +72,7 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
     </button>
   </div>
 
-  <article class="px-5 pb-10">
+  <article id="tappa-article" class="px-5 pb-10">
     <div
       class="rounded-2xl p-5 border"
       style="background-color: var(--glass-bg); border-color: var(--glass-border); backdrop-filter: blur(12px)"
@@ -86,7 +86,7 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
   <nav class="px-5 pb-6 grid grid-cols-2 gap-3">
     {prev ? (
       <a
-        href={`/tappa/${prev.id}`}
+        href={`/tappa/${prev.id}/`}
         class="flex flex-col gap-1 p-3 rounded-xl border transition-colors hover:border-accent/40"
         style="background-color: var(--glass-bg); border-color: var(--glass-border)"
       >
@@ -98,7 +98,7 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
 
     {next ? (
       <a
-        href={`/tappa/${next.id}`}
+        href={`/tappa/${next.id}/`}
         class="flex flex-col gap-1 p-3 rounded-xl border text-right transition-colors hover:border-accent/40"
         style="background-color: var(--glass-bg); border-color: var(--glass-border)"
       >
@@ -113,19 +113,64 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
 <script>
   import { audioStore } from '../../lib/audioStore';
 
-  function initPlayButton(): void {
+  let article: HTMLElement | null = null;
+  let trackSrc: string | null = null; // absolute URL of this page's audio
+  let autoScroll = false;
+
+  function syncScroll(currentTime: number, duration: number): void {
+    if (!autoScroll || !article || duration <= 0) return;
+    const top = article.getBoundingClientRect().top + window.scrollY;
+    const start = top - 90; // keep a bit of header visible
+    const end = top + article.offsetHeight - window.innerHeight + 120;
+    if (end <= start) return; // fits on screen: nothing to scroll
+    const progress = Math.min(1, currentTime / duration);
+    const target = Math.max(0, start + progress * (end - start));
+    window.scrollTo({ top: target, behavior: 'instant' as ScrollBehavior });
+  }
+
+  // Follow the audio of THIS page only
+  audioStore.addEventListener('progress', (e: Event) => {
+    const { currentTime, duration, src } = (e as CustomEvent).detail;
+    if (src === trackSrc) syncScroll(currentTime, duration);
+  });
+
+  // Engage following when this page's track starts
+  audioStore.addEventListener('play-tappa', (e: Event) => {
+    const { src } = (e as CustomEvent).detail;
+    if (new URL(src, location.href).href === trackSrc) autoScroll = true;
+  });
+
+  // Any manual scroll gesture hands control back to the user
+  const release = () => { autoScroll = false; };
+  window.addEventListener('wheel', release, { passive: true });
+  window.addEventListener('touchmove', release, { passive: true });
+
+  function initTappa(): void {
     const btn = document.getElementById('btn-ascolta') as HTMLButtonElement | null;
-    if (!btn) return;
+    article = document.getElementById('tappa-article');
+    if (!btn) {
+      trackSrc = null;
+      autoScroll = false;
+      return;
+    }
+    trackSrc = new URL(btn.dataset.src!, location.href).href;
+    // Resume following if we land on the tappa whose audio is already playing
+    const current = audioStore.current;
+    autoScroll = !!(
+      audioStore.playing &&
+      current &&
+      new URL(current.src, location.href).href === trackSrc
+    );
 
     btn.addEventListener('click', () => {
-      const src = btn.dataset.src!;
-      const titolo = btn.dataset.titolo!;
-      const numero = parseInt(btn.dataset.numero!, 10);
-
-      audioStore.playTappa({ src, titolo, numero });
+      audioStore.playTappa({
+        src: btn.dataset.src!,
+        titolo: btn.dataset.titolo!,
+        numero: parseInt(btn.dataset.numero!, 10),
+      });
     });
   }
 
   // astro:page-load fires on the initial load and after every View Transition
-  document.addEventListener('astro:page-load', initPlayButton);
+  document.addEventListener('astro:page-load', initTappa);
 </script>
