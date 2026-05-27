@@ -64,6 +64,7 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
       data-src={tappa.audioSrc}
       data-titolo={tappa.titolo}
       data-numero={tappa.id}
+      data-durata={tappa.durata}
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
         <polygon points="6,3 20,12 6,21"/>
@@ -167,6 +168,7 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
         src: btn.dataset.src!,
         titolo: btn.dataset.titolo!,
         numero: parseInt(btn.dataset.numero!, 10),
+        durata: btn.dataset.durata,
       });
     });
   }

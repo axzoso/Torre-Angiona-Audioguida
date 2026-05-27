@@ -107,11 +107,27 @@
   const iconPlay = document.getElementById('icon-play') as HTMLElement;
   const iconPause = document.getElementById('icon-pause') as HTMLElement;
 
+  // Fallback duration (seconds) from the tappa metadata, used when the browser
+  // reports duration as Infinity/NaN (common for MP3s served from the SW cache).
+  let knownDuration = 0;
+
   function fmt(s: number): string {
     if (isNaN(s) || !isFinite(s)) return '0:00';
     const m = Math.floor(s / 60);
     const sec = Math.floor(s % 60);
     return `${m}:${sec.toString().padStart(2, '0')}`;
+  }
+
+  function parseDurata(str: string | undefined): number {
+    if (!str) return 0;
+    const parts = str.split(':').map(Number);
+    if (parts.some(isNaN)) return 0;
+    return parts.reduce((acc, n) => acc * 60 + n, 0);
+  }
+
+  // Prefer the real duration; fall back to the known value when it is unusable.
+  function effectiveDuration(): number {
+    return isFinite(audio.duration) && audio.duration > 0 ? audio.duration : knownDuration;
   }
 
   function showPlayer(): void {
@@ -134,11 +150,13 @@
 
   // Listen for play-tappa events from pages
   audioStore.addEventListener('play-tappa', (e: Event) => {
-    const { src, titolo, numero } = (e as CustomEvent<{ src: string; titolo: string; numero: number }>).detail;
+    const { src, titolo, numero, durata } = (e as CustomEvent<{ src: string; titolo: string; numero: number; durata?: string }>).detail;
     const resolvedSrc = new URL(src, window.location.href).href;
 
     elTitolo.textContent = titolo;
     elNumero.textContent = String(numero);
+    knownDuration = parseDurata(durata);
+    elDuration.textContent = fmt(effectiveDuration());
     showPlayer();
 
     if (audio.src !== resolvedSrc) {
@@ -160,7 +178,8 @@
   // Listen for seek-relative events
   audioStore.addEventListener('seek-relative', (e: Event) => {
     const { seconds } = (e as CustomEvent<{ seconds: number }>).detail;
-    audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + seconds));
+    const max = effectiveDuration() || Infinity;
+    audio.currentTime = Math.max(0, Math.min(max, audio.currentTime + seconds));
   });
 
   // The player persists across View Transitions but the body is swapped,
@@ -178,15 +197,23 @@
 
   // Sync progress bar with audio
   audio.addEventListener('timeupdate', () => {
-    if (!isNaN(audio.duration) && audio.duration > 0) {
-      progressBar.value = String((audio.currentTime / audio.duration) * 100);
+    const d = effectiveDuration();
+    if (d > 0) {
+      progressBar.value = String(Math.min(100, (audio.currentTime / d) * 100));
       elCurrent.textContent = fmt(audio.currentTime);
-      audioStore.reportProgress(audio.currentTime, audio.duration, audio.src);
+      audioStore.reportProgress(audio.currentTime, d, audio.src);
     }
   });
 
   audio.addEventListener('loadedmetadata', () => {
-    elDuration.textContent = fmt(audio.duration);
+    elDuration.textContent = fmt(effectiveDuration());
+  });
+
+  // Duration may only become known after buffering; update the display then.
+  audio.addEventListener('durationchange', () => {
+    if (isFinite(audio.duration) && audio.duration > 0) {
+      elDuration.textContent = fmt(audio.duration);
+    }
   });
 
   audio.addEventListener('play', () => {
@@ -208,8 +235,9 @@
 
   // Allow scrubbing via progress bar
   progressBar.addEventListener('input', () => {
-    if (!isNaN(audio.duration) && audio.duration > 0) {
-      audio.currentTime = (Number(progressBar.value) / 100) * audio.duration;
+    const d = effectiveDuration();
+    if (d > 0) {
+      audio.currentTime = (Number(progressBar.value) / 100) * d;
     }
   });
 </script>

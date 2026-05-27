@@ -2,6 +2,7 @@ export interface TappaInfo {
   src: string;
   titolo: string;
   numero: number;
+  durata?: string;
 }
 
 class AudioStore extends EventTarget {
