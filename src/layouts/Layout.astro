@@ -26,15 +26,23 @@ const {
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/icons/icon-192.png" />
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) - Configurazione Strictly Anonymous -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4GFKQ1B6XE"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-4GFKQ1B6XE');
 
-      // Forza il tracciamento di GA4 ad ogni cambio pagina simulato da Astro
+      // Blindatura Privacy per conformità senza Banner
+      gtag('config', 'G-4GFKQ1B6XE', {
+        'anonymize_ip': true,                // Anonimizzazione IP (già nativa ma esplicitata)
+        'allow_google_signals': false,       // Disattiva profilazione cross-device e pubblicitaria
+        'allow_ad_personalization_signals': false, // Blocca la personalizzazione degli annunci
+        'restricted_data_processing': true,  // Forza il trattamento dati restrittivo (GDPR)
+        'client_storage': 'none'             // IMPEDISCE a GA4 di salvare cookie persistenti sul telefono
+      });
+
+      // Tracciamento dei cambi pagina compatibile con ClientRouter
       document.addEventListener('astro:page-load', () => {
         if (typeof gtag === 'function') {
           gtag('event', 'page_view', {
