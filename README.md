@@ -275,13 +275,27 @@ npm run build
 1. Push su `main`
 2. Il webhook di Coolify avvia il deploy
 3. Nixpacks installa le dipendenze e builda il sito (`npm run build`)
-4. Il container nginx:alpine serve `dist/`
+4. Il container nginx:alpine serve `dist/` usando `nginx.conf` nel root del repo
 5. Il service worker aggiorna la cache offline-first lato client
 
 **Tempi:** con il webhook attivo, dal push ai nuovi file online passano circa
 2–4 minuti (build su ARM). Per gli utenti che hanno già aperto la PWA,
 l'aggiornamento effettivo arriva alla successiva apertura online, grazie
 all'auto-update del service worker (`registerType: 'autoUpdate'`).
+
+### Cloudflare — configurazione per PWA offline
+
+Cloudflare è in front come proxy/DNS. Per garantire il funzionamento offline
+della PWA è **obbligatorio** che `sw.js` non venga cachato dalla CDN:
+
+**Rules → Cache Rules → Crea regola:**
+- Campo: `URI Path` equals `/sw.js`
+- Azione: Cache Status → **Bypass**
+
+Senza questa regola Cloudflare serve il vecchio `sw.js` dalla CDN e il Service
+Worker non si aggiorna mai → la cache precachata è sbagliata → offline non funziona.
+
+Verificare anche che **Rocket Loader** (Speed → Optimization) sia disattivato.
 
 ---
 
