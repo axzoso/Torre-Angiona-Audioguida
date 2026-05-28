@@ -19,6 +19,20 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!--
+      Content-Security-Policy a livello applicativo (via meta, perché nginx.conf
+      è gestito da Coolify e non va modificato). Difesa in profondità: anche se
+      un terzo (Google Analytics) venisse compromesso, può caricare risorse solo
+      dai domini elencati. Il cuore dell'app è tutto 'self' + blob:, quindi se
+      questa policy fosse troppo stretta al più smette GA, non l'audioguida.
+      Nota: 'unsafe-inline' è necessario per gli stili inline e per lo snippet
+      gtag inline; 'frame-ancestors'/X-Frame-Options vanno impostati su Cloudflare.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline'; media-src 'self' blob:; font-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0A0A0A" />
     <meta name="mobile-web-app-capable" content="yes" />
