@@ -69,5 +69,35 @@ const {
       <a href="/privacy/" class="text-[#E0A96D] hover:underline mt-2 inline-block text-xs transition-colors">Informativa sulla Privacy</a>
     </footer>
     <AudioPlayer />
+    <script>
+      // Strategia di Pre-buffering / Warm-up (Background Audio Caching)
+      if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          // Attende che la CPU sia inattiva per non bloccare il thread principale
+          const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 2000));
+          
+          idleCallback(async () => {
+            if (!navigator.onLine) return; // Evita di forzare richieste se siamo già offline
+            
+            try {
+              // Array delle tappe (da 1 a 8 come da JSON)
+              const tappe = [1, 2, 3, 4, 5, 6, 7, 8];
+              for (const t of tappe) {
+                const url = `/audio/tappa${t}.mp3`;
+                // Fetch in background. Il SW Workbox intercetterà la richiesta 
+                // tramite il runtimeCaching "CacheFirst" configurato in astro.config.ts
+                // e salverà l'MP3 per l'uso offline.
+                fetch(url, { priority: 'low' }).catch(() => {});
+                
+                // Piccola pausa di 800ms tra una richiesta e l'altra per evitare congestioni
+                await new Promise(r => setTimeout(r, 800));
+              }
+            } catch (err) {
+              console.warn("Errore durante il pre-buffering degli audio:", err);
+            }
+          });
+        });
+      }
+    </script>
   </body>
 </html>

@@ -9,9 +9,22 @@ export default defineConfig({
     AstroPWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{html,css,js,ico,png,svg,mp3}'],
+        globPatterns: ['**/*.{html,css,js,ico,png,svg,webmanifest}'],
         maximumFileSizeToCacheInBytes: 15_000_000,
         navigateFallback: null,
+        runtimeCaching: [
+          {
+            urlPattern: /\.mp3$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'audio-cache',
+              rangeRequests: true, // Abilita HTTP 206 Partial Content per iOS/Safari
+              cacheableResponse: {
+                statuses: [0, 200, 206]
+              }
+            }
+          }
+        ]
       },
       manifest: {
         name: 'Torre Angioina — Audioguide',
@@ -27,7 +40,8 @@ export default defineConfig({
         ],
       },
       devOptions: {
-        enabled: false,
+        enabled: true,
+        navigateFallbackAllowlist: [/^\//],
       },
     }),
   ],
