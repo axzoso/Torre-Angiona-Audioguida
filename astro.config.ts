@@ -14,11 +14,15 @@ export default defineConfig({
         navigateFallback: null,
         runtimeCaching: [
           {
-            urlPattern: /\.mp3$/,
+            urlPattern: /.*\.mp3.*/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'audio-cache',
               rangeRequests: true, // Abilita HTTP 206 Partial Content per iOS/Safari
+              matchOptions: {
+                ignoreSearch: true,
+                ignoreVary: true,
+              },
               cacheableResponse: {
                 statuses: [0, 200, 206]
               }

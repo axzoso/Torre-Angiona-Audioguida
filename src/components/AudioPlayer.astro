@@ -149,7 +149,7 @@
   }
 
   // Listen for play-tappa events from pages
-  audioStore.addEventListener('play-tappa', (e: Event) => {
+  audioStore.addEventListener('play-tappa', async (e: Event) => {
     const { src, titolo, numero, durata } = (e as CustomEvent<{ src: string; titolo: string; numero: number; durata?: string }>).detail;
     const resolvedSrc = new URL(src, window.location.href).href;
 
@@ -159,11 +159,30 @@
     elDuration.textContent = fmt(effectiveDuration());
     showPlayer();
 
-    if (audio.src !== resolvedSrc) {
-      audio.src = resolvedSrc;
+    try {
+      // FONDAMENTALE: Aggiriamo il blocco delle "Range Requests" di Safari e Workbox
+      // effettuando una normale fetch(). Workbox intercetterà questa fetch e 
+      // restituirà istantaneamente il file MP3 intero dalla cache locale.
+      const response = await fetch(resolvedSrc);
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      
+      // Pulizia della memoria dal blob precedente
+      if (audio.src && audio.src.startsWith('blob:')) {
+        URL.revokeObjectURL(audio.src);
+      }
+      
+      audio.src = objectUrl;
       audio.load();
+      audio.play().catch(() => {/* browser may block autoplay */});
+    } catch (err) {
+      // Fallback tradizionale
+      if (audio.src !== resolvedSrc) {
+        audio.src = resolvedSrc;
+        audio.load();
+      }
+      audio.play().catch(() => {/* browser may block autoplay */});
     }
-    audio.play().catch(() => {/* browser may block autoplay */});
   });
 
   // Listen for toggle-play events
