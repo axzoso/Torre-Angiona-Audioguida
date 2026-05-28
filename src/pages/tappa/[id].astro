@@ -126,7 +126,7 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
     if (end <= start) return; // fits on screen: nothing to scroll
     const progress = Math.min(1, currentTime / duration);
     const target = Math.max(0, start + progress * (end - start));
-    window.scrollTo({ top: target, behavior: 'instant' as ScrollBehavior });
+    window.scrollTo({ top: target, behavior: 'smooth' as ScrollBehavior });
   }
 
   // Follow the audio of THIS page only

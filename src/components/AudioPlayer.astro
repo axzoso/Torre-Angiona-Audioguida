@@ -148,10 +148,13 @@
     }
   }
 
+  let currentTrackSrc: string | null = null;
+
   // Listen for play-tappa events from pages
   audioStore.addEventListener('play-tappa', async (e: Event) => {
     const { src, titolo, numero, durata } = (e as CustomEvent<{ src: string; titolo: string; numero: number; durata?: string }>).detail;
     const resolvedSrc = new URL(src, window.location.href).href;
+    currentTrackSrc = resolvedSrc;
 
     elTitolo.textContent = titolo;
     elNumero.textContent = String(numero);
@@ -220,7 +223,7 @@
     if (d > 0) {
       progressBar.value = String(Math.min(100, (audio.currentTime / d) * 100));
       elCurrent.textContent = fmt(audio.currentTime);
-      audioStore.reportProgress(audio.currentTime, d, audio.src);
+      audioStore.reportProgress(audio.currentTime, d, currentTrackSrc || audio.src);
     }
   });
 
@@ -237,19 +240,19 @@
 
   audio.addEventListener('play', () => {
     setPlayingUI(true);
-    audioStore.reportState(true, audio.src);
+    audioStore.reportState(true, currentTrackSrc || audio.src);
   });
 
   audio.addEventListener('pause', () => {
     setPlayingUI(false);
-    audioStore.reportState(false, audio.src);
+    audioStore.reportState(false, currentTrackSrc || audio.src);
   });
 
   audio.addEventListener('ended', () => {
     setPlayingUI(false);
     progressBar.value = '0';
     audio.currentTime = 0;
-    audioStore.reportState(false, audio.src);
+    audioStore.reportState(false, currentTrackSrc || audio.src);
   });
 
   // Allow scrubbing via progress bar
