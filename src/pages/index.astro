@@ -1,7 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import TappaCard from '../components/TappaCard.astro';
-import audioguides from '../data/audioguides.json';
+import Layout from "../layouts/Layout.astro";
+import TappaCard from "../components/TappaCard.astro";
+import audioguides from "../data/audioguides.json";
 ---
 
 <Layout title="Torre Angioina — Audioguide">
@@ -10,36 +10,52 @@ import audioguides from '../data/audioguides.json';
       class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full opacity-20 blur-3xl pointer-events-none"
       style="background: radial-gradient(circle, #8B2635, transparent)"
       aria-hidden="true"
-    ></div>
+    >
+    </div>
 
     <div class="relative">
-      <p class="text-xs font-mono tracking-widest uppercase mb-2" style="color: var(--accent)">
+      <p
+        class="text-xs font-mono tracking-widest uppercase mb-2"
+        style="color: var(--accent)"
+      >
         San Marco Argentano · XIII sec.
       </p>
-      <h1 class="font-serif text-4xl font-bold leading-tight" style="color: var(--text-primary)">
+      <h1
+        class="font-serif text-4xl font-bold leading-tight"
+        style="color: var(--text-primary)"
+      >
         Torre<br />Angioina
       </h1>
-      <p class="mt-3 text-sm leading-relaxed max-w-xs" style="color: var(--text-secondary)">
-        Otto tappe per scoprire otto secoli di storia. Scansiona il codice QR accanto a ogni punto di interesse.
+      <p
+        class="mt-3 text-sm leading-relaxed max-w-xs"
+        style="color: var(--text-secondary)"
+      >
+        Otto tappe per rivivere la storia. Scansiona il codice QR accanto a ogni
+        punto di interesse.
       </p>
     </div>
   </header>
 
   <section class="px-5 pb-6">
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xs font-mono tracking-widest uppercase" style="color: var(--text-secondary)">
+      <h2
+        class="text-xs font-mono tracking-widest uppercase"
+        style="color: var(--text-secondary)"
+      >
         Percorso · 8 tappe
       </h2>
     </div>
     <div class="grid grid-cols-2 gap-3">
-      {audioguides.map((tappa) => (
-        <TappaCard
-          id={tappa.id}
-          titolo={tappa.titolo}
-          durata={tappa.durata}
-          posizione={tappa.posizione}
-        />
-      ))}
+      {
+        audioguides.map((tappa) => (
+          <TappaCard
+            id={tappa.id}
+            titolo={tappa.titolo}
+            durata={tappa.durata}
+            posizione={tappa.posizione}
+          />
+        ))
+      }
     </div>
   </section>
 </Layout>

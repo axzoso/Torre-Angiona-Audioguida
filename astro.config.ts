@@ -27,9 +27,9 @@ export default defineConfig({
         ]
       },
       manifest: {
-        name: 'Torre Angioina — Audioguide',
+        name: 'Torre Angioina — Audioguida',
         short_name: 'Torre Angioina',
-        description: 'Audioguide per la Torre Angioina di San Marco Argentano',
+        description: 'Audioguida per la Torre Angioina di San Marco Argentano',
         theme_color: '#0A0A0A',
         background_color: '#0A0A0A',
         display: 'standalone',
