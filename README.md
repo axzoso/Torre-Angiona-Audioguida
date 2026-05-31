@@ -11,6 +11,7 @@ Applicazione web interattiva che trasforma la visita al sito storico in un perco
 | Documento | A chi è rivolto | Contenuto |
 |-----------|-----------------|-----------|
 | [README.md](README.md) | Sviluppatori | Questo file: panoramica tecnica, setup, deploy. |
+| [docs/analytics_ga4.md](docs/analytics_ga4.md) | Sviluppatori / Admin GA4 | Tracciamento Google Analytics 4: eventi custom, impostazione dimensioni e report. |
 | [PRESENTAZIONE.md](PRESENTAZIONE.md) | Pubblico non tecnico | Cos'è l'app in parole semplici, caratteristiche, vantaggi e limiti. |
 | [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) | Sviluppatori / AI | Onboarding rapido: architettura, runtime, deploy, stato sicurezza, gotcha. |
 

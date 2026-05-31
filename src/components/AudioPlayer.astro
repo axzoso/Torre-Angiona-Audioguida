@@ -162,6 +162,15 @@
     elDuration.textContent = fmt(effectiveDuration());
     showPlayer();
 
+    // Invio evento a Google Analytics (GA4)
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'play_audio', {
+        'audio_title': titolo,
+        'audio_id': numero,
+        'audio_src': src
+      });
+    }
+
     try {
       // FONDAMENTALE: Aggiriamo il blocco delle "Range Requests" di Safari e Workbox
       // effettuando una normale fetch(). Workbox intercetterà questa fetch e 
@@ -246,6 +255,18 @@
   audio.addEventListener('pause', () => {
     setPlayingUI(false);
     audioStore.reportState(false, currentTrackSrc || audio.src);
+
+    // Invia evento di pausa (escludendo quando l'audio è terminato)
+    const dur = effectiveDuration();
+    if (dur > 0 && audio.currentTime < dur - 0.5) {
+      if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+        (window as any).gtag('event', 'audio_pause', {
+          'audio_title': elTitolo.textContent,
+          'audio_id': parseInt(elNumero.textContent || '0', 10),
+          'audio_position': Math.round(audio.currentTime)
+        });
+      }
+    }
   });
 
   audio.addEventListener('ended', () => {
@@ -253,6 +274,15 @@
     progressBar.value = '0';
     audio.currentTime = 0;
     audioStore.reportState(false, currentTrackSrc || audio.src);
+
+    // Invia evento di completamento audio
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'audio_complete', {
+        'audio_title': elTitolo.textContent,
+        'audio_id': parseInt(elNumero.textContent || '0', 10),
+        'audio_src': currentTrackSrc || audio.src
+      });
+    }
   });
 
   // Allow scrubbing via progress bar
