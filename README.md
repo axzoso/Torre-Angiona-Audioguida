@@ -206,9 +206,12 @@ Vedi [Privacy Policy](src/pages/privacy.astro) per dettagli completi.
 // astro.config.ts
 trailingSlash: 'always',
 workbox: {
-  globPatterns: ['**/*.{html,css,js,ico,png,svg,mp3}'],
-  maximumFileSizeToCacheInBytes: 15_000_000, // include gli mp3 (fino a ~5 MB ciascuno)
+  globPatterns: ['**/*.{html,css,js,ico,png,svg,webmanifest}'],
+  maximumFileSizeToCacheInBytes: 15_000_000,
   navigateFallback: null,
+  // Gli mp3 NON sono nel precache: sono gestiti a runtime con strategia
+  // CacheFirst (cacheName: 'audio-cache', ignoreSearch: true).
+  runtimeCaching: [ /* *.mp3 → CacheFirst */ ],
 }
 ```
 
@@ -264,6 +267,12 @@ Struttura `src/data/audioguides.json`:
 
 > La `durata` è usata anche come fallback dal player quando il browser non riesce
 > a determinare la durata reale dell'mp3 (tipico dei file serviti dalla cache).
+
+> ⚠️ **Per sostituire un audio bisogna rinominare il file** (es. `tappa3-v2.mp3`,
+> aggiornando `audioSrc` nel JSON). Gli mp3 sono cachati lato client con
+> CacheFirst senza scadenza: chi ha già la cache non scaricherebbe mai la nuova
+> versione con lo stesso nome. Il cache-busting via query string NON funziona
+> (`ignoreSearch: true`).
 
 ---
 

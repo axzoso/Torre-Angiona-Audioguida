@@ -26,7 +26,8 @@ const {
       dai domini elencati. Il cuore dell'app è tutto 'self' + blob:, quindi se
       questa policy fosse troppo stretta al più smette GA, non l'audioguida.
       Nota: 'unsafe-inline' è necessario per gli stili inline e per lo snippet
-      gtag inline; 'frame-ancestors'/X-Frame-Options vanno impostati su Cloudflare.
+      gtag inline; 'frame-ancestors' non è esprimibile via meta → il clickjacking
+      è coperto da X-Frame-Options in nginx.conf.
     -->
     <meta
       http-equiv="Content-Security-Policy"
@@ -49,6 +50,7 @@ const {
 
       // Blindatura Privacy per conformità senza Banner
       gtag('config', 'G-4GFKQ1B6XE', {
+        'send_page_view': false,             // page_view inviato solo da astro:page-load (altrimenti il primo caricamento conta doppio)
         'anonymize_ip': true,                // Anonimizzazione IP (già nativa ma esplicitata)
         'allow_google_signals': false,       // Disattiva profilazione cross-device e pubblicitaria
         'allow_ad_personalization_signals': false, // Blocca la personalizzazione degli annunci
@@ -85,7 +87,8 @@ const {
     <AudioPlayer />
     <script>
       import { registerSW } from 'virtual:pwa-register';
-      
+      import audioguides from '../data/audioguides.json';
+
       // Registrazione esplicita del Service Worker per essere sicuri al 100%
       if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
         registerSW({ immediate: true });
@@ -99,10 +102,8 @@ const {
             if (!navigator.onLine) return; // Evita di forzare richieste se siamo già offline
             
             try {
-              const tappe = [1, 2, 3, 4, 5, 6, 7, 8];
-              for (const t of tappe) {
-                const url = `/audio/tappa${t}.mp3`;
-                fetch(url, { priority: 'low' }).catch(() => {});
+              for (const tappa of audioguides) {
+                fetch(tappa.audioSrc, { priority: 'low' }).catch(() => {});
                 await new Promise(r => setTimeout(r, 800));
               }
             } catch (err) {

@@ -13,7 +13,7 @@ Per garantire la conformità al GDPR senza la necessità di un banner di consens
 * Forza il trattamento restrittivo dei dati (`restricted_data_processing: true`).
 * Impedisce l'uso di cookie persistenti o local storage per scopi di tracciamento (`client_storage: 'none'`).
 
-Il tracciamento dei cambi di pagina è compatibile con le transizioni di Astro (`ClientRouter`) tramite l'ascolto dell'evento `astro:page-load`.
+Il tracciamento dei cambi di pagina è compatibile con le transizioni di Astro (`ClientRouter`) tramite l'ascolto dell'evento `astro:page-load`. Nella `gtag('config', …)` è impostato `send_page_view: false`: il `page_view` automatico di GA4 è disattivato perché `astro:page-load` scatta anche al primo caricamento, e senza questa opzione la prima pagina verrebbe conteggiata due volte.
 
 ---
 
