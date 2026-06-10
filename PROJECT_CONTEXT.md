@@ -54,10 +54,14 @@ nginx.conf              # config del container nginx:alpine in produzione
 ## Stato sicurezza (audit 2026-05-28)
 **Nessuna vulnerabilità sfruttabile nel codice.** `npm audit` = 0 vulnerabilità. App statica → superficie d'attacco minima (no input utente, no backend, contenuti fidati dal repo). Astro auto-escapa tutto l'output; il JS client usa solo `textContent`/`dataset`, mai `innerHTML`/`set:html`.
 
-Hardening consigliato (difensivo, non urgente):
-1. **[Media] Header di sicurezza HTTP assenti in `nginx.conf`**: aggiungere `Content-Security-Policy`, `X-Frame-Options`/`frame-ancestors` (clickjacking), `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`. Implementabile in nginx o via Cloudflare Transform Rules. La CSP deve allowlistare `googletagmanager.com`/`google-analytics.com` e consentire `media-src blob:` (per gli object URL del player) e `'unsafe-inline'` per il blocco gtag inline.
+Hardening applicato (2026-06-10):
+1. ✅ **Header di sicurezza HTTP in `nginx.conf`**: `X-Frame-Options`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy` su tutte le location (ripetuti per blocco: `add_header` non è ereditato dove la location ne definisce altri). La CSP resta nel `<meta>` di `Layout.astro`.
+2. ✅ **Fix cache HTML**: la vecchia location `~* \.html$` non matchava mai gli URL reali (`/tappa/1/` ecc. sono directory) → `Cache-Control: no-cache, must-revalidate` ora è su `location /`, così il ciclo di update del SW è garantito anche se cambiano le cache rule Cloudflare.
+
+Hardening residuo (difensivo, non urgente):
+1. **[Bassa]** `'unsafe-inline'` in `script-src`: eliminabile autorizzando lo snippet gtag via hash `'sha256-…'` (sito statico, l'hash è stabile).
 2. **[Bassa]** Nessuna SRI sullo script GA (inerente a gtag.js dinamico).
-3. **[Cosmetica]** La privacy page intitola l'app "Torre Vive" invece di "Torre Angioina".
+3. **[Cosmetica]** La privacy page intitola l'app "Torre Vive" invece di "Torre Angioina" (forse intenzionale: il dominio è torreviva).
 
 ## Privacy
 GDPR-oriented: GA4 hardened in `Layout.astro` (`anonymize_ip`, `allow_google_signals:false`, `allow_ad_personalization_signals:false`, `restricted_data_processing:true`, `client_storage:'none'` → niente cookie persistenti). Nessun dato personale raccolto. Solo cookie tecnici Cloudflare.
@@ -72,7 +76,8 @@ npm run test     # vitest run
 
 ## Note / gotcha per modifiche future
 - Aggiungere/modificare una tappa = editare SOLO `src/data/audioguides.json` + aggiungere `public/audio/tappaN.mp3`. Le route `/tappa/[id]/` sono generate da `getStaticPaths`.
-- Il pre-buffering audio in `Layout.astro` itera hardcoded sulle tappe `[1..8]`: va aggiornato se cambia il numero di tappe.
+- ⚠️ **Per sostituire un audio esistente va rinominato il file** (es. `tappa3-v2.mp3` + aggiornare `audioSrc`): la cache runtime è CacheFirst senza scadenza e con `ignoreSearch: true`, quindi né il riuso del nome né il cache-busting via query aggiornano chi ha già la cache.
+- Il pre-buffering audio in `Layout.astro` deriva la lista da `audioguides.json` (non più hardcoded).
 - `PWAStatus.astro` esiste ma non è montato in nessuna pagina.
 - `maximumFileSizeToCacheInBytes: 15MB` in Workbox per includere gli mp3 nel precache — alzare se gli audio crescono.
 - I file audio sono in `globPatterns`? No: gli mp3 sono gestiti via `runtimeCaching` (CacheFirst, `cacheName: 'audio-cache'`), non nel precache globale.

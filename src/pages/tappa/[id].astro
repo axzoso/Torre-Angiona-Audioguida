@@ -129,10 +129,11 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
     window.scrollTo({ top: target, behavior: 'smooth' as ScrollBehavior });
   }
 
-  // Follow the audio of THIS page only
+  // Follow the audio of THIS page only, and only while it is playing:
+  // the currentTime reset after 'ended' must not scroll back to the top.
   audioStore.addEventListener('progress', (e: Event) => {
     const { currentTime, duration, src } = (e as CustomEvent).detail;
-    if (src === trackSrc) syncScroll(currentTime, duration);
+    if (src === trackSrc && audioStore.playing) syncScroll(currentTime, duration);
   });
 
   // Engage following when this page's track starts
