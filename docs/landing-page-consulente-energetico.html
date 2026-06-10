@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Analisi energetica gratuita per privati e aziende. Il Consulente Energetico ottimizza le tue forniture di luce e gas con metodo, indipendenza e zero conflitti d'interesse." />
+  <title>Il Consulente Energetico — Analisi Gratuita della Tua Bolletta</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CUSTOM PROPERTIES — DESIGN SYSTEM
+    ============================================================ */
+    :root {
+      --navy:      #0B1F3A;
+      --navy-mid:  #1A2F4E;
+      --navy-dark: #091729;
+      --gold:      #C8932A;
+      --gold-dark: #A87820;
+      --gold-light:#E8B24A;
+      --text:      #3D4A5C;
+      --text-light:#6B7A8D;
+      --bg-light:  #F7F9FC;
+      --bg-white:  #FFFFFF;
+      --border:    #DDE3EC;
+
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+
+      --shadow-sm:  0 2px 8px rgba(11,31,58,.07);
+      --shadow-md:  0 6px 24px rgba(11,31,58,.10);
+      --shadow-lg:  0 16px 48px rgba(11,31,58,.14);
+
+      --container:  1140px;
+      --transition: .25s ease;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text);
+      background: var(--bg-white);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 700; line-height: 1.2; color: var(--navy); }
+
+    h1 { font-size: clamp(36px, 5vw, 58px); letter-spacing: -.5px; }
+    h2 { font-size: clamp(28px, 3.5vw, 42px); letter-spacing: -.3px; }
+    h3 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 600; }
+    h4 { font-size: 18px; font-family: var(--font-sans); font-weight: 700; }
+
+    p { line-height: 1.75; color: var(--text); }
+
+    .section-label {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      padding: 16px 32px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      border: 2px solid transparent;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+    .btn-primary:hover {
+      background: var(--gold-dark);
+      border-color: var(--gold-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(200,147,42,.35);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--navy);
+      border-color: var(--navy);
+    }
+    .btn-outline:hover {
+      background: var(--navy);
+      color: #fff;
+    }
+    .btn-outline-white {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255,255,255,.5);
+    }
+    .btn-outline-white:hover {
+      background: rgba(255,255,255,.1);
+      border-color: #fff;
+    }
+    .btn-lg { padding: 20px 40px; font-size: 16px; }
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* ============================================================
+       SECTION SPACING
+    ============================================================ */
+    .section { padding: 96px 0; }
+    .section-sm { padding: 64px 0; }
+
+    /* ============================================================
+       HEADER / NAVIGATION
+    ============================================================ */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow var(--transition);
+    }
+    #header.scrolled { box-shadow: var(--shadow-md); }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      gap: 32px;
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .logo-name {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -.2px;
+      line-height: 1.1;
+    }
+    .logo-tagline {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      transition: color var(--transition);
+    }
+    .nav a:hover { color: var(--navy); }
+
+    .header-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header-phone {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--navy);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #hero {
+      padding: 144px 0 96px;
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, #112744 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(200,147,42,.08) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, var(--bg-white));
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(200,147,42,.15);
+      border: 1px solid rgba(200,147,42,.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      margin-bottom: 24px;
+    }
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .hero-badge span {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    .hero-title {
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--gold-light);
+    }
+
+    .hero-subtitle {
+      font-size: 17px;
+      line-height: 1.75;
+      color: rgba(255,255,255,.75);
+      margin-bottom: 36px;
+      max-width: 520px;
+    }
+
+    .hero-benefits {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .hero-benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: rgba(255,255,255,.85);
+    }
+    .hero-benefit-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      color: var(--gold-light);
+    }
+
+    /* Hero Form Card */
+    .hero-form-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .form-card-header {
+      margin-bottom: 28px;
+    }
+    .form-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: var(--font-serif);
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .form-card-subtitle {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--navy);
+      background: var(--bg-light);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+      appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(11,31,58,.08);
+      background: #fff;
+    }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233D4A5C' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 40px;
+    }
+
+    .form-radio-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .radio-option {
+      position: relative;
+    }
+    .radio-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .radio-option label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--bg-light);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .radio-option input:checked + label {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff;
+    }
+    .radio-option label:hover { border-color: var(--navy); }
+
+    .form-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .form-checkbox input {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      accent-color: var(--navy);
+      cursor: pointer;
+    }
+    .form-checkbox span {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+    .form-checkbox a { color: var(--navy); text-decoration: underline; }
+
+    .form-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* ============================================================
+       TRUST BAR (NUMERI)
+    ============================================================ */
+    #trust-bar {
+      background: var(--navy);
+      padding: 56px 0;
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .trust-item {
+      text-align: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+    .trust-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 20%; bottom: 20%;
+      width: 1px;
+      background: rgba(255,255,255,.12);
+    }
+    .trust-number {
+      font-family: var(--font-serif);
+      font-size: clamp(34px, 4vw, 48px);
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .trust-label {
+      font-size: 13px;
+      color: rgba(255,255,255,.65);
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    /* ============================================================
+       SECTION HEADERS
+    ============================================================ */
+    .section-header {
+      max-width: 640px;
+      margin: 0 auto 64px;
+      text-align: center;
+    }
+    .section-header.left {
+      margin-left: 0;
+      text-align: left;
+    }
+    .section-header h2 { margin-bottom: 16px; }
+    .section-header p {
+      font-size: 17px;
+      color: var(--text-light);
+      line-height: 1.75;
+    }
+
+    /* ============================================================
+       PROBLEMA SECTION
+    ============================================================ */
+    #problema { background: var(--bg-light); }
+
+    .problema-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .problema-image-wrap {
+      position: relative;
+    }
+    .problema-image-bg {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a3a5c 0%, #0b2040 100%);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .problema-chart {
+      padding: 40px;
+      width: 100%;
+    }
+    .chart-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 24px;
+    }
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      height: 140px;
+    }
+    .chart-bar-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+    .chart-bar {
+      width: 100%;
+      border-radius: 4px 4px 0 0;
+      background: rgba(255,255,255,.15);
+    }
+    .chart-bar.highlight { background: var(--gold); }
+    .chart-year {
+      font-size: 11px;
+      color: rgba(255,255,255,.4);
+    }
+    .chart-annotation {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .chart-annotation-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .chart-annotation-text {
+      font-size: 12px;
+      color: rgba(255,255,255,.6);
+    }
+
+    .problema-badge {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .problema-badge-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(200,147,42,.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .problema-badge-text strong {
+      display: block;
+      font-size: 20px;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .problema-badge-text span {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .problema-problems {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 32px;
+    }
+    .problema-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .problema-item-icon {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-sm);
+      background: rgba(200,147,42,.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--gold);
+    }
+    .problema-item-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .problema-item-text {
+      font-size: 14px;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       METODO SECTION
+    ============================================================ */
+    #metodo { background: var(--bg-white); }
+
+    .metodo-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-bottom: 56px;
+    }
+    .metodo-step {
+      padding: 48px 40px;
+      position: relative;
+      background: var(--bg-light);
+    }
+    .metodo-step:first-child { border-radius: var(--radius-md) 0 0 var(--radius-md); }
+    .metodo-step:last-child  { border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .metodo-step.active { background: var(--navy); }
+
+    .metodo-step-connector {
+      position: absolute;
+      right: -1px; top: 50%;
+      transform: translateY(-50%);
+      width: 24px; height: 24px;
+      background: var(--bg-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+    .metodo-step-connector svg {
+      color: var(--text-light);
+    }
+    .metodo-step.active .metodo-step-connector svg { color: var(--navy); }
+
+    .step-num {
+      font-family: var(--font-serif);
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--border);
+      margin-bottom: 20px;
+    }
+    .metodo-step.active .step-num { color: rgba(255,255,255,.15); }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: var(--font-serif);
+      margin-bottom: 12px;
+      color: var(--navy);
+    }
+    .metodo-step.active .step-title { color: #fff; }
+
+    .step-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-light);
+    }
+    .metodo-step.active .step-text { color: rgba(255,255,255,.7); }
+
+    .metodo-cta {
+      text-align: center;
+    }
+
+    /* ============================================================
+       SERVIZI SECTION
+    ============================================================ */
+    #servizi { background: var(--bg-light); }
+
+    .servizi-tabs {
+      display: flex;
+      gap: 0;
+      background: var(--border);
+      border-radius: var(--radius-md);
+      padding: 4px;
+      max-width: 400px;
+      margin: 0 auto 48px;
+    }
+    .servizi-tab {
+      flex: 1;
+      padding: 12px 24px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: calc(var(--radius-md) - 4px);
+      transition: var(--transition);
+      color: var(--text-light);
+    }
+    .servizi-tab.active {
+      background: var(--bg-white);
+      color: var(--navy);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .servizi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .service-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .service-card-header {
+      padding: 32px 32px 0;
+      position: relative;
+    }
+    .service-card-accent {
+      height: 4px;
+      border-radius: 4px 4px 0 0;
+      margin: -32px -32px 32px;
+    }
+    .service-card-accent.gold { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+    .service-card-accent.navy { background: linear-gradient(90deg, var(--navy), var(--navy-mid)); }
+
+    .service-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .service-badge.gold { background: rgba(200,147,42,.1); color: var(--gold-dark); }
+    .service-badge.navy { background: rgba(11,31,58,.08); color: var(--navy); }
+
+    .service-card-body {
+      padding: 0 32px 32px;
+    }
+    .service-card-title {
+      margin-bottom: 10px;
+    }
+    .service-card-subtitle {
+      font-size: 15px;
+      color: var(--text-light);
+      margin-bottom: 28px;
+      line-height: 1.65;
+    }
+
+    .service-features {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .service-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .service-feature-check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .service-feature-check.gold { background: rgba(200,147,42,.12); color: var(--gold); }
+    .service-feature-check.navy { background: rgba(11,31,58,.08); color: var(--navy); }
+
+    /* ============================================================
+       DIFFERENZIAZIONE SECTION
+    ============================================================ */
+    #differenziazione { background: var(--navy); }
+    #differenziazione .section-header h2 { color: #fff; }
+    #differenziazione .section-header p { color: rgba(255,255,255,.6); }
+    #differenziazione .section-label { color: rgba(200,147,42,.8); }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+    .diff-item {
+      padding: 48px 44px;
+      background: rgba(255,255,255,.04);
+      transition: background var(--transition);
+    }
+    .diff-item:hover { background: rgba(255,255,255,.07); }
+    .diff-item:nth-child(1) { border-radius: var(--radius-md) 0 0 0; }
+    .diff-item:nth-child(2) { border-radius: 0 var(--radius-md) 0 0; }
+    .diff-item:nth-child(3) { border-radius: 0 0 0 var(--radius-md); }
+    .diff-item:nth-child(4) { border-radius: 0 0 var(--radius-md) 0; }
+
+    .diff-icon {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-sm);
+      background: rgba(200,147,42,.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      margin-bottom: 24px;
+    }
+    .diff-title {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: var(--font-serif);
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .diff-text {
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(255,255,255,.55);
+    }
+
+    /* ============================================================
+       TESTIMONIANZE SECTION
+    ============================================================ */
+    #testimonianze { background: var(--bg-white); }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 56px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-light);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      position: relative;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .testimonial-card:hover {
+      border-color: rgba(200,147,42,.3);
+      box-shadow: var(--shadow-md);
+    }
+    .testimonial-quote {
+      font-size: 48px;
+      line-height: 1;
+      font-family: Georgia, serif;
+      color: var(--gold);
+      opacity: .3;
+      position: absolute;
+      top: 20px; right: 28px;
+    }
+    .testimonial-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 20px;
+    }
+    .star {
+      width: 16px; height: 16px;
+      color: var(--gold);
+    }
+    .testimonial-text {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text);
+      font-style: italic;
+      margin-bottom: 28px;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .author-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.7);
+      font-size: 16px;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .author-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--navy);
+    }
+    .author-role {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .trust-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .trust-logo-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-light);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .trust-logo-icon {
+      width: 32px; height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+
+    /* ============================================================
+       FAQ SECTION
+    ============================================================ */
+    #faq { background: var(--bg-light); }
+
+    .faq-list {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .faq-item.open { border-color: rgba(11,31,58,.2); box-shadow: var(--shadow-sm); }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 28px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .faq-q-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      flex: 1;
+      line-height: 1.4;
+    }
+    .faq-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .faq-item.open .faq-icon {
+      background: var(--navy);
+      transform: rotate(45deg);
+    }
+    .faq-icon svg { color: var(--navy); transition: color var(--transition); }
+    .faq-item.open .faq-icon svg { color: #fff; }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease, padding .3s ease;
+      padding: 0 28px;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 400px;
+      padding: 0 28px 24px;
+    }
+    .faq-answer p {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    /* ============================================================
+       CTA FINALE SECTION
+    ============================================================ */
+    #cta-finale {
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, #112744 100%);
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta-finale::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(200,147,42,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-finale-inner {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-finale-inner h2 {
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .cta-finale-inner p {
+      font-size: 17px;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 40px;
+      line-height: 1.75;
+    }
+    .cta-benefits-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .cta-benefit-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: rgba(255,255,255,.75);
+      font-weight: 500;
+    }
+    .cta-benefit-item svg { color: var(--gold-light); flex-shrink: 0; }
+
+    .cta-phone-note {
+      margin-top: 24px;
+      font-size: 14px;
+      color: rgba(255,255,255,.5);
+    }
+    .cta-phone-note a {
+      color: rgba(255,255,255,.8);
+      font-weight: 600;
+    }
+    .cta-phone-note a:hover { color: var(--gold-light); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: #080E19;
+      padding: 72px 0 0;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 56px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .footer-brand { }
+    .footer-logo-name {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .footer-logo-tag {
+      font-size: 10px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .footer-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,.45);
+      line-height: 1.75;
+      max-width: 280px;
+      margin-bottom: 28px;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+    }
+    .social-link {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.5);
+      transition: var(--transition);
+    }
+    .social-link:hover {
+      background: rgba(200,147,42,.15);
+      border-color: rgba(200,147,42,.3);
+      color: var(--gold-light);
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+      margin-bottom: 20px;
+    }
+    .footer-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-col ul a {
+      font-size: 14px;
+      color: rgba(255,255,255,.5);
+      transition: color var(--transition);
+    }
+    .footer-col ul a:hover { color: rgba(255,255,255,.9); }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .footer-contact-item svg { flex-shrink: 0; margin-top: 2px; color: var(--gold); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-size: 13px;
+      color: rgba(255,255,255,.3);
+    }
+    .footer-policy-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-policy-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,.3);
+      transition: color var(--transition);
+    }
+    .footer-policy-links a:hover { color: rgba(255,255,255,.6); }
+
+    /* ============================================================
+       SCROLL TO TOP
+    ============================================================ */
+    .scroll-top {
+      position: fixed;
+      bottom: 32px; right: 32px;
+      width: 44px; height: 44px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+      z-index: 900;
+      border: none;
+    }
+    .scroll-top.visible { opacity: 1; pointer-events: auto; }
+    .scroll-top:hover {
+      background: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================================
+       MOBILE NAVIGATION OVERLAY
+    ============================================================ */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--bg-white);
+      padding: 80px 24px 40px;
+      flex-direction: column;
+      gap: 0;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 22px;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      color: var(--navy);
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-nav .btn { margin-top: 24px; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-form-card { max-width: 560px; }
+      .problema-grid { grid-template-columns: 1fr; gap: 48px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .problema-image-wrap { order: -1; }
+    }
+
+    @media (max-width: 860px) {
+      .nav { display: none; }
+      .header-phone { display: none; }
+      .hamburger { display: flex; }
+      .trust-grid { grid-template-columns: 1fr 1fr; }
+      .trust-item:nth-child(2)::after { display: none; }
+      .metodo-steps { grid-template-columns: 1fr; gap: 2px; }
+      .metodo-step:first-child { border-radius: var(--radius-md) var(--radius-md) 0 0; }
+      .metodo-step:last-child  { border-radius: 0 0 var(--radius-md) var(--radius-md); }
+      .metodo-step-connector { display: none; }
+      .servizi-grid { grid-template-columns: 1fr; }
+      .diff-grid { grid-template-columns: 1fr; }
+      .diff-item { border-radius: 0 !important; }
+      .diff-item:first-child { border-radius: var(--radius-md) var(--radius-md) 0 0 !important; }
+      .diff-item:last-child  { border-radius: 0 0 var(--radius-md) var(--radius-md) !important; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .section { padding: 72px 0; }
+      #hero { padding: 120px 0 72px; }
+      .hero-form-card { padding: 28px 24px; }
+      .trust-grid { grid-template-columns: 1fr 1fr; }
+      .trust-item::after { display: none; }
+      .cta-benefits-row { flex-direction: column; gap: 16px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .scroll-top { bottom: 20px; right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+============================================================ -->
+<header id="header">
+  <div class="container">
+    <div class="header-inner">
+
+      <a href="#hero" class="logo">
+        <span class="logo-name">Il Consulente Energetico</span>
+        <span class="logo-tagline">Analisi · Ottimizzazione · Monitoraggio</span>
+      </a>
+
+      <nav class="nav">
+        <a href="#metodo">Come Funziona</a>
+        <a href="#servizi">Servizi</a>
+        <a href="#testimonianze">Recensioni</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="header-cta">
+        <span class="header-phone">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+          +39 000 000 0000
+        </span>
+        <a href="#hero" class="btn btn-primary">Analisi Gratuita</a>
+      </div>
+
+      <button class="hamburger" id="menuBtn" aria-label="Apri menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav Overlay -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#metodo" class="mobile-link">Come Funziona</a>
+  <a href="#servizi" class="mobile-link">Servizi</a>
+  <a href="#testimonianze" class="mobile-link">Recensioni</a>
+  <a href="#faq" class="mobile-link">FAQ</a>
+  <a href="#hero" class="btn btn-primary btn-full">Richiedi Analisi Gratuita</a>
+</div>
+
+
+<!-- ============================================================
+     HERO SECTION
+============================================================ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- Left: copy -->
+      <div>
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Consulenza Energetica Indipendente · B2C &amp; B2B</span>
+        </div>
+
+        <h1 class="hero-title">
+          La tua bolletta ti sta costando<br>
+          <em>più del dovuto.</em>
+        </h1>
+
+        <p class="hero-subtitle">
+          Il Consulente Energetico analizza la tua fornitura di luce e gas con metodo, indipendenza e zero conflitti d'interesse. Ottimizziamo i tuoi consumi e negoziamo le condizioni migliori sul mercato libero.
+        </p>
+
+        <ul class="hero-benefits">
+          <li class="hero-benefit">
+            <svg class="hero-benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong style="color:#fff;">Analisi personalizzata</strong> — Sul tuo profilo di consumo reale, non su stime generiche</span>
+          </li>
+          <li class="hero-benefit">
+            <svg class="hero-benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong style="color:#fff;">15–30% di risparmio medio</strong> — Identificato su forniture attualmente non ottimizzate</span>
+          </li>
+          <li class="hero-benefit">
+            <svg class="hero-benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong style="color:#fff;">Nessun operatore di parte</strong> — La nostra unica lealtà è verso di te</span>
+          </li>
+          <li class="hero-benefit">
+            <svg class="hero-benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong style="color:#fff;">Gestione completa</strong> — Dalla firma del contratto al monitoraggio periodico</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right: form -->
+      <div>
+        <div class="hero-form-card">
+          <div class="form-card-header">
+            <div class="form-card-title">Richiedi la tua Analisi Energetica Gratuita</div>
+            <div class="form-card-subtitle">Risposta entro 24 ore lavorative · Senza impegno contrattuale</div>
+          </div>
+
+          <form action="#" method="post" novalidate>
+            <div class="form-group">
+              <label for="nome">Nome e Cognome</label>
+              <input type="text" id="nome" name="nome" placeholder="Mario Rossi" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Indirizzo Email</label>
+              <input type="email" id="email" name="email" placeholder="mario@email.it" required />
+            </div>
+            <div class="form-group">
+              <label for="telefono">Numero di Telefono</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="+39 333 000 0000" required />
+            </div>
+            <div class="form-group">
+              <label>Tipo di Utenza</label>
+              <div class="form-radio-group">
+                <div class="radio-option">
+                  <input type="radio" name="tipo" id="tipo-privato" value="privato" checked />
+                  <label for="tipo-privato">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Privato / Famiglia
+                  </label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" name="tipo" id="tipo-azienda" value="azienda" />
+                  <label for="tipo-azienda">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M9 21V9h6v12"/></svg>
+                    Azienda / P.IVA
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-checkbox">
+              <input type="checkbox" id="privacy" name="privacy" required />
+              <span>Acconsento al trattamento dei dati personali ai sensi del <a href="#">Regolamento GDPR (EU 2016/679)</a>. I dati non saranno ceduti a terzi.</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full btn-lg">
+              Invia la Richiesta — È Gratuita
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </form>
+
+          <div class="form-note">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            Dati protetti · GDPR Compliant · Zero spam
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     TRUST BAR — NUMERI
+============================================================ -->
+<section id="trust-bar">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-number">+2.400</div>
+        <div class="trust-label">Forniture analizzate</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-number">€ 1.200</div>
+        <div class="trust-label">Risparmio medio annuo<br>per cliente business</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-number">15 anni</div>
+        <div class="trust-label">di esperienza nel mercato<br>energetico italiano</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-number">98%</div>
+        <div class="trust-label">dei clienti rinnova<br>la consulenza</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PROBLEMA SECTION
+============================================================ -->
+<section id="problema" class="section">
+  <div class="container">
+    <div class="problema-grid">
+
+      <!-- Left: immagine/grafico -->
+      <div class="problema-image-wrap">
+        <div class="problema-image-bg">
+          <div class="problema-chart">
+            <div class="chart-title">Andamento costi energetici (indice)</div>
+            <div class="chart-bars">
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="height:38%"></div>
+                <span class="chart-year">2020</span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="height:52%"></div>
+                <span class="chart-year">2021</span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar highlight" style="height:100%"></div>
+                <span class="chart-year">2022</span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="height:74%"></div>
+                <span class="chart-year">2023</span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="height:64%"></div>
+                <span class="chart-year">2024</span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="chart-bar" style="height:68%"></div>
+                <span class="chart-year">2025</span>
+              </div>
+            </div>
+            <div class="chart-annotation">
+              <div class="chart-annotation-dot"></div>
+              <span class="chart-annotation-text">I prezzi restano strutturalmente alti rispetto al decennio precedente</span>
+            </div>
+          </div>
+        </div>
+        <div class="problema-badge">
+          <div class="problema-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="problema-badge-text">
+            <strong>+40%</strong>
+            <span>Aumento medio delle bollette<br>negli ultimi 4 anni</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: testo -->
+      <div>
+        <span class="section-label">Il Problema</span>
+        <h2>Il mercato libero dell'energia è diventato un labirinto.</h2>
+        <p style="margin-top:16px; margin-bottom:32px; font-size:16px; color:var(--text-light);">
+          Liberalizzazione non ha significato semplicità. Significa più operatori, più offerte, più clausole — e più possibilità di ritrovarsi sul contratto sbagliato senza saperlo.
+        </p>
+
+        <div class="problema-problems">
+          <div class="problema-item">
+            <div class="problema-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+              <div class="problema-item-title">Offerte poco trasparenti</div>
+              <div class="problema-item-text">Prezzi promozionali che durano 6 mesi. Poi cosa succede? Quasi nessuno lo controlla.</div>
+            </div>
+          </div>
+          <div class="problema-item">
+            <div class="problema-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <div class="problema-item-title">Costi fissi sottovalutati</div>
+              <div class="problema-item-text">Quote fisse, oneri di rete e accise rappresentano il 40–60% della bolletta e vengono ignorati al momento della scelta.</div>
+            </div>
+          </div>
+          <div class="problema-item">
+            <div class="problema-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+            </div>
+            <div>
+              <div class="problema-item-title">Clausole di recesso capestro</div>
+              <div class="problema-item-text">Penali camuffate che rendono difficile cambiare operatore proprio quando vorresti farlo.</div>
+            </div>
+          </div>
+          <div class="problema-item">
+            <div class="problema-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01M12 9h.01M12 15h.01"/></svg>
+            </div>
+            <div>
+              <div class="problema-item-title">Zero monitoraggio post-contratto</div>
+              <div class="problema-item-text">Una volta firmato, chi ti avvisa se il mercato cambia o se esiste un'offerta migliore?</div>
+            </div>
+          </div>
+        </div>
+
+        <blockquote style="margin-top:36px; padding:20px 24px; background:rgba(200,147,42,.06); border-left:3px solid var(--gold); border-radius:0 var(--radius-sm) var(--radius-sm) 0;">
+          <p style="font-size:16px; font-style:italic; color:var(--navy); font-family:var(--font-serif); font-weight:600;">
+            "Non è colpa tua non orientarti in questo scenario. È esattamente per questo che esistiamo."
+          </p>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     METODO SECTION
+============================================================ -->
+<section id="metodo" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Il Nostro Metodo</span>
+      <h2>Analisi, ottimizzazione, monitoraggio.</h2>
+      <p>Un approccio in tre fasi per trasformare la tua fornitura energetica in un asset ottimizzato — non in una voce di costo opaca.</p>
+    </div>
+
+    <div class="metodo-steps">
+      <!-- Step 1 -->
+      <div class="metodo-step">
+        <div class="step-num">01</div>
+        <div class="step-title">Analisi della Fornitura</div>
+        <p class="step-text">
+          Raccogliamo e analizziamo le tue bollette, i contratti in essere e il profilo di consumo reale. Non utilizziamo stime generiche: lavoriamo sui tuoi dati. Fotografia precisa della situazione attuale e identificazione di ogni margine di miglioramento.
+        </p>
+        <div class="metodo-step-connector">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+      <!-- Step 2 -->
+      <div class="metodo-step active">
+        <div class="step-num">02</div>
+        <div class="step-title">Ottimizzazione e Selezione</div>
+        <p class="step-text">
+          Valutiamo le migliori offerte sul mercato libero per il tuo profilo — confrontando non solo il prezzo dell'energia, ma l'intero costo della fornitura. Se la tua offerta attuale è già competitiva, te lo diciamo apertamente.
+        </p>
+        <div class="metodo-step-connector">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+      <!-- Step 3 -->
+      <div class="metodo-step">
+        <div class="step-num">03</div>
+        <div class="step-title">Affiancamento Continuo</div>
+        <p class="step-text">
+          La nostra consulenza non finisce con la firma del contratto. Monitoriamo la tua fornitura, ti avvisiamo proattivamente quando emergono opportunità di ulteriore risparmio e gestiamo per te qualsiasi comunicazione con il fornitore.
+        </p>
+      </div>
+    </div>
+
+    <div class="metodo-cta">
+      <a href="#hero" class="btn btn-outline">
+        Inizia con l'Analisi Gratuita
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SERVIZI SECTION
+============================================================ -->
+<section id="servizi" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">I Nostri Servizi</span>
+      <h2>Soluzioni su misura per ogni esigenza.</h2>
+      <p>Che tu sia un privato o un'impresa, il nostro approccio si adatta alla tua realtà specifica.</p>
+    </div>
+
+    <div class="servizi-grid">
+
+      <!-- Card Privati -->
+      <div class="service-card">
+        <div class="service-card-header">
+          <div class="service-card-accent gold" style="margin:-1px -1px 32px;"></div>
+          <span class="service-badge gold">Per Privati e Famiglie</span>
+          <h3 class="service-card-title">Riprendi il controllo della tua bolletta di casa.</h3>
+          <p class="service-card-subtitle">Analizziamo la tua fornitura di luce e gas domestica, identifichiamo le inefficienze contrattuali e ti guidiamo verso l'offerta più vantaggiosa — in modo semplice e senza sorprese.</p>
+        </div>
+        <div class="service-card-body">
+          <ul class="service-features">
+            <li class="service-feature">
+              <span class="service-feature-check gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Analisi delle bollette degli ultimi 12 mesi
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Confronto tra le migliori offerte del mercato libero per il tuo profilo
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Gestione completa del cambio fornitore (se necessario)
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Verifica corretta applicazione bonus sociali e agevolazioni
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Assistenza in caso di errori di fatturazione o controversie
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Report annuale di sintesi sulla tua fornitura
+            </li>
+          </ul>
+          <a href="#hero" class="btn btn-primary btn-full">
+            Inizia la tua Analisi Gratuita
+          </a>
+        </div>
+      </div>
+
+      <!-- Card Aziende -->
+      <div class="service-card">
+        <div class="service-card-header">
+          <div class="service-card-accent navy" style="margin:-1px -1px 32px;"></div>
+          <span class="service-badge navy">Per Aziende e PMI</span>
+          <h3 class="service-card-title">L'energia è un costo rilevante. Gestiscila come tale.</h3>
+          <p class="service-card-subtitle">Per le imprese, l'ottimizzazione energetica può incidere in modo significativo sul margine operativo. Affianchiamo PMI, artigiani, studi professionali e strutture ricettive con dati alla mano.</p>
+        </div>
+        <div class="service-card-body">
+          <ul class="service-features">
+            <li class="service-feature">
+              <span class="service-feature-check navy"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Audit energetico completo delle forniture aziendali (luce, gas, punti multipli)
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check navy"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Analisi del profilo di consumo per fascia oraria e stagionalità
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check navy"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Selezione e negoziazione delle migliori offerte B2B sul mercato libero
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check navy"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Consolidamento di più POD/PDR in un'unica strategia contrattuale
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check navy"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Monitoraggio periodico e alert su variazioni di mercato rilevanti
+            </li>
+            <li class="service-feature">
+              <span class="service-feature-check navy"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Supporto nella gestione amministrativa delle forniture
+            </li>
+          </ul>
+          <a href="#hero" class="btn btn-outline btn-full">
+            Consulenza per la tua Azienda
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DIFFERENZIAZIONE SECTION
+============================================================ -->
+<section id="differenziazione" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Perché Noi</span>
+      <h2>Consulenza indipendente, non vendita di contratti.</h2>
+      <p>C'è una differenza fondamentale tra un agente commerciale di un operatore energetico e un consulente indipendente. Noi siamo la seconda cosa.</p>
+    </div>
+
+    <div class="diff-grid">
+      <div class="diff-item">
+        <div class="diff-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="diff-title">Indipendenza totale dai fornitori</div>
+        <p class="diff-text">Non siamo agenti, non percepiamo commissioni dagli operatori. Il nostro compenso viene esclusivamente dal cliente. Questo elimina qualsiasi conflitto d'interesse nella selezione dell'offerta migliore per te.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div class="diff-title">Competenza verticale sul mercato energia</div>
+        <p class="diff-text">Il mercato energetico italiano è regolamentato da ARERA e in continua evoluzione. La nostra specializzazione esclusiva ci consente un livello di aggiornamento che un consulente generalista non può garantire.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="diff-title">Trasparenza totale nel processo</div>
+        <p class="diff-text">Prima ancora di iniziare, ti spieghiamo esattamente come lavoriamo, cosa possiamo fare per te e — con onestà — cosa non possiamo fare. Nessuna promessa non mantenibile, nessun contratto capestro.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="diff-title">Relazione di lungo periodo</div>
+        <p class="diff-text">Non siamo interessati a "chiudere un contratto". Siamo interessati a costruire un rapporto continuativo in cui il tuo risparmio energetico cresca nel tempo. La nostra reputazione si costruisce sui risultati.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     TESTIMONIANZE SECTION
+============================================================ -->
+<section id="testimonianze" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Testimonianze</span>
+      <h2>Cosa dicono i nostri clienti.</h2>
+      <p>Non promesse, ma risultati verificabili. Ecco cosa hanno vissuto chi ci ha già affidato la propria fornitura energetica.</p>
+    </div>
+
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <span class="testimonial-quote">"</span>
+        <div class="testimonial-stars">
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testimonial-text">
+          "Avevo cambiato operatore due volte negli ultimi tre anni, sempre sperando di risparmiare, e sempre finendo per spendere di più dopo i primi sei mesi. Il Consulente Energetico ha analizzato la mia situazione, mi ha spiegato esattamente cosa stavo pagando e perché. Per la prima volta capisco la mia bolletta."
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">M</div>
+          <div>
+            <div class="author-name">Marco R.</div>
+            <div class="author-role">Privato · Milano</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <span class="testimonial-quote">"</span>
+        <div class="testimonial-stars">
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testimonial-text">
+          "Come titolare di un bed &amp; breakfast con consumi non trascurabili, l'energia è una voce di costo che incide sul margine. Grazie alla consulenza ho ottimizzato sia la fornitura elettrica che quella gas, con un risparmio stimato di circa €2.800 annui. L'investimento si è ripagato nel primo trimestre."
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">G</div>
+          <div>
+            <div class="author-name">Giulia T.</div>
+            <div class="author-role">Titolare B&amp;B · Toscana</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <span class="testimonial-quote">"</span>
+        <div class="testimonial-stars">
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testimonial-text">
+          "La cosa che ho apprezzato di più è l'onestà. Mi hanno detto subito che la mia offerta attuale era già discreta, ma che c'era margine su alcuni costi fissi. Non hanno cercato di vendermi un cambio operatore a tutti i costi. Quello mi ha convinto della loro serietà."
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">A</div>
+          <div>
+            <div class="author-name">Ing. Andrea F.</div>
+            <div class="author-role">Studio Tecnico · Torino</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Trust logos -->
+    <div class="trust-logos">
+      <div class="trust-logo-item">
+        <div class="trust-logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        Consulente Certificato
+      </div>
+      <div class="trust-logo-item">
+        <div class="trust-logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        GDPR Compliant
+      </div>
+      <div class="trust-logo-item">
+        <div class="trust-logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        Analisi 100% Gratuita
+      </div>
+      <div class="trust-logo-item">
+        <div class="trust-logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        Indipendente da Operatori
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FAQ SECTION
+============================================================ -->
+<section id="faq" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">FAQ</span>
+      <h2>Domande frequenti.</h2>
+      <p>Risposte chiare alle domande che ci vengono poste più spesso prima di iniziare.</p>
+    </div>
+
+    <div class="faq-list" id="faqList">
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-q-text">Quanto costa la consulenza?</span>
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </div>
+        <div class="faq-answer">
+          <p>La prima analisi energetica è completamente gratuita e senza impegno. Ti forniamo una diagnosi della tua fornitura attuale e un'indicazione del potenziale di ottimizzazione senza alcun costo. I nostri pacchetti di consulenza continuativa sono definiti in modo trasparente prima di qualsiasi avanzamento: nessuna sorpresa in fattura.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-q-text">Devo necessariamente cambiare operatore?</span>
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </div>
+        <div class="faq-answer">
+          <p>Assolutamente no. Il cambio fornitore è solo uno degli strumenti disponibili, non l'obiettivo. In alcuni casi la tua offerta attuale è già competitiva e l'ottimizzazione avviene su altri fronti (struttura tariffaria, potenza impegnata, componenti fisse). Te lo diciamo sempre con chiarezza prima di suggerire qualsiasi azione.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-q-text">Il passaggio al mercato libero mi riguarda? Cosa devo fare?</span>
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </div>
+        <div class="faq-answer">
+          <p>Il completamento della liberalizzazione del mercato energetico italiano riguarda tutte le utenze domestiche che erano ancora in tutela. Se non hai ancora scelto un'offerta sul mercato libero, o sei stato trasferito automaticamente su una tariffa non ottimale, è il momento giusto per un'analisi. Ti guidiamo passo dopo passo, senza fretta e senza pressioni.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-q-text">Gestite anche forniture business con più punti di prelievo?</span>
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </div>
+        <div class="faq-answer">
+          <p>Sì. Lavoriamo regolarmente con PMI, attività commerciali, studi professionali e strutture con più POD (punti di prelievo elettrici) e PDR (punti di riconsegna gas). In questi casi l'analisi include una valutazione della strategia contrattuale complessiva, non solo delle singole forniture.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-q-text">Come funziona il processo dall'inizio alla fine?</span>
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </div>
+        <div class="faq-answer">
+          <p>Il processo è semplice: <strong>1)</strong> Ci contatti tramite il form. <strong>2)</strong> Ti ricontattamo entro 24 ore lavorative per una prima call conoscitiva (15–20 minuti). <strong>3)</strong> Condividi con noi le ultime bollette o fornisci accesso ai dati via portale. <strong>4)</strong> Elaboriamo l'analisi (48–72 ore). <strong>5)</strong> Presentiamo i risultati e le nostre raccomandazioni. <strong>6)</strong> Decidi tu come procedere — nessuna pressione.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-q-text">Siete agenti di qualche operatore energetico?</span>
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </div>
+        <div class="faq-answer">
+          <p>No. Non siamo agenti, broker o rappresentanti di nessun operatore. Non percepiamo commissioni o incentivi dai fornitori. Questo è il fondamento della nostra indipendenza e il motivo per cui possiamo davvero agire nel tuo interesse.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span class="faq-q-text">I miei dati sono al sicuro?</span>
+          <span class="faq-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+        </div>
+        <div class="faq-answer">
+          <p>I tuoi dati vengono trattati esclusivamente per le finalità della consulenza energetica, nel pieno rispetto del GDPR (Reg. UE 2016/679). Non vengono condivisi con operatori o terze parti. Puoi richiedere la cancellazione dei tuoi dati in qualsiasi momento contattandoci via email.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA FINALE
+============================================================ -->
+<section id="cta-finale">
+  <div class="container">
+    <div class="cta-finale-inner">
+      <span class="section-label" style="color:rgba(200,147,42,.8);">Inizia Oggi</span>
+      <h2>La tua prima analisi è gratuita.</h2>
+      <p>Non aspettare la prossima bolletta per chiederti se stai pagando troppo. Prenota la tua analisi energetica gratuita e ottieni una risposta chiara entro 24 ore lavorative.</p>
+
+      <div class="cta-benefits-row">
+        <div class="cta-benefit-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Nessun impegno contrattuale
+        </div>
+        <div class="cta-benefit-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Risposta entro 24 ore
+        </div>
+        <div class="cta-benefit-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Analisi sui tuoi dati reali
+        </div>
+        <div class="cta-benefit-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Consulente dedicato
+        </div>
+      </div>
+
+      <a href="#hero" class="btn btn-primary btn-lg">
+        Richiedi la tua Analisi Gratuita
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+
+      <p class="cta-phone-note">
+        Preferisci parlare con un consulente?
+        <a href="tel:+390000000000">+39 000 000 0000</a>
+        — Lun–Ven, 9:00–18:00
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+
+      <!-- Brand -->
+      <div class="footer-brand">
+        <div class="footer-logo-name">Il Consulente Energetico</div>
+        <div class="footer-logo-tag">Analisi · Ottimizzazione · Monitoraggio</div>
+        <p class="footer-desc">
+          Consulenza energetica indipendente per privati e aziende. Analisi sartoriale delle forniture, ottimizzazione dei costi e monitoraggio continuativo — senza conflitti d'interesse.
+        </p>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navigazione -->
+      <div class="footer-col">
+        <h4>Navigazione</h4>
+        <ul>
+          <li><a href="#metodo">Come Funziona</a></li>
+          <li><a href="#servizi">Per Privati</a></li>
+          <li><a href="#servizi">Per Aziende</a></li>
+          <li><a href="#testimonianze">Recensioni</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Servizi -->
+      <div class="footer-col">
+        <h4>Servizi</h4>
+        <ul>
+          <li><a href="#">Analisi Bolletta</a></li>
+          <li><a href="#">Ottimizzazione Contratto</a></li>
+          <li><a href="#">Audit Energetico B2B</a></li>
+          <li><a href="#">Monitoraggio Continuo</a></li>
+          <li><a href="#">Gestione Controversie</a></li>
+        </ul>
+      </div>
+
+      <!-- Contatti -->
+      <div class="footer-col">
+        <h4>Contatti</h4>
+        <div class="footer-contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+          +39 000 000 0000
+        </div>
+        <div class="footer-contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          info@ilconsulenteenergetico.it
+        </div>
+        <div class="footer-contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Lun–Ven: 9:00–18:00
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Il Consulente Energetico · P.IVA [XXXXXXXXXX] · Tutti i diritti riservati</span>
+      <div class="footer-policy-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Termini di Servizio</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Scroll to top -->
+<button class="scroll-top" id="scrollTop" aria-label="Torna in cima">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /* ---- Sticky Header shadow ---- */
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ---- Scroll to top ---- */
+  document.getElementById('scrollTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ---- Mobile menu ---- */
+  const menuBtn  = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  let menuOpen = false;
+  menuBtn.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    mobileNav.classList.toggle('open', menuOpen);
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+  });
+  mobileNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      menuOpen = false;
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ---- FAQ Accordion ---- */
+  document.getElementById('faqList').addEventListener('click', (e) => {
+    const question = e.target.closest('.faq-question');
+    if (!question) return;
+    const item = question.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    /* close all */
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    /* open clicked if it was closed */
+    if (!isOpen) item.classList.add('open');
+  });
+
+  /* ---- Radio buttons visual ---- */
+  document.querySelectorAll('.radio-option input').forEach(input => {
+    input.addEventListener('change', () => {
+      document.querySelectorAll('.radio-option label').forEach(l => {
+        l.closest('.radio-option').querySelector('input').checked
+          ? null : null;
+      });
+    });
+  });
+
+  /* ---- Smooth anchor scroll (offset for sticky header) ---- */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      const offset = header.offsetHeight + 16;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  /* ---- Intersection Observer: fade-in on scroll ---- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll(
+    '.metodo-step, .service-card, .diff-item, .testimonial-card, .faq-item, .problema-item, .trust-item'
+  ).forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = `opacity .55s ease ${i * 0.07}s, transform .55s ease ${i * 0.07}s`;
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
