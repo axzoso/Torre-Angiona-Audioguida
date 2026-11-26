@@ -71,43 +71,41 @@ const stopLabel = t.stop(currentIndex + 1, total);
       </div>
     </section>
 
-    <nav class="pn" aria-label="Tappa precedente e successiva">
-      <ul class="entries">
-        {
-          next ? (
-            <li>
-              <a class="pn-row is-next" href={`/tappa/${next.id}/`}>
-                <span class="pn-k mono">{t.next}</span>
-                <span class="pn-t">
-                  <span class="mono stamp">{pad(next.id)}</span> {next.titolo}
-                </span>
-                <span class="pn-arr" aria-hidden="true">→</span>
-              </a>
-            </li>
-          ) : (
-            <li>
-              <a class="pn-row is-next" href="/">
-                <span class="pn-k mono">{t.end}</span>
-                <span class="pn-t">{t.backHome}</span>
-                <span class="pn-arr" aria-hidden="true">→</span>
-              </a>
-            </li>
-          )
-        }
-        {
-          prev && (
-            <li>
-              <a class="pn-row is-prev" href={`/tappa/${prev.id}/`}>
-                <span class="pn-k mono">{t.prev}</span>
-                <span class="pn-t">
-                  <span class="mono">{pad(prev.id)}</span> {prev.titolo}
-                </span>
-                <span class="pn-arr" aria-hidden="true">←</span>
-              </a>
-            </li>
-          )
-        }
-      </ul>
+    <nav class="pn" aria-label={`${t.prev} / ${t.next}`}>
+      {
+        prev && (
+          <a class="pn-card is-prev" href={`/tappa/${prev.id}/`} rel="prev">
+            <span class="pn-k mono">
+              <span class="pn-arr" aria-hidden="true">←</span>
+              {t.prevShort}
+            </span>
+            <span class="pn-t">
+              <span class="pn-n mono">{pad(prev.id)}</span> {prev.titolo}
+            </span>
+          </a>
+        )
+      }
+      {
+        next ? (
+          <a class="pn-card is-next" href={`/tappa/${next.id}/`} rel="next">
+            <span class="pn-k mono">
+              {t.nextShort}
+              <span class="pn-arr" aria-hidden="true">→</span>
+            </span>
+            <span class="pn-t">
+              <span class="pn-n mono">{pad(next.id)}</span> {next.titolo}
+            </span>
+          </a>
+        ) : (
+          <a class="pn-card is-next" href="/">
+            <span class="pn-k mono">
+              {t.endShort}
+              <span class="pn-arr" aria-hidden="true">→</span>
+            </span>
+            <span class="pn-t">{t.backHome}</span>
+          </a>
+        )
+      }
     </nav>
   </article>
 </Layout>
@@ -415,64 +413,100 @@ const stopLabel = t.stop(currentIndex + 1, total);
     font-variation-settings: 'opsz' 144;
   }
 
-  /* Precedente / successiva */
+  /* Precedente / successiva: due card affiancate, la direzione è il lato.
+     La precedente sta a sinistra, la successiva sempre a destra (anche alla
+     prima tappa, dove la sinistra resta vuota) ed è l'unica in timbro. */
   .pn {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
     margin-top: clamp(3rem, 7vw, 5rem);
   }
 
-  .pn-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      'k arr'
-      't arr';
-    gap: 0.2rem 1rem;
-    align-items: center;
-    padding: 1.15rem 0;
-    min-height: 4.5rem;
+  .pn-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.9rem;
+    min-height: calc(var(--tap) * 2.25);
+    padding: 0.85rem 0.9rem 1rem;
+    border: 1px solid var(--rule);
+    color: var(--ink);
     text-decoration: none;
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
+  }
+
+  .pn-card.is-prev {
+    grid-column: 1;
+  }
+
+  .pn-card.is-next {
+    grid-column: 2;
+    align-items: flex-end;
+    text-align: end;
+    border-color: var(--stamp);
+    background: color-mix(in srgb, var(--stamp) 7%, transparent);
   }
 
   .pn-k {
-    grid-area: k;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     color: var(--ink-soft);
   }
 
-  .pn-t {
-    grid-area: t;
+  .is-next .pn-k,
+  .is-next .pn-n {
+    color: var(--stamp);
+  }
+
+  .pn-arr {
     font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 0.2s ease-out;
+  }
+
+  .pn-t {
+    font-size: clamp(1.1rem, 1.02rem + 0.35vw, 1.28rem);
     line-height: 1.2;
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     text-wrap: balance;
+    hyphens: auto;
   }
 
-  .pn-t .mono {
-    font-size: 1rem;
-    margin-right: 0.35rem;
-  }
-
-  .pn-row.is-prev .pn-t {
-    font-size: 1.2rem;
-  }
-
-  .pn-arr {
-    grid-area: arr;
-    font-size: 1.5rem;
+  .pn-n {
+    margin-right: 0.2rem;
     color: var(--ink-soft);
-    transition: transform 0.2s ease-out, color 0.2s ease-out;
   }
 
-  .pn-row:hover .pn-t,
-  .pn-row:hover .pn-arr {
-    color: var(--stamp);
+  @media (min-width: 40rem) {
+    .pn-t {
+      font-size: 1.5rem;
+    }
   }
 
-  .pn-row.is-next:hover .pn-arr {
-    transform: translateX(3px);
-  }
+  /* niente hover "appiccicoso" dopo il tocco sul telefono */
+  @media (hover: hover) {
+    .pn-card.is-prev:hover {
+      border-color: var(--ink);
+    }
 
-  .pn-row.is-prev:hover .pn-arr {
-    transform: translateX(-3px);
+    .pn-card.is-next:hover {
+      background: var(--stamp);
+      color: var(--paper);
+    }
+
+    .pn-card.is-next:hover :is(.pn-k, .pn-n) {
+      color: var(--paper);
+    }
+
+    .is-prev:hover .pn-arr {
+      transform: translateX(-3px);
+    }
+
+    .is-next:hover .pn-arr {
+      transform: translateX(3px);
+    }
   }
 </style>

@@ -180,7 +180,7 @@
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Titoli di riga: elenco tappe, Riprendi, precedente/successiva."
+        "purpose": "Titoli di riga: elenco tappe, Riprendi, card precedente/successiva."
       },
       "lead": {
         "displayName": "Lead",
@@ -357,7 +357,7 @@
       "Carta `#efe9db` con rumore SVG (alpha 0.055, tile 240px), mai colore piatto, mai bianco puro.",
       "Un solo accento: timbro rosso sulla carta, la sua versione chiara sul tema notte.",
       "Fraunces per tutto il testo, JetBrains Mono 400 per ogni dato e controllo, tracking 0, mai maiuscolo.",
-      "Angoli vivi, bordi da 1px, nessuna ombra, nessuna card: elenchi filettati.",
+      "Angoli vivi, bordi da 1px, nessuna ombra, nessuna card di contenuto: elenchi filettati. Solo le azioni possono essere riquadri bordati (Riprendi, Precedente/Successiva).",
       "SVG a tratto 0.8–1.4px con `vector-effect: non-scaling-stroke`, marker quadrati 7×7.",
       "Aree toccabili minime da 48px (`--tap`)."
     ],
@@ -404,7 +404,7 @@
     ],
     "donts": [
       "**Don't** usare border-radius, pillole, ombre portate, glassmorphism o gradienti decorativi (l'unico gradiente ammesso è la dissolvenza dell'header).",
-      "**Don't** introdurre card con fondo o riquadro: l'unico riquadro bordato è un'azione (Riprendi).",
+      "**Don't** introdurre card di contenuto con fondo o riquadro: i riquadri bordati sono solo azioni (Riprendi, Precedente/Successiva) e solo la \"Successiva\" porta il velo timbro.",
       "**Don't** aggiungere un secondo colore d'accento né colori saturi; non stendere il rosso su grandi superfici oltre al bottone primario e al play.",
       "**Don't** usare font sans-serif, né il mono in maiuscolo o con letter-spacing largo.",
       "**Don't** mettere etichette mono decorative sopra i titoli: il mono sopra un titolo compare solo come numero di tappa o come etichetta di funzione dentro una riga-azione.",

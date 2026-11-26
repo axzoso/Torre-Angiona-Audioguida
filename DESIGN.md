@@ -160,7 +160,7 @@ Il movimento è solo di stato: colore, avanzamento del segnalibro, ingresso del 
 - Carta `#efe9db` con rumore SVG (alpha 0.055, tile 240px), mai colore piatto, mai bianco puro.
 - Un solo accento: timbro rosso sulla carta, la sua versione chiara sul tema notte.
 - Fraunces per tutto il testo, JetBrains Mono 400 per ogni dato e controllo, tracking 0, mai maiuscolo.
-- Angoli vivi, bordi da 1px, nessuna ombra, nessuna card: elenchi filettati.
+- Angoli vivi, bordi da 1px, nessuna ombra, nessuna card di contenuto: elenchi filettati. Solo le azioni possono essere riquadri bordati (Riprendi, Precedente/Successiva).
 - SVG a tratto 0.8–1.4px con `vector-effect: non-scaling-stroke`, marker quadrati 7×7.
 - Aree toccabili minime da 48px (`--tap`).
 
@@ -169,7 +169,7 @@ Il movimento è solo di stato: colore, avanzamento del segnalibro, ingresso del 
 Palette quasi monocroma calda, carta e inchiostro, con un timbro rosso che segna azione e stato.
 
 ### Primary
-- **Timbro** (stamp): l'unico accento sulla carta. Bottone primario pieno "Ascolta", capolettera della trascrizione, numero della tappa in testata, hover di link e righe, focus ring (2px), selezione del testo, marker di stato ascoltato/in ascolto, tratto percorso completato nel disegno.
+- **Timbro** (stamp): l'unico accento sulla carta. Bottone primario pieno "Ascolta", capolettera della trascrizione, numero della tappa in testata, hover di link e righe, focus ring (2px), selezione del testo, marker di stato ascoltato/in ascolto, tratto percorso completato nel disegno, bordo, velo al 7% ed etichetta della card "Successiva" (piena timbro all'hover).
 - **Timbro notte** (night-stamp): la versione chiara del timbro sul tema scuro. Bottone play del player, barra di avanzamento, numero di tappa nel player, hover nel footer, bordo della "tappa successiva" a fine traccia.
 
 ### Neutral
@@ -199,7 +199,7 @@ Palette quasi monocroma calda, carta e inchiostro, con un timbro rosso che segna
 - **Display** (450, clamp 3.4–7.4rem, 0.98, -0.03em, opsz 144): solo il nome dell'audioguida in home; lo stesso registro (450, fino a 8.5rem, 0.95, -0.035em) firma "Fuori le Mura" nel footer.
 - **Headline** (500, clamp 2.4–5rem, 1.08, -0.03em, opsz 144): H1 della pagina tappa e delle pagine documento.
 - **Section** (500, clamp 2–3.2rem, 1.08, -0.015em): H2 di sezione, es. "Percorso"; H2 interni ai documenti scendono a clamp 1.5–2.1rem.
-- **Title** (500, 1.5rem, 1.2, opsz 72): titolo nelle righe dell'elenco, nell'azione "Riprendi" e nella navigazione precedente/successiva; logotipo header a 1.35rem, titolo nel player a 1.05rem (opsz 36).
+- **Title** (500, 1.5rem, 1.2, opsz 72): titolo nelle righe dell'elenco, nell'azione "Riprendi" e nelle card precedente/successiva (sotto i 40rem, dove le card sono strette, scende alla misura del corpo); logotipo header a 1.35rem, titolo nel player a 1.05rem (opsz 36).
 - **Lead** (400 italic, 1.25em, 1.35, opsz 100): sottotitolo della home; nei documenti il lead è roman, 1.5 di interlinea, opsz 36.
 - **Body** (400, clamp 1.1–1.28rem, 1.68, opsz 14): trascrizioni e testo, colonna `--measure` (36rem), `hyphens: auto`, `text-wrap: pretty`, paragrafi a 1.1em.
 - **Label** (mono 400, 0.8125rem, 1.55, tracking 0, cifre tabulari): numeri e durate delle tappe, stati, note a margine, contesto in header, didascalie. Nei disegni SVG il mono scende a 11px.
@@ -247,7 +247,12 @@ Tattili e asciutti: testo mono, bordo da 1px, angoli vivi, nessuna ombra.
 - **Struttura:** lista senza stile con filetto sopra e sotto ogni voce; ogni voce è un unico link a griglia.
 - **Contenuto:** numero e durata mono a sinistra, titolo Title e posizione serif 0.95rem in inchiostro tenue, stato mono con marker quadrato 7×7, freccia → in inchiostro tenue.
 - **Stati:** hover e tocco colorano titolo, numero e freccia in timbro; la freccia scorre di 3px (0.2s ease-out). Stato "ascoltata": testo inchiostro, marker pieno timbro; "in ascolto": testo e marker timbro.
-- **Precedente/successiva:** stessa riga filettata in fondo alla tappa, con etichetta di funzione mono a sinistra in alto, titolo con numero mono e freccia; la riga "precedente" ha titolo ridotto a 1.2rem e freccia che scorre a sinistra.
+
+### Precedente / successiva
+Due card affiancate in fondo alla tappa, sempre sulla stessa riga (griglia a due colonne uguali, gap 0.5rem): la direzione è il lato. Ogni card è un unico link, padding 0.85rem 0.9rem 1rem, alta almeno 6.75rem; in alto l'etichetta di funzione mono con la freccia, in basso il titolo con il numero mono.
+- **Precedente:** colonna sinistra, "← Precedente" in inchiostro tenue, bordo 1px filetto; hover bordo inchiostro e freccia che scorre a sinistra.
+- **Successiva:** sempre nella colonna destra (alla prima tappa la sinistra resta vuota), allineata a destra a specchio, "Successiva →" ed etichetta/numero in timbro, bordo 1px timbro e velo timbro al 7% (`color-mix`); hover pieno timbro con testo carta e freccia che scorre a destra. All'ultima tappa diventa "Fine →" con "Torna al percorso".
+- Gli hover valgono solo con `(hover: hover)`, per non restare accesi dopo il tocco.
 
 ### Riprendi
 L'unica area bordata della home, perché è un'azione: bordo 1px inchiostro, padding 1rem 1.1rem, larga al massimo 36rem. Etichetta mono timbro e tempo mono tenue sulla prima riga, titolo della tappa sotto. Hover inverte su inchiostro, con etichetta in timbro notte e tempo in tenue notte. Nascosta quando non c'è un punto di ripresa.
@@ -282,7 +287,7 @@ Curve di livello generate, tacche di griglia sul bordo, percorso tratteggiato e 
 
 ### Don't:
 - **Don't** usare border-radius, pillole, ombre portate, glassmorphism o gradienti decorativi (l'unico gradiente ammesso è la dissolvenza dell'header).
-- **Don't** introdurre card con fondo o riquadro: l'unico riquadro bordato è un'azione (Riprendi).
+- **Don't** introdurre card di contenuto con fondo o riquadro: i riquadri bordati sono solo azioni (Riprendi, Precedente/Successiva) e solo la "Successiva" porta il velo timbro.
 - **Don't** aggiungere un secondo colore d'accento né colori saturi; non stendere il rosso su grandi superfici oltre al bottone primario e al play.
 - **Don't** usare font sans-serif, né il mono in maiuscolo o con letter-spacing largo.
 - **Don't** mettere etichette mono decorative sopra i titoli: il mono sopra un titolo compare solo come numero di tappa o come etichetta di funzione dentro una riga-azione.
