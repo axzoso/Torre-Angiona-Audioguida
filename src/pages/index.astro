@@ -6,12 +6,6 @@ import audioguides from '../data/audioguides.json';
 import { t, parseDurata } from '../i18n/ui';
 
 const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durata), 0) / 60);
-// Didascalie che accompagnano l'apertura della torre su mobile (soglie di t)
-const racconto = [
-  { at: 0, text: 'La Torre Angioina, XIII secolo.' },
-  { at: 0.35, text: 'Scorrendo, la torre si apre in sezione.' },
-  { at: 0.8, text: 'Otto tappe, dentro e intorno alla torre.' },
-];
 ---
 
 <Layout heroTitle>
@@ -33,10 +27,10 @@ const racconto = [
       <span>{t.scrollCue}</span>
       <span class="scroll-cue-line"></span>
     </p>
+    <!-- su mobile l'introduzione si legge qui, una frase alla volta (il testo
+         completo resta nell'intestazione per gli screen reader) -->
     <div class="racconto" data-racconto aria-hidden="true">
-      {racconto.map((r) => (
-        <p data-at={r.at}>{r.text}</p>
-      ))}
+      {t.introParts.map((text) => <p>{text}</p>)}
     </div>
   </section>
 
@@ -123,9 +117,10 @@ const racconto = [
   audioStore.addEventListener('state-changed', render);
   document.addEventListener('astro:page-load', render);
 
-  // Invito allo scroll: visibile solo in cima alla pagina. Su mobile, mentre
-  // la torre è ferma, nel vuoto sotto il disegno scorrono le didascalie che
-  // seguono l'apertura, finché arriva il percorso.
+  // Invito allo scroll: visibile solo in cima alla pagina.
+  // Su mobile l'introduzione diventa il racconto nel vuoto sotto la torre:
+  // le frasi si susseguono con lo scroll, da quando sotto il disegno c'è
+  // spazio a quando arriva il percorso; ognuna esce prima che entri l'altra.
   let cueStop: AbortController | null = null;
   document.addEventListener('astro:page-load', () => {
     cueStop?.abort();
@@ -137,37 +132,34 @@ const racconto = [
     const fig = document.querySelector<HTMLElement>('[data-torre]');
     const heading = document.getElementById('percorso');
     const racconto = document.querySelector<HTMLElement>('[data-racconto]');
-    const lines = racconto ? [...racconto.querySelectorAll<HTMLElement>('[data-at]')] : [];
-    let t = 0;
-
-    const listArrived = () => !!heading && heading.getBoundingClientRect().top < innerHeight - 24;
-    const pinned = () => {
-      if (!fig) return false;
-      const pinTop = parseFloat(getComputedStyle(fig).top) || 0;
-      return getComputedStyle(fig).position === 'sticky' && fig.getBoundingClientRect().top <= pinTop + 1;
-    };
+    const lines = racconto ? [...racconto.querySelectorAll<HTMLElement>('p')] : [];
+    const MIN_VOID = 150; // px di vuoto sotto la torre perché il racconto compaia
 
     const update = () => {
       cue.classList.toggle('is-gone', scrollY > 24);
-      if (!racconto) return;
-      const on = mobile.matches && pinned() && !listArrived();
+      if (!racconto || !fig || !heading) return;
+      // solo su mobile e con l'animazione attiva (la torre è sticky)
+      if (!mobile.matches || getComputedStyle(fig).position !== 'sticky') {
+        racconto.classList.remove('is-on');
+        return;
+      }
+      const fr = fig.getBoundingClientRect();
+      const box = fig.parentElement ?? fig;
+      // fondo del disegno nella pagina, prima che resti fermo
+      const naturalBottom = box.getBoundingClientRect().top + scrollY + fig.offsetHeight;
+      const start = Math.max(0, naturalBottom - innerHeight + MIN_VOID);
+      const end = heading.getBoundingClientRect().top + scrollY - (innerHeight - 24);
+      const on = innerHeight - fr.bottom >= MIN_VOID && scrollY < end;
       racconto.classList.toggle('is-on', on);
-      if (on && fig) racconto.style.top = `${fig.getBoundingClientRect().bottom}px`;
-      let k = 0;
+      racconto.style.top = `${fr.bottom}px`;
+      const p = (scrollY - start) / Math.max(1, end - start);
+      const k = Math.max(0, Math.min(lines.length - 1, Math.floor(p * lines.length)));
       lines.forEach((l, i) => {
-        if (t >= Number(l.dataset.at)) k = i;
+        l.classList.toggle('is-now', i === k);
+        l.classList.toggle('is-past', i < k);
       });
-      lines.forEach((l, i) => l.classList.toggle('is-now', i === k));
     };
 
-    document.addEventListener(
-      'torre:progress',
-      (e) => {
-        t = (e as CustomEvent<number>).detail;
-        update();
-      },
-      { signal },
-    );
     addEventListener('scroll', update, { passive: true, signal });
     addEventListener('resize', update, { signal });
     document.addEventListener('astro:before-swap', () => cueStop?.abort(), { once: true, signal });
@@ -225,10 +217,11 @@ const racconto = [
 
   /* Scorrendo, il disegno resta fermo sotto l'intestazione: nel primo mezzo
      schermo la torre ruota e si apre (TorreDrawing), poi su mobile resta
-     ferma ancora un tratto (--torre-hold) mentre sotto sale il percorso. */
+     ferma ancora un tratto (--torre-hold): il tempo per leggere, sotto,
+     le quattro frasi del racconto (circa un terzo di schermo ciascuna). */
   @media (prefers-reduced-motion: no-preference) {
     .hero-draw {
-      --torre-hold: 30svh;
+      --torre-hold: 90svh;
     }
 
     /* spaziatore (non padding: lo sticky si muove solo nell'area del contenuto) */
@@ -348,7 +341,7 @@ const racconto = [
     z-index: 4;
     display: grid;
     place-items: center;
-    padding: 0 var(--gutter) 2rem;
+    padding: 0 var(--gutter) 4.5rem;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.5s ease-out;
@@ -358,6 +351,9 @@ const racconto = [
     opacity: 1;
   }
 
+  /* Le frasi stanno una sopra l'altra: quella che esce sparisce in fretta
+     (0.25s) e solo dopo entra la successiva, così non si accavallano mai.
+     Il verso segue lo scroll: avanti salgono, indietro scendono. */
   .racconto p {
     grid-area: 1 / 1;
     max-width: 17em;
@@ -367,16 +363,38 @@ const racconto = [
     line-height: 1.3;
     font-variation-settings: 'opsz' 72;
     text-align: center;
+    text-wrap: balance;
     opacity: 0;
-    transform: translateY(0.4rem);
+    transform: translateY(0.6rem);
     transition:
-      opacity 0.5s ease-out,
-      transform 0.5s ease-out;
+      opacity 0.25s ease-in,
+      transform 0.25s ease-in;
+  }
+
+  .racconto p.is-past {
+    transform: translateY(-0.6rem);
   }
 
   .racconto p.is-now {
     opacity: 1;
     transform: none;
+    transition:
+      opacity 0.45s ease-out 0.25s,
+      transform 0.45s ease-out 0.25s;
+  }
+
+  /* Su mobile, con l'animazione attiva, l'introduzione si legge nel racconto
+     sotto la torre: nell'intestazione resta solo per gli screen reader */
+  @media (max-width: 51.99rem) and (prefers-reduced-motion: no-preference) {
+    .intro {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
   }
 
   .list {

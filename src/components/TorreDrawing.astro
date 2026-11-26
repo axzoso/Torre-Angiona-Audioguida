@@ -45,8 +45,6 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
       scene.innerHTML = renderScene(homeCam(t), ID);
       route.style.opacity = String(Math.max(0, Math.min(1, (t - 0.88) / 0.12)));
       shown = t;
-      // avanzamento per chi accompagna il disegno (didascalie)
-      fig.dispatchEvent(new CustomEvent('torre:progress', { detail: t, bubbles: true }));
     };
 
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
