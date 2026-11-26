@@ -11,7 +11,9 @@
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   },
-  "workers_dev": true,
+  // Solo il dominio torreviva.fuorilemura.org: niente indirizzo *.workers.dev
+  // (restano attive le URL di anteprima dei branch).
+  "workers_dev": false,
   "preview_urls": true,
   // Necessario a `npx wrangler preview` (build dei branch non di produzione
   // in Workers Builds). Vuoto: le anteprime ereditano questa configurazione.
