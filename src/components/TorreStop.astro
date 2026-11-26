@@ -7,16 +7,14 @@ import { stopDrawing } from '../lib/torre/stops';
 interface Props {
   index: number; // 0–7, ordine della visita
   label: string;
-  caption: string;
 }
 
-const { index, label, caption } = Astro.props;
+const { index, label } = Astro.props;
 const { viewBox, inner } = stopDrawing(index);
 ---
 
 <figure class="torre torre-stop">
   <svg viewBox={viewBox} preserveAspectRatio="xMidYMid meet" role="img" aria-label={label} focusable="false" set:html={inner} />
-  <figcaption class="mono soft">{caption}</figcaption>
 </figure>
 
 <style>

@@ -5,11 +5,6 @@
 import '../styles/torre.css';
 import { W, H, homeCam, renderContours, renderDefs, renderScene, routePath, stopPoint, STOPS } from '../lib/torre/scene';
 
-interface Props {
-  caption: string;
-}
-
-const { caption } = Astro.props;
 const ID = 'tv-home';
 const final = homeCam(1);
 const dots = STOPS.map((_, i) => stopPoint(i, final));
@@ -25,7 +20,6 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
       {dots.map(([x, y]) => <rect class="pt" x={(x - 3.5).toFixed(1)} y={(y - 3.5).toFixed(1)} width="7" height="7" />)}
     </g>
   </svg>
-  <figcaption class="mono">{caption}</figcaption>
 </figure>
 
 <script>

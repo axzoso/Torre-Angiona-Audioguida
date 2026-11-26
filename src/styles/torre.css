@@ -198,7 +198,3 @@
 .torre .pt {
   fill: var(--stamp);
 }
-
-.torre figcaption {
-  margin-top: 0.6rem;
-}
