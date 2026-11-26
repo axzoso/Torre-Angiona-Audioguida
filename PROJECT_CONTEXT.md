@@ -32,7 +32,8 @@ src/
   data/audioguides.json # UNICA fonte dati: id, titolo, descrizione, audioSrc, durata, posizione
 public/audio/*.mp3      # 8 file audio statici
 astro.config.ts         # config Astro + PWA/Workbox
-nginx.conf              # config del container nginx:alpine in produzione
+wrangler.jsonc          # Cloudflare Workers (static assets): dist/, slash finali, 404, previews
+public/_headers         # intestazioni HTTP di cache e sicurezza (Workers)
 ```
 
 ## Architettura runtime (come comunicano i pezzi)
@@ -45,20 +46,24 @@ nginx.conf              # config del container nginx:alpine in produzione
 - View Transitions via `<ClientRouter/>`: la logica si ri-inizializza su `astro:page-load` e `astro:after-swap` (il player persiste, il body viene swappato).
 
 ## Deployment
-- **In migrazione (2026-11-26) a Cloudflare Workers static assets**: `wrangler.jsonc` + `public/_headers` (cache/sicurezza, sostituisce nginx.conf). Workers Builds: build `npm run build`, deploy `npx wrangler deploy`, branch non di produzione `npx wrangler versions upload`. Il precache esclude `404.html` (su Workers `/404/` reindirizza e farebbe fallire l'install del SW). Range request sugli mp3: wrangler dev risponde 200 invece di 206 → verificare la riproduzione su iOS Safari nell'anteprima.
-- VPS Oracle Always Free (ARM) → **Coolify** → build con **Railpack** (`npm run build`; Nixpacks è deprecato) → `dist/` servito da nginx. ⚠️ `nginx.conf` del repo NON viene applicato da solo: va incollato in Coolify → Custom Nginx Configuration (verificato 2026-11-26: in produzione mancavano Cache-Control e header di sicurezza).
-- **Cloudflare** in front (proxy/DNS).
+- **Cloudflare Workers static assets** (dal 2026-11-26; prima VPS Oracle + Coolify, dismessa). Worker `torreviva`, custom domain `torreviva.fuorilemura.org` nella zona `fuorilemura.org`.
+- Config nel repo: `wrangler.jsonc` (`assets.directory: ./dist`, `html_handling: auto-trailing-slash`, `not_found_handling: 404-page`, `previews: {}`) + `public/_headers` (cache e sicurezza; le regole che matchano lo stesso URL si sommano → `Cache-Control` solo su percorsi specifici, mai su `/*`).
+- **Workers Builds** collegato a GitHub: produzione = `main` (`npm run build` → `npx wrangler deploy`); altri branch → `npx wrangler preview` (richiede il blocco `previews`, anche vuoto) → URL `<id8>-torreviva.cla-antonucci.workers.dev`. Esito visibile come check sul commit.
 - ⚠️ Vincoli operativi critici per l'offline:
-  - `sw.js` NON deve essere cachato dalla CDN → Cloudflare Cache Rule: `URI Path == /sw.js` → **Bypass**.
-  - **Rocket Loader disattivato** su Cloudflare.
+  - `sw.js` e `workbox-*` mai in cache HTTP → `no-store` in `public/_headers`.
+  - Il precache esclude `404.html`: su Workers `/404/` reindirizza e farebbe fallire l'install del SW.
+  - Il pre-buffering degli mp3 in `Layout.astro` parte solo quando il SW controlla la pagina (`controllerchange`): i fetch precedenti non passano dalla `audio-cache` e quegli audio mancherebbero offline (bug visto su iPhone, risolto 2026-11-26).
+  - Font mai inlined come `data:` (`vite.build.assetsInlineLimit` in `astro.config.ts`): la CSP ha `font-src 'self'`.
   - `trailingSlash: 'always'` è obbligatorio: gli URL devono coincidere con le chiavi della cache del SW.
+  - Su Cloudflare: Rocket Loader e Zaraz/RUM disattivati, Always Use HTTPS attivo.
+  - Range request sugli mp3: Workers risponde 200 (non 206); il player usa fetch → blob, quindi è ininfluente.
 
 ## Stato sicurezza (audit 2026-05-28)
 **Nessuna vulnerabilità sfruttabile nel codice.** `npm audit` = 0 vulnerabilità. App statica → superficie d'attacco minima (no input utente, no backend, contenuti fidati dal repo). Astro auto-escapa tutto l'output; il JS client usa solo `textContent`/`dataset`, mai `innerHTML`/`set:html`.
 
 Hardening applicato (2026-06-10):
-1. ✅ **Header di sicurezza HTTP in `nginx.conf`**: `X-Frame-Options`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy` su tutte le location (ripetuti per blocco: `add_header` non è ereditato dove la location ne definisce altri). La CSP resta nel `<meta>` di `Layout.astro`.
-2. ✅ **Fix cache HTML**: la vecchia location `~* \.html$` non matchava mai gli URL reali (`/tappa/1/` ecc. sono directory) → `Cache-Control: no-cache, must-revalidate` ora è su `location /`, così il ciclo di update del SW è garantito anche se cambiano le cache rule Cloudflare.
+1. ✅ **Header di sicurezza HTTP** (allora in `nginx.conf`, dal 2026-11-26 in `public/_headers`): `X-Frame-Options`, `Content-Security-Policy: frame-ancestors 'self'`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy` su tutto il sito. La CSP completa resta nel `<meta>` di `Layout.astro`.
+2. ✅ **Cache HTML**: le pagine (`/`, `/tappa/1/`, …) usano il default di Workers `max-age=0, must-revalidate`, così il ciclo di update del SW è garantito.
 
 Hardening residuo (difensivo, non urgente):
 1. **[Bassa]** `'unsafe-inline'` in `script-src`: eliminabile autorizzando lo snippet gtag via hash `'sha256-…'` (sito statico, l'hash è stabile).

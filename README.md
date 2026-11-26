@@ -281,70 +281,55 @@ Struttura `src/data/audioguides.json`:
 
 ## 🌐 Deployment
 
-### Cloudflare Workers (static assets) — in migrazione
+Produzione: **https://torreviva.fuorilemura.org**, servito da **Cloudflare
+Workers (static assets)**: solo file statici, nessun codice Worker. Il dominio
+è un *custom domain* del Worker `torreviva` nella zona Cloudflare
+`fuorilemura.org`.
 
-Il sito è un insieme di file statici serviti da Cloudflare Workers (nessun
-codice Worker). Configurazione nel repo:
+Configurazione nel repo:
 
 - `wrangler.jsonc` — nome del Worker, cartella `dist/`, gestione degli slash
-  finali (`auto-trailing-slash`) e pagina 404.
-- `public/_headers` — intestazioni di cache e sicurezza (sostituisce `nginx.conf`):
-  `sw.js` mai in cache, asset in `_astro/` immutabili, audio 1 giorno,
-  `frame-ancestors 'self'` + X-Frame-Options, nosniff, Referrer/Permissions-Policy.
+  finali (`auto-trailing-slash`: `/tappa/1` → `/tappa/1/`), pagina 404 e
+  blocco `previews` (richiesto da `wrangler preview` per le anteprime).
+- `public/_headers` — intestazioni di cache e sicurezza: `sw.js` e `workbox-*`
+  mai in cache, manifest sempre rivalidato, asset in `_astro/` immutabili
+  (1 anno), audio 1 giorno, icone 7 giorni; su tutto il sito
+  `frame-ancestors 'self'` + X-Frame-Options, nosniff, Referrer-Policy e
+  Permissions-Policy. La CSP completa resta nel `<meta>` di `Layout.astro`.
 - `.node-version` — Node 24 per la build.
 
-**Workers Builds (collegamento a GitHub):**
+**Workers Builds (collegato a GitHub):**
+- Branch di produzione: `main`
 - Build command: `npm run build`
 - Deploy command: `npx wrangler deploy`
-- Non-production branch deploy command: `npx wrangler versions upload`
-  (ogni branch ottiene un URL di anteprima)
+- Branch non di produzione: `npx wrangler preview` → ogni branch ottiene un
+  URL di anteprima `<id-versione>-torreviva.cla-antonucci.workers.dev`
+
+**Flusso di deploy:**
+1. Push su `main`
+2. Workers Builds installa le dipendenze, builda il sito e pubblica `dist/`
+   (un paio di minuti; l'esito compare come check sul commit in GitHub)
+3. Il service worker aggiorna la cache offline dei visitatori alla successiva
+   apertura online (`registerType: 'autoUpdate'`)
 
 Prova in locale con il runtime di Cloudflare:
 
 ```bash
-npm run build && npx wrangler dev
+npm run build && npx wrangler dev   # http://localhost:8787
 ```
 
-### Coolify su VPS (Oracle Cloud Always Free, ARM) — da dismettere dopo la migrazione
+### Cloudflare — vincoli per la PWA offline
 
-L'app è ospitata su una VPS Oracle Always Free (Ampere A1, architettura ARM) e
-gestita da [Coolify](https://coolify.io). La build avviene con **Railpack**
-(Nixpacks è deprecato in Coolify), e i file statici vengono serviti da nginx.
-
-```bash
-# Build statico (eseguita da Railpack in fase di deploy)
-npm run build
-
-# Output: dist/  → servito da nginx:alpine
-```
-
-**Flusso di deploy:**
-1. Push su `main`
-2. Il webhook di Coolify avvia il deploy
-3. Railpack installa le dipendenze (`npm ci`, Node da `.node-version`) e builda il sito (`npm run build`)
-4. nginx serve `dist/`. ⚠️ Le intestazioni di cache e sicurezza di `nginx.conf` vanno
-   incollate in Coolify → Configuration → **Custom Nginx Configuration**: il file nel
-   repo da solo non viene applicato.
-5. Il service worker aggiorna la cache offline-first lato client
-
-**Tempi:** con il webhook attivo, dal push ai nuovi file online passano circa
-2–4 minuti (build su ARM). Per gli utenti che hanno già aperto la PWA,
-l'aggiornamento effettivo arriva alla successiva apertura online, grazie
-all'auto-update del service worker (`registerType: 'autoUpdate'`).
-
-### Cloudflare — configurazione per PWA offline
-
-Cloudflare è in front come proxy/DNS. Per garantire il funzionamento offline
-della PWA è **obbligatorio** che `sw.js` non venga cachato dalla CDN:
-
-**Rules → Cache Rules → Crea regola:**
-- Campo: `URI Path` equals `/sw.js`
-- Azione: Cache Status → **Bypass**
-
-Senza questa regola Cloudflare serve il vecchio `sw.js` dalla CDN e il Service
-Worker non si aggiorna mai → la cache precachata è sbagliata → offline non funziona.
-
-Verificare anche che **Rocket Loader** (Speed → Optimization) sia disattivato.
+- `sw.js` non deve mai essere servito vecchio: lo garantisce `public/_headers`
+  (`no-store`). La vecchia Cache Rule *Bypass* su `/sw.js` della zona non è più
+  necessaria con Workers, ma può restare.
+- **Rocket Loader** (Speed → Optimization) disattivato.
+- **Zaraz** e Web Analytics/RUM disattivati per questo host: iniettano script
+  bloccati dalla CSP (vedi `DISATTIVARE-ZARAZ-TORREVIVA.md`).
+- **Always Use HTTPS** da tenere attivo (SSL/TLS → Edge Certificates): su `http://` il
+  service worker non si registra e l'offline non funziona.
+- Gli audio su Workers rispondono `200` anche alle Range request (non `206`): il
+  player scarica l'mp3 intero come blob, quindi la riproduzione non ne risente.
 
 ---
 

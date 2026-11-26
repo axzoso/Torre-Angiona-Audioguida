@@ -23,7 +23,7 @@ Un racconto in prima persona legato fisicamente ai luoghi della Torre, curato da
 - Accesso via QR code a `/tappa/<n>/`; home con l'elenco del percorso.
 - Ascolto in movimento: il player resta attivo cambiando pagina; il testo scorre con l'audio.
 - PWA statica offline-first (Astro static + Workbox); gli audio vengono pre-scaricati in silenzio in background.
-- Dominio di produzione: torreviva.fuorilemura.org (Cloudflare davanti a nginx).
+- Dominio di produzione: torreviva.fuorilemura.org (Cloudflare Workers, static assets).
 
 ## Capabilities and Constraints
 

@@ -1,5 +1,5 @@
 # Intestazioni HTTP per Cloudflare Workers (static assets).
-# Sostituisce nginx.conf. Le regole che corrispondono allo stesso URL si
+# Le regole che corrispondono allo stesso URL si
 # sommano: per questo Cache-Control NON è su /* ma solo sui percorsi specifici
 # (le pagine usano il default di Cloudflare: max-age=0, must-revalidate).
 

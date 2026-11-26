@@ -26,14 +26,14 @@ const year = new Date().getFullYear();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <!--
-      Content-Security-Policy a livello applicativo (via meta, perché nginx.conf
-      è gestito da Coolify e non va modificato). Difesa in profondità: anche se
+      Content-Security-Policy a livello applicativo (via meta, così vive insieme
+      al codice che la richiede). Difesa in profondità: anche se
       un terzo (Google Analytics) venisse compromesso, può caricare risorse solo
       dai domini elencati. Il cuore dell'app è tutto 'self' + blob:, quindi se
       questa policy fosse troppo stretta al più smette GA, non l'audioguida.
       Nota: 'unsafe-inline' è necessario per gli stili inline e per lo snippet
       gtag inline; 'frame-ancestors' non è esprimibile via meta → il clickjacking
-      è coperto da X-Frame-Options in nginx.conf.
+      è coperto da X-Frame-Options e frame-ancestors in public/_headers.
     -->
     <meta
       http-equiv="Content-Security-Policy"
