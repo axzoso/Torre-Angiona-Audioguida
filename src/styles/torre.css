@@ -1,0 +1,204 @@
+/* Disegno a tratto della torre (home e pagine delle tappe).
+   Linguaggio da tavola: tratteggio a 45° per le parti sezionate, puntinato
+   per il terrapieno, linee fantasma tratto-punto per la parte asportata,
+   percorso e punti in rosso timbro. Spessori costanti a ogni scala. */
+.torre {
+  margin: 0;
+}
+
+.torre svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.torre :is(path, rect, circle) {
+  vector-effect: non-scaling-stroke;
+}
+
+.torre .ct {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.8;
+  opacity: 0.13;
+}
+
+.torre .ct.maj {
+  stroke-width: 1.1;
+  opacity: 0.26;
+}
+
+.torre .face {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+}
+
+.torre .face.nostroke {
+  stroke: none;
+}
+
+.torre .edge {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.torre .thin {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.5;
+  opacity: 0.4;
+}
+
+.torre .course {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.5;
+  opacity: 0.18;
+}
+
+.torre .wall {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.45;
+  opacity: 0.24;
+}
+
+.torre .back {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.7;
+  opacity: 0.75;
+}
+
+.torre .slit {
+  stroke: var(--ink);
+  stroke-width: 1.3;
+}
+
+.torre .deck {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+
+.torre .rail {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.7;
+}
+
+.torre .rail.thin {
+  opacity: 0.55;
+}
+
+.torre .post {
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+
+.torre .cut-bg {
+  fill: var(--paper);
+  stroke: none;
+}
+
+.torre .cut {
+  stroke: var(--ink);
+  stroke-width: 1.3;
+  stroke-linejoin: miter;
+}
+
+.torre .ht {
+  stroke: var(--ink);
+  stroke-width: 0.55;
+  opacity: 0.5;
+}
+
+.torre .dot {
+  fill: var(--ink);
+  opacity: 0.45;
+}
+
+.torre .void {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.1;
+}
+
+.torre .void-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.1;
+}
+
+.torre .rib {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.9;
+}
+
+.torre .beam {
+  fill: var(--ink);
+  opacity: 0.75;
+}
+
+.torre .water {
+  stroke: var(--ink);
+  stroke-width: 0.7;
+  stroke-dasharray: 3 3;
+  opacity: 0.6;
+}
+
+.torre .open {
+  fill: rgba(27, 26, 23, 0.07);
+  stroke: var(--ink);
+  stroke-width: 0.7;
+}
+
+.torre .steps {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.5;
+  opacity: 0.55;
+}
+
+.torre .ground {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.3;
+}
+
+.torre .hidden {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.6;
+  stroke-dasharray: 3 2.5;
+  opacity: 0.5;
+}
+
+.torre .ghost {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.7;
+  stroke-dasharray: 8 3 1 3;
+  opacity: 0.35;
+}
+
+.torre .rt {
+  fill: none;
+  stroke: var(--stamp);
+  stroke-width: 1.6;
+  stroke-dasharray: 2 5;
+  stroke-linecap: square;
+}
+
+.torre .pt {
+  fill: var(--stamp);
+}
+
+.torre figcaption {
+  margin-top: 0.6rem;
+}

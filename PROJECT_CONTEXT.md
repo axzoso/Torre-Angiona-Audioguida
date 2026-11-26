@@ -29,6 +29,10 @@ src/
   lib/
     audioStore.ts      # event bus (EventTarget + CustomEvent) tra pagine e player
     audioStore.test.ts # test del bus
+  lib/torre/scene.ts   # disegno della torre in sezione (geometria schematica, camera rotazione + taglio)
+  lib/torre/stops.ts   # inquadrature di dettaglio per le pagine delle tappe (punto rosso = dove sei)
+  components/TorreDrawing.astro # home: la torre ruota e si apre allo scroll (sticky + rAF; reduced-motion → sezione aperta)
+  components/TorreStop.astro    # pagina tappa: dettaglio statico generato in build
   data/audioguides.json # UNICA fonte dati: id, titolo, descrizione, audioSrc, durata, posizione
 public/audio/*.mp3      # 8 file audio statici
 astro.config.ts         # config Astro + PWA/Workbox

@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import TappaRow from '../components/TappaRow.astro';
-import RouteDrawing from '../components/RouteDrawing.astro';
+import TorreDrawing from '../components/TorreDrawing.astro';
 import audioguides from '../data/audioguides.json';
 import { t, parseDurata } from '../i18n/ui';
 
@@ -21,7 +21,7 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
       </a>
     </div>
     <div class="hero-draw">
-      <RouteDrawing ids={audioguides.map((s) => s.id)} caption={t.routeSchema} />
+      <TorreDrawing caption={t.routeSchema} />
     </div>
   </section>
 
@@ -50,14 +50,11 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
     if (!document.querySelector('[data-stop-row]')) return; // non siamo in home
     const store = getAll();
     const playingId = audioStore.playing ? currentId() : null;
-    const activeId = currentId();
 
-    let furthestDone = -1;
-    audioguides.forEach((s, i) => {
+    audioguides.forEach((s) => {
       const st = store.tappe[s.id];
       const row = document.querySelector(`[data-stop-row="${s.id}"]`);
       const status = row?.querySelector<HTMLElement>('[data-status]');
-      const mark = document.querySelector(`[data-stop-mark="${s.id}"]`);
       let state = '';
       let label = '';
       if (playingId === s.id) {
@@ -70,23 +67,12 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
         state = 'started';
         label = t.statusStarted(fmtTime(st.t));
       }
-      if (st?.done) furthestDone = Math.max(furthestDone, i);
       if (status) {
         status.hidden = !state;
         status.textContent = label;
         status.dataset.state = state;
       }
-      mark?.classList.toggle('is-done', !!st?.done && activeId !== s.id);
-      mark?.classList.toggle('is-current', activeId === s.id);
     });
-
-    // Tratto rosso del percorso fino all'ultima tappa ascoltata
-    const done = document.querySelector<SVGPathElement>('[data-route-done]');
-    if (done) {
-      const fracs: number[] = JSON.parse(done.dataset.fracs || '[]');
-      const f = furthestDone >= 0 ? fracs[furthestDone] ?? 0 : 0;
-      done.style.strokeDasharray = `${f} 1`;
-    }
 
     // Riga "Riprendi": ultima tappa iniziata e non conclusa, altrimenti la successiva
     const resume = document.querySelector<HTMLAnchorElement>('[data-resume]');
@@ -168,6 +154,38 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
 
     .hero-draw {
       max-width: none;
+    }
+  }
+
+  /* Scorrendo, il disegno resta fermo sotto l'intestazione per mezzo schermo:
+     in quello spazio la torre ruota e si apre (TorreDrawing). */
+  @media (prefers-reduced-motion: no-preference) {
+    /* spaziatore (non padding: lo sticky si muove solo nell'area del contenuto) */
+    .hero-draw::after {
+      content: '';
+      display: block;
+      height: 55svh;
+    }
+
+    .hero-draw > :global(.torre) {
+      position: sticky;
+      top: 4.5rem;
+    }
+
+    .hero-draw > :global(.torre svg) {
+      max-height: calc(100svh - 7.5rem);
+    }
+
+    @media (min-width: 52rem) {
+      .hero {
+        align-items: start;
+      }
+
+      .hero-text {
+        position: sticky;
+        top: 4.5rem;
+        padding-top: clamp(2rem, 8vh, 6rem);
+      }
     }
   }
 

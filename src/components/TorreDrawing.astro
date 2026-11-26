@@ -1,0 +1,90 @@
+---
+// Home: la torre intera che, scorrendo la pagina, ruota e si apre in sezione.
+// Il disegno è generato da src/lib/torre/scene.ts: lato server il primo
+// fotogramma (torre intera), nel browser i successivi.
+import '../styles/torre.css';
+import { W, H, homeCam, renderContours, renderDefs, renderScene, routePath, stopPoint, STOPS } from '../lib/torre/scene';
+
+interface Props {
+  caption: string;
+}
+
+const { caption } = Astro.props;
+const ID = 'tv-home';
+const final = homeCam(1);
+const dots = STOPS.map((_, i) => stopPoint(i, final));
+---
+
+<figure class="torre" data-torre aria-hidden="true">
+  <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" role="presentation" focusable="false">
+    <defs set:html={renderDefs(ID)} />
+    <g set:html={renderContours()} />
+    <g data-scene set:html={renderScene(homeCam(0), ID)} />
+    <g class="route" data-route style="opacity: 0">
+      <path class="rt" d={routePath()} />
+      {dots.map(([x, y]) => <rect class="pt" x={(x - 3.5).toFixed(1)} y={(y - 3.5).toFixed(1)} width="7" height="7" />)}
+    </g>
+  </svg>
+  <figcaption class="mono">{caption}</figcaption>
+</figure>
+
+<script>
+  import { homeCam, renderScene } from '../lib/torre/scene';
+
+  const ID = 'tv-home';
+  let stop: AbortController | null = null;
+
+  function init(): void {
+    stop?.abort();
+    const fig = document.querySelector<HTMLElement>('[data-torre]');
+    const scene = fig?.querySelector<SVGGElement>('[data-scene]');
+    const route = fig?.querySelector<SVGGElement>('[data-route]');
+    if (!fig || !scene || !route) return;
+
+    let shown = 0; // fotogramma disegnato (il server ha disegnato t = 0)
+    let cur = 0;
+    let target = 0;
+    let raf = 0;
+
+    const draw = (t: number) => {
+      if (Math.abs(t - shown) < 0.002 && t !== 0 && t !== 1) return;
+      scene.innerHTML = renderScene(homeCam(t), ID);
+      route.style.opacity = String(Math.max(0, Math.min(1, (t - 0.88) / 0.12)));
+      shown = t;
+    };
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      draw(1);
+      return;
+    }
+
+    // t = 0 in cima alla pagina; t = 1 alla fine del tratto in cui il disegno
+    // resta fermo (il contenitore è più alto del disegno: vedi index.astro)
+    const box = fig.parentElement ?? fig;
+    const measure = () => {
+      const r = box.getBoundingClientRect();
+      const pinTop = parseFloat(getComputedStyle(fig).top) || 0;
+      const runway = Math.max(r.height - fig.offsetHeight, innerHeight * 0.3);
+      const end = Math.max(240, r.top + scrollY - pinTop + runway);
+      target = Math.max(0, Math.min(1, scrollY / end));
+    };
+    const tick = () => {
+      cur += (target - cur) * 0.14;
+      if (Math.abs(target - cur) < 0.002) cur = target;
+      draw(cur);
+      raf = cur === target ? 0 : requestAnimationFrame(tick);
+    };
+    const onScroll = () => {
+      measure();
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
+    stop = new AbortController();
+    addEventListener('scroll', onScroll, { passive: true, signal: stop.signal });
+    addEventListener('resize', onScroll, { signal: stop.signal });
+    document.addEventListener('astro:before-swap', () => stop?.abort(), { once: true, signal: stop.signal });
+    onScroll();
+  }
+
+  document.addEventListener('astro:page-load', init);
+</script>

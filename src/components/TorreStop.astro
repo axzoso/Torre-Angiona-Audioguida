@@ -1,0 +1,30 @@
+---
+// Pagina della tappa: il dettaglio della torre dove ci si trova, con un solo
+// punto rosso. Disegno statico generato in fase di build.
+import '../styles/torre.css';
+import { stopDrawing } from '../lib/torre/stops';
+
+interface Props {
+  index: number; // 0–7, ordine della visita
+  label: string;
+  caption: string;
+}
+
+const { index, label, caption } = Astro.props;
+const { viewBox, inner } = stopDrawing(index);
+---
+
+<figure class="torre torre-stop">
+  <svg viewBox={viewBox} preserveAspectRatio="xMidYMid meet" role="img" aria-label={label} focusable="false" set:html={inner} />
+  <figcaption class="mono soft">{caption}</figcaption>
+</figure>
+
+<style>
+  .torre-stop {
+    margin-top: 1.8rem;
+  }
+
+  .torre-stop svg {
+    border-block: 1px solid var(--rule);
+  }
+</style>

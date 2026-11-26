@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # Cloudflare Wrangler (stato locale di `wrangler dev`)
 .wrangler/
+
+# foto Torre Angioina
+TORRE ANGIOINA/
