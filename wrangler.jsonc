@@ -1,6 +1,6 @@
 // Cloudflare Workers — solo asset statici (nessun codice Worker).
 // Build: `npm run build` → dist/. Deploy: `npx wrangler deploy`
-// (sui branch non di produzione: `npx wrangler versions upload` → URL di anteprima).
+// (sui branch non di produzione: `npx wrangler preview` → URL di anteprima).
 {
   "name": "torreviva",
   "compatibility_date": "2026-11-26",
@@ -13,6 +13,9 @@
   },
   "workers_dev": true,
   "preview_urls": true,
+  // Necessario a `npx wrangler preview` (build dei branch non di produzione
+  // in Workers Builds). Vuoto: le anteprime ereditano questa configurazione.
+  "previews": {},
   "observability": {
     "enabled": true
   }
