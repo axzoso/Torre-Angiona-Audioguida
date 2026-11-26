@@ -12,6 +12,7 @@ export const ui = {
     route: 'Percorso',
     routeCount: (n: number) => `${n} tappe`,
     whereYouAre: (pos: string) => `Disegno della torre: dove ti trovi, ${pos}`,
+    scrollCue: 'scorri',
     resume: 'Riprendi',
     resumeFrom: (t: string) => `da ${t}`,
     stop: (n: number, total: number) => `Tappa ${String(n).padStart(2, '0')} di ${String(total).padStart(2, '0')}`,
