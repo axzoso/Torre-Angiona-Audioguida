@@ -13,9 +13,9 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.4.0",
-    "tailwindcss": "^4.3.0"
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "astro": "^7.4.13"
   },
   "devDependencies": {
     "@vite-pwa/astro": "^1.2.0",

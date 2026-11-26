@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
 import AstroPWA from '@vite-pwa/astro';
 
 export default defineConfig({
@@ -9,7 +8,7 @@ export default defineConfig({
     AstroPWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{html,css,js,ico,png,svg,webmanifest}'],
+        globPatterns: ['**/*.{html,css,js,ico,png,svg,webmanifest,woff2}'],
         maximumFileSizeToCacheInBytes: 15_000_000,
         navigateFallback: null,
         runtimeCaching: [
@@ -31,11 +30,11 @@ export default defineConfig({
         ]
       },
       manifest: {
-        name: 'Torre Angioina — Audioguida',
-        short_name: 'Torre Angioina',
-        description: 'Audioguida per la Torre Angioina di San Marco Argentano',
-        theme_color: '#0A0A0A',
-        background_color: '#0A0A0A',
+        name: 'Torre Viva — Audioguida della Torre Angioina',
+        short_name: 'Torre Viva',
+        description: 'Audioguida Torre Viva per la Torre Angioina di San Marco Argentano',
+        theme_color: '#efe9db',
+        background_color: '#efe9db',
         display: 'standalone',
         start_url: '/',
         icons: [
@@ -49,7 +48,4 @@ export default defineConfig({
       },
     }),
   ],
-  vite: {
-    plugins: [tailwindcss()],
-  },
 });

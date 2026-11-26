@@ -1,53 +1,135 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { t } from '../i18n/ui';
 ---
 
-<Layout title="Informativa sulla Privacy — Torre Vive" description="Informativa sul trattamento dei dati personali dei visitatori.">
-  <div class="max-w-2xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-serif text-[#E0A96D] mb-6">Informativa sulla Privacy</h1>
-    <p class="text-sm text-gray-400 mb-8">Ultimo aggiornamento: Maggio 2026</p>
+<Layout title={`Informativa sulla Privacy — ${t.appName}`} description="Informativa sul trattamento dei dati personali dei visitatori." context="Privacy">
+  <article class="doc sheet book">
+    <header class="doc-head">
+      <h1>Informativa sulla Privacy</h1>
+      <p class="mono soft">Ultimo aggiornamento: novembre 2026</p>
+    </header>
 
-    <section class="space-y-6 text-gray-300 leading-relaxed text-sm">
+    <p class="lead">
+      Benvenuto su <strong>Torre Viva</strong>, l'applicazione di audioguida per la Torre Angioina di San Marco Argentano, gestita dall'Associazione <strong>Fuori le Mura</strong>. La privacy dei nostri visitatori è fondamentale per noi.
+    </p>
+
+    <p class="margin mono soft">1</p>
+    <section>
+      <h2>Trattamento dei dati e base giuridica</h2>
       <p>
-        Benvenuto su <strong>Torre Vive</strong>, l'applicazione di audioguida per la Torre Angioina di San Marco Argentano, gestita dall'Associazione <strong>Fuori le Mura</strong>. La privacy dei nostri visitatori è fondamentale per noi.
+        Questa WebApp è stata progettata per essere utilizzata in mobilità all'interno del sito museale e <strong>non raccoglie, non richiede e non memorizza alcun dato personale identificativo</strong> (come nomi, email, numeri di telefono o posizioni GPS precise).
       </p>
-
-      <div>
-        <h2 class="text-xl font-serif text-[#E0A96D] mt-6 mb-2">1. Trattamento dei Dati e Base Giuridica</h2>
-        <p>
-          Questa WebApp è stata progettata per essere utilizzata in mobilità all'interno del sito museale e <strong>non raccoglie, non richiede e non memorizza alcun dato personale identificativo</strong> (come nomi, email, numeri di telefono o posizioni GPS precise).
-        </p>
-      </div>
-
-      <div>
-        <h2 class="text-xl font-serif text-[#E0A96D] mt-6 mb-2">2. Strumenti di Statistica (Google Analytics 4)</h2>
-        <p>
-          Al solo fine istituzionale di rendicontare digitalmente il numero di presenze e l'utilizzo dell'audioguida all'Amministrazione Comunale, utilizziamo Google Analytics 4 in modalità <strong>totalmente anonima</strong>. 
-        </p>
-        <ul class="list-disc pl-5 mt-2 space-y-1">
-          <li>L'indirizzo IP viene anonimizzato istantaneamente all'atto della connessione.</li>
-          <li>È stata disattivata l'archiviazione locale di cookie di profilazione o tracciamento pubblicitario (modalità senza memorizzazione client).</li>
-          <li>I dati vengono raccolti in forma aggregata e puramente statistica (es. "numero di ascolti della Tappa 1").</li>
-        </ul>
-      </div>
-
-      <div>
-        <h2 class="text-xl font-serif text-[#E0A96D] mt-6 mb-2">3. Infrastruttura e Sicurezza (Cloudflare)</h2>
-        <p>
-          Il traffico verso questa WebApp è protetto e ottimizzato tramite la piattaforma Cloudflare, che rilascia unicamente cookie strettamente tecnici legati alla sicurezza informatica, alla mitigazione dei tentativi di attacco e alla corretta distribuzione dei contenuti audio. Tali cookie non sono disattivabili poiché necessari all'erogazione stessa del servizio.
-        </p>
-      </div>
-
-      <div>
-        <h2 class="text-xl font-serif text-[#E0A96D] mt-6 mb-2">4. Diritti dell'Utente</h2>
-        <p>
-          Non trattando dati personali persistenti o identificativi, non vengono effettuati processi di profilazione né archiviati file sensibili nel dispositivo. Per qualsiasi informazione riguardante le attività dell'Associazione o l'utilizzo dell'applicazione, è possibile contattarci all'indirizzo istituzionale dell'Associazione Fuori le Mura.
-        </p>
-      </div>
     </section>
-    
-    <div class="mt-8 pt-6 border-t border-gray-800 text-center">
-      <a href="/" class="text-[#E0A96D] hover:underline text-sm">&larr; Torna all'Audioguida</a>
-    </div>
-  </div>
+
+    <p class="margin mono soft">2</p>
+    <section>
+      <h2>Strumenti di statistica (Google Analytics 4)</h2>
+      <p>
+        Al solo fine istituzionale di rendicontare digitalmente il numero di presenze e l'utilizzo dell'audioguida all'Amministrazione Comunale, utilizziamo Google Analytics 4 in modalità <strong>totalmente anonima</strong>.
+      </p>
+      <ul>
+        <li>L'indirizzo IP viene anonimizzato istantaneamente all'atto della connessione.</li>
+        <li>È stata disattivata l'archiviazione locale di cookie di profilazione o tracciamento pubblicitario (modalità senza memorizzazione client).</li>
+        <li>I dati vengono raccolti in forma aggregata e puramente statistica (es. "numero di ascolti della Tappa 1").</li>
+      </ul>
+    </section>
+
+    <p class="margin mono soft">3</p>
+    <section>
+      <h2>Memoria locale dell'ascolto</h2>
+      <p>
+        Per mostrarti quali tappe hai già ascoltato e farti riprendere dal punto in cui ti eri fermato, l'audioguida salva <strong>solo sul tuo dispositivo</strong> (memoria locale del browser) il numero delle tappe ascoltate, la posizione raggiunta e la velocità di riproduzione scelta. Queste informazioni non vengono inviate a nessun server, non identificano la persona e puoi cancellarle in qualsiasi momento eliminando i dati del sito dalle impostazioni del browser.
+      </p>
+    </section>
+
+    <p class="margin mono soft">4</p>
+    <section>
+      <h2>Infrastruttura e sicurezza (Cloudflare)</h2>
+      <p>
+        Il traffico verso questa WebApp è protetto e ottimizzato tramite la piattaforma Cloudflare, che rilascia unicamente cookie strettamente tecnici legati alla sicurezza informatica, alla mitigazione dei tentativi di attacco e alla corretta distribuzione dei contenuti audio. Tali cookie non sono disattivabili poiché necessari all'erogazione stessa del servizio.
+      </p>
+    </section>
+
+    <p class="margin mono soft">5</p>
+    <section>
+      <h2>Diritti dell'utente</h2>
+      <p>
+        Non trattando dati personali persistenti o identificativi, non vengono effettuati processi di profilazione né archiviati file sensibili nel dispositivo. Per qualsiasi informazione riguardante le attività dell'Associazione o l'utilizzo dell'applicazione, è possibile contattarci all'indirizzo istituzionale dell'Associazione Fuori le Mura.
+      </p>
+    </section>
+
+    <p class="back">
+      <a class="btn" href="/">← {t.backHome}</a>
+    </p>
+  </article>
 </Layout>
+
+<style>
+  .doc {
+    padding-top: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .doc-head h1 {
+    font-size: clamp(2.4rem, 1.2rem + 5vw, 5rem);
+    letter-spacing: -0.03em;
+  }
+
+  .doc-head p {
+    margin: 1rem 0 0;
+  }
+
+  .lead {
+    margin-top: 1.6rem;
+    font-size: 1.25em;
+    line-height: 1.5;
+    font-variation-settings: 'opsz' 36;
+  }
+
+  section {
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  .margin {
+    display: none;
+  }
+
+  @media (min-width: 62rem) {
+    .margin {
+      display: block;
+      margin: clamp(2rem, 5vw, 3rem) 0 0;
+      padding-top: 0.5rem;
+    }
+
+    /* la nota a margine si allinea alla sezione che segue */
+    .margin + section {
+      grid-row: span 1;
+    }
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem);
+    margin-bottom: 1.1rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  li + li {
+    margin-top: 0.5em;
+  }
+
+  li::marker {
+    color: var(--stamp);
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  .back {
+    margin-top: clamp(3rem, 7vw, 5rem);
+  }
+</style>

@@ -1,61 +1,244 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import TappaCard from "../components/TappaCard.astro";
-import audioguides from "../data/audioguides.json";
+import Layout from '../layouts/Layout.astro';
+import TappaRow from '../components/TappaRow.astro';
+import RouteDrawing from '../components/RouteDrawing.astro';
+import audioguides from '../data/audioguides.json';
+import { t, parseDurata } from '../i18n/ui';
+
+const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durata), 0) / 60);
 ---
 
-<Layout title="Torre Angioina — Audioguide">
-  <header class="relative px-5 pt-14 pb-8 overflow-hidden">
-    <div
-      class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full opacity-20 blur-3xl pointer-events-none"
-      style="background: radial-gradient(circle, #8B2635, transparent)"
-      aria-hidden="true"
-    >
+<Layout>
+  <section class="hero sheet">
+    <div class="hero-text">
+      <h1 class="title">{t.appName}</h1>
+      <p class="sub">Torre Angioina di San Marco Argentano, XIII secolo</p>
+      <p class="intro">{t.intro}</p>
+      <a class="resume" href="/" data-resume hidden>
+        <span class="resume-k mono" data-resume-k>{t.resume}</span>
+        <span class="resume-t" data-resume-t></span>
+        <span class="resume-at mono" data-resume-at></span>
+      </a>
     </div>
-
-    <div class="relative">
-      <p
-        class="text-xs font-mono tracking-widest uppercase mb-2"
-        style="color: var(--accent)"
-      >
-        San Marco Argentano · XIII sec.
-      </p>
-      <h1
-        class="font-serif text-4xl font-bold leading-tight"
-        style="color: var(--text-primary)"
-      >
-        Torre<br />Angioina
-      </h1>
-      <p
-        class="mt-3 text-sm leading-relaxed max-w-xs"
-        style="color: var(--text-secondary)"
-      >
-        Otto tappe per rivivere la storia. Scansiona il QR code accanto a ogni
-        punto di interesse.
-      </p>
-    </div>
-  </header>
-
-  <section class="px-5 pb-6">
-    <div class="flex items-center justify-between mb-4">
-      <h2
-        class="text-xs font-mono tracking-widest uppercase"
-        style="color: var(--text-secondary)"
-      >
-        Percorso · 8 tappe
-      </h2>
-    </div>
-    <div class="grid grid-cols-2 gap-3">
-      {
-        audioguides.map((tappa) => (
-          <TappaCard
-            id={tappa.id}
-            titolo={tappa.titolo}
-            durata={tappa.durata}
-            posizione={tappa.posizione}
-          />
-        ))
-      }
+    <div class="hero-draw">
+      <RouteDrawing ids={audioguides.map((s) => s.id)} caption={t.routeSchema} />
     </div>
   </section>
+
+  <section class="list sheet book" aria-labelledby="percorso">
+    <h2 id="percorso" class="list-h">{t.route}</h2>
+    <p class="margin mono soft">{t.routeCount(audioguides.length)} · circa {totalMin} min</p>
+
+
+    <ol class="entries">
+      {audioguides.map((s) => <TappaRow id={s.id} titolo={s.titolo} durata={s.durata} posizione={s.posizione} />)}
+    </ol>
+  </section>
 </Layout>
+
+<script>
+  import { audioStore } from '../lib/audioStore';
+  import { getAll } from '../lib/listenState';
+  import audioguides from '../data/audioguides.json';
+  import { t, pad, fmtTime } from '../i18n/ui';
+
+  function currentId(): number | null {
+    return audioStore.current ? audioStore.current.numero : null;
+  }
+
+  function render(): void {
+    if (!document.querySelector('[data-stop-row]')) return; // non siamo in home
+    const store = getAll();
+    const playingId = audioStore.playing ? currentId() : null;
+    const activeId = currentId();
+
+    let furthestDone = -1;
+    audioguides.forEach((s, i) => {
+      const st = store.tappe[s.id];
+      const row = document.querySelector(`[data-stop-row="${s.id}"]`);
+      const status = row?.querySelector<HTMLElement>('[data-status]');
+      const mark = document.querySelector(`[data-stop-mark="${s.id}"]`);
+      let state = '';
+      let label = '';
+      if (playingId === s.id) {
+        state = 'playing';
+        label = t.statusPlaying;
+      } else if (st?.done) {
+        state = 'done';
+        label = t.statusDone;
+      } else if (st && st.t > 0) {
+        state = 'started';
+        label = t.statusStarted(fmtTime(st.t));
+      }
+      if (st?.done) furthestDone = Math.max(furthestDone, i);
+      if (status) {
+        status.hidden = !state;
+        status.textContent = label;
+        status.dataset.state = state;
+      }
+      mark?.classList.toggle('is-done', !!st?.done && activeId !== s.id);
+      mark?.classList.toggle('is-current', activeId === s.id);
+    });
+
+    // Tratto rosso del percorso fino all'ultima tappa ascoltata
+    const done = document.querySelector<SVGPathElement>('[data-route-done]');
+    if (done) {
+      const fracs: number[] = JSON.parse(done.dataset.fracs || '[]');
+      const f = furthestDone >= 0 ? fracs[furthestDone] ?? 0 : 0;
+      done.style.strokeDasharray = `${f} 1`;
+    }
+
+    // Riga "Riprendi": ultima tappa iniziata e non conclusa, altrimenti la successiva
+    const resume = document.querySelector<HTMLAnchorElement>('[data-resume]');
+    if (!resume) return;
+    const lastId = store.last;
+    const idx = audioguides.findIndex((s) => s.id === lastId);
+    let target: (typeof audioguides)[number] | null = null;
+    let kicker = '';
+    let at = '';
+    if (idx >= 0) {
+      const st = store.tappe[audioguides[idx].id];
+      if (st && !st.done && st.t > 0) {
+        target = audioguides[idx];
+        kicker = `${t.resume} · ${pad(target.id)}`;
+        at = t.resumeFrom(fmtTime(st.t));
+      } else if (st?.done && idx < audioguides.length - 1) {
+        target = audioguides[idx + 1];
+        kicker = `${t.next} · ${pad(target.id)}`;
+        at = target.durata;
+      }
+    }
+    if (target && playingId === null) {
+      resume.hidden = false;
+      resume.href = `/tappa/${target.id}/`;
+      resume.querySelector('[data-resume-k]')!.textContent = kicker;
+      resume.querySelector('[data-resume-t]')!.textContent = target.titolo;
+      resume.querySelector('[data-resume-at]')!.textContent = at;
+    } else {
+      resume.hidden = true;
+    }
+  }
+
+  audioStore.addEventListener('state-changed', render);
+  document.addEventListener('astro:page-load', render);
+</script>
+
+<style>
+  .hero {
+    display: grid;
+    gap: 1.75rem;
+    padding-top: clamp(1rem, 4vw, 3rem);
+    padding-bottom: clamp(2rem, 6vw, 4rem);
+  }
+
+  .title {
+    font-size: clamp(3.4rem, 1rem + 7.4vw, 7.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-weight: 450;
+  }
+
+  .sub {
+    margin: 0.9rem 0 0;
+    font-style: italic;
+    font-size: 1.25em;
+    line-height: 1.35;
+    font-variation-settings: 'opsz' 100;
+    max-width: 22em;
+    hyphens: manual;
+  }
+
+  .intro {
+    margin: 1.4rem 0 0;
+    max-width: var(--measure);
+  }
+
+  .hero-draw {
+    max-width: 19rem;
+    width: 100%;
+    justify-self: center;
+  }
+
+  @media (min-width: 52rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      align-items: end;
+      column-gap: 3rem;
+    }
+
+    .hero-draw {
+      max-width: none;
+    }
+  }
+
+  .list {
+    padding-top: clamp(1rem, 4vw, 2rem);
+  }
+
+  .list .margin {
+    margin: -1rem 0 1.6rem;
+  }
+
+  @media (min-width: 62rem) {
+    .list .margin {
+      grid-row: 1;
+      margin: 0.9rem 0 0;
+    }
+  }
+
+  .list-h {
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+    margin-bottom: 1.6rem;
+  }
+
+  /* Riprendi: unica area bordata della pagina, è un'azione */
+  .resume {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'k at'
+      't t';
+    gap: 0.25rem 1rem;
+    margin-top: 1.6rem;
+    max-width: var(--measure);
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--ink);
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .resume[hidden] {
+    display: none;
+  }
+
+  .resume-k {
+    grid-area: k;
+    color: var(--stamp);
+  }
+
+  .resume-at {
+    grid-area: at;
+    color: var(--ink-soft);
+  }
+
+  .resume-t {
+    grid-area: t;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .resume:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .resume:hover .resume-k {
+    color: var(--f-red);
+  }
+
+  .resume:hover .resume-at {
+    color: var(--f-soft);
+  }
+</style>

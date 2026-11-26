@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import Layout from '../../layouts/Layout.astro';
 import audioguides from '../../data/audioguides.json';
+import { t, pad, paragraphs } from '../../i18n/ui';
 
 export const getStaticPaths = (() => {
   return audioguides.map((tappa) => ({
@@ -16,130 +17,188 @@ interface Props {
 
 const { tappa } = Astro.props;
 
-const currentIndex = audioguides.findIndex((t) => t.id === tappa.id);
+const total = audioguides.length;
+const currentIndex = audioguides.findIndex((s) => s.id === tappa.id);
 const prev = currentIndex > 0 ? audioguides[currentIndex - 1] : null;
-const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 1] : null;
+const next = currentIndex < total - 1 ? audioguides[currentIndex + 1] : null;
+const stopLabel = t.stop(currentIndex + 1, total);
 ---
 
 <Layout
-  title={`${tappa.titolo} — Torre Angioina`}
+  title={`${pad(tappa.id)} ${tappa.titolo} — ${t.appName}`}
   description={tappa.descrizione.slice(0, 160)}
+  context={stopLabel}
 >
-  <nav class="px-5 pt-10 pb-4">
-    <a
-      href="/"
-      class="inline-flex items-center gap-2 text-sm transition-colors hover:text-white"
-      style="color: var(--text-secondary)"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-        <path fill-rule="evenodd" d="M11.03 3.97a.75.75 0 010 1.06l-6.22 6.22H21a.75.75 0 010 1.5H4.81l6.22 6.22a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z" clip-rule="evenodd"/>
-      </svg>
-      Tutte le tappe
-    </a>
+  <nav class="crumbs sheet" aria-label="Navigazione tappe">
+    <a class="back mono" href="/">← {t.allStops}</a>
   </nav>
 
-  <header class="px-5 pb-6 relative overflow-hidden">
-    <div
-      class="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10 blur-3xl pointer-events-none"
-      style="background: radial-gradient(circle, #8B2635, transparent)"
-      aria-hidden="true"
-    ></div>
+  <article class="stop sheet book" data-stop={tappa.id}>
+    <header class="head">
+      <p class="num mono stamp" aria-hidden="true">{pad(tappa.id)}</p>
+      <h1>{tappa.titolo}</h1>
+      <p class="pos mono soft">{tappa.posizione}</p>
+    </header>
 
-    <div class="relative">
-      <p class="font-mono font-bold text-6xl leading-none mb-4" style="color: var(--accent)">
-        {String(tappa.id).padStart(2, '0')}
-      </p>
-      <h1 class="font-serif text-2xl font-bold leading-snug mb-2" style="color: var(--text-primary)">
-        {tappa.titolo}
-      </h1>
-      <p class="text-xs font-mono" style="color: var(--text-secondary)">{tappa.posizione}</p>
+    <div class="margin meta mono soft">
+      <span class="meta-st" data-meta-status>{t.statusNone}</span>
     </div>
-  </header>
 
-  <div class="px-5 mb-8">
     <button
       id="btn-ascolta"
-      class="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-semibold text-white transition-all active:scale-[0.97]"
-      style="background-color: var(--accent)"
+      class="listen btn solid"
+      type="button"
       data-src={tappa.audioSrc}
       data-titolo={tappa.titolo}
       data-numero={tappa.id}
       data-durata={tappa.durata}
+      aria-describedby="listen-dur"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-        <polygon points="6,3 20,12 6,21"/>
-      </svg>
-      Ascolta l'audioguida · {tappa.durata}
+      <svg class="ico ico-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 3 12.5 8l-8 5z" /></svg>
+      <svg class="ico ico-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 3h2v10h-2zM9.5 3h2v10h-2z" /></svg>
+      <span class="listen-label" data-listen-label>{t.listen}</span>
+      <span class="listen-dur" id="listen-dur" data-listen-dur>{tappa.durata}</span>
     </button>
-  </div>
 
-  <article id="tappa-article" class="px-5 pb-10">
-    <div
-      class="rounded-2xl p-5 border"
-      style="background-color: var(--glass-bg); border-color: var(--glass-border); backdrop-filter: blur(12px)"
-    >
-      <p class="font-serif text-base leading-relaxed" style="color: var(--text-primary)">
-        {tappa.descrizione}
-      </p>
-    </div>
+    <section class="tx" aria-label={t.transcript}>
+      <div class="bookmark" aria-hidden="true">
+        <span class="bookmark-mark" data-bookmark></span>
+      </div>
+      <div class="tx-body" id="tappa-article">
+        {paragraphs(tappa.descrizione).map((para) => <p>{para}</p>)}
+      </div>
+    </section>
+
+    <nav class="pn" aria-label="Tappa precedente e successiva">
+      <ul class="entries">
+        {
+          next ? (
+            <li>
+              <a class="pn-row is-next" href={`/tappa/${next.id}/`}>
+                <span class="pn-k mono">{t.next}</span>
+                <span class="pn-t">
+                  <span class="mono stamp">{pad(next.id)}</span> {next.titolo}
+                </span>
+                <span class="pn-arr" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ) : (
+            <li>
+              <a class="pn-row is-next" href="/">
+                <span class="pn-k mono">{t.end}</span>
+                <span class="pn-t">{t.backHome}</span>
+                <span class="pn-arr" aria-hidden="true">→</span>
+              </a>
+            </li>
+          )
+        }
+        {
+          prev && (
+            <li>
+              <a class="pn-row is-prev" href={`/tappa/${prev.id}/`}>
+                <span class="pn-k mono">{t.prev}</span>
+                <span class="pn-t">
+                  <span class="mono">{pad(prev.id)}</span> {prev.titolo}
+                </span>
+                <span class="pn-arr" aria-hidden="true">←</span>
+              </a>
+            </li>
+          )
+        }
+      </ul>
+    </nav>
   </article>
-
-  <nav class="px-5 pb-6 grid grid-cols-2 gap-3">
-    {prev ? (
-      <a
-        href={`/tappa/${prev.id}/`}
-        class="flex flex-col gap-1 p-3 rounded-xl border transition-colors hover:border-accent/40"
-        style="background-color: var(--glass-bg); border-color: var(--glass-border)"
-      >
-        <span class="text-xs" style="color: var(--text-secondary)">← Precedente</span>
-        <span class="font-mono font-bold text-lg leading-none" style="color: var(--accent)">{String(prev.id).padStart(2, '0')}</span>
-        <span class="text-sm font-medium truncate" style="color: var(--text-primary)">{prev.titolo}</span>
-      </a>
-    ) : <div></div>}
-
-    {next ? (
-      <a
-        href={`/tappa/${next.id}/`}
-        class="flex flex-col gap-1 p-3 rounded-xl border text-right transition-colors hover:border-accent/40"
-        style="background-color: var(--glass-bg); border-color: var(--glass-border)"
-      >
-        <span class="text-xs" style="color: var(--text-secondary)">Successiva →</span>
-        <span class="font-mono font-bold text-lg leading-none" style="color: var(--accent)">{String(next.id).padStart(2, '0')}</span>
-        <span class="text-sm font-medium truncate" style="color: var(--text-primary)">{next.titolo}</span>
-      </a>
-    ) : <div></div>}
-  </nav>
 </Layout>
 
 <script>
   import { audioStore } from '../../lib/audioStore';
+  import { getStop } from '../../lib/listenState';
+  import { t, fmtTime, parseDurata } from '../../i18n/ui';
 
   let article: HTMLElement | null = null;
+  let btn: HTMLButtonElement | null = null;
+  let mark: HTMLElement | null = null;
   let trackSrc: string | null = null; // absolute URL of this page's audio
+  let stopId = 0;
   let autoScroll = false;
+
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function isThisTrack(src: string | undefined | null): boolean {
+    return !!src && !!trackSrc && new URL(src, location.href).href === trackSrc;
+  }
 
   function syncScroll(currentTime: number, duration: number): void {
     if (!autoScroll || !article || duration <= 0) return;
     const top = article.getBoundingClientRect().top + window.scrollY;
-    const start = top - 90; // keep a bit of header visible
-    const end = top + article.offsetHeight - window.innerHeight + 120;
+    const playerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--player-h')) || 0;
+    const headerH = document.querySelector<HTMLElement>('.hd')?.offsetHeight ?? 64;
+    const start = top - headerH - 24; // la prima riga resta sotto l'header, non dietro
+    const end = top + article.offsetHeight - (window.innerHeight - playerH) + 120;
     if (end <= start) return; // fits on screen: nothing to scroll
     const progress = Math.min(1, currentTime / duration);
     const target = Math.max(0, start + progress * (end - start));
-    window.scrollTo({ top: target, behavior: 'smooth' as ScrollBehavior });
+    window.scrollTo({ top: target, behavior: (reduceMotion() ? 'auto' : 'smooth') as ScrollBehavior });
+  }
+
+  // Segnalibro di ascolto: marker che scorre lungo il filetto a margine
+  function setBookmark(fraction: number): void {
+    if (!mark) return;
+    const f = Math.max(0, Math.min(1, fraction));
+    mark.style.setProperty('--f', String(f));
+    mark.parentElement?.classList.toggle('is-on', f > 0);
+  }
+
+  // Etichetta del bottone principale secondo lo stato
+  function renderButton(): void {
+    if (!btn) return;
+    const label = btn.querySelector('[data-listen-label]')!;
+    const dur = btn.querySelector('[data-listen-dur]')!;
+    const playing = audioStore.playing && isThisTrack(audioStore.current?.src);
+    const saved = getStop(stopId);
+    btn.classList.toggle('is-playing', playing);
+    btn.setAttribute('aria-pressed', String(playing));
+    if (playing) {
+      label.textContent = t.pause;
+    } else if (isThisTrack(audioStore.current?.src) && (saved?.t ?? 0) > 0) {
+      label.textContent = t.resumeAt(fmtTime(saved!.t));
+    } else if (saved && !saved.done && saved.t > 0) {
+      label.textContent = t.resumeAt(fmtTime(saved.t));
+    } else if (saved?.done) {
+      label.textContent = t.relisten;
+    } else {
+      label.textContent = t.listen;
+    }
+    dur.textContent = btn.dataset.durata || '';
+
+    const meta = document.querySelector<HTMLElement>('[data-meta-status]');
+    if (meta) {
+      meta.textContent = playing
+        ? t.statusPlaying
+        : saved?.done
+          ? t.statusDone
+          : saved && saved.t > 0
+            ? t.statusStarted(fmtTime(saved.t))
+            : t.statusNone;
+      meta.classList.toggle('stamp', playing);
+    }
   }
 
   // Follow the audio of THIS page only, and only while it is playing:
   // the currentTime reset after 'ended' must not scroll back to the top.
   audioStore.addEventListener('progress', (e: Event) => {
     const { currentTime, duration, src } = (e as CustomEvent).detail;
-    if (src === trackSrc && audioStore.playing) syncScroll(currentTime, duration);
+    if (src !== trackSrc) return;
+    if (duration > 0) setBookmark(currentTime / duration);
+    if (audioStore.playing) syncScroll(currentTime, duration);
   });
+
+  audioStore.addEventListener('state-changed', renderButton);
 
   // Engage following when this page's track starts
   audioStore.addEventListener('play-tappa', (e: Event) => {
     const { src } = (e as CustomEvent).detail;
-    if (new URL(src, location.href).href === trackSrc) autoScroll = true;
+    if (isThisTrack(src)) autoScroll = true;
   });
 
   // Any manual scroll gesture hands control back to the user
@@ -148,28 +207,40 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
   window.addEventListener('touchmove', release, { passive: true });
 
   function initTappa(): void {
-    const btn = document.getElementById('btn-ascolta') as HTMLButtonElement | null;
+    btn = document.getElementById('btn-ascolta') as HTMLButtonElement | null;
     article = document.getElementById('tappa-article');
+    mark = document.querySelector('[data-bookmark]');
     if (!btn) {
       trackSrc = null;
       autoScroll = false;
       return;
     }
     trackSrc = new URL(btn.dataset.src!, location.href).href;
+    stopId = parseInt(btn.dataset.numero!, 10);
+
     // Resume following if we land on the tappa whose audio is already playing
     const current = audioStore.current;
-    autoScroll = !!(
-      audioStore.playing &&
-      current &&
-      new URL(current.src, location.href).href === trackSrc
-    );
+    const playingHere = !!(audioStore.playing && current && isThisTrack(current.src));
+    autoScroll = playingHere;
 
-    btn.addEventListener('click', () => {
+    // Posizione del segnalibro: punto salvato (se non conclusa)
+    const saved = getStop(stopId);
+    const d = parseDurata(btn.dataset.durata);
+    setBookmark(saved && !saved.done && d > 0 ? saved.t / d : 0);
+    renderButton();
+
+    const b = btn;
+    b.addEventListener('click', () => {
+      // Se è già la traccia corrente: play/pausa senza ricaricare
+      if (isThisTrack(audioStore.current?.src)) {
+        audioStore.togglePlay();
+        return;
+      }
       audioStore.playTappa({
-        src: btn.dataset.src!,
-        titolo: btn.dataset.titolo!,
-        numero: parseInt(btn.dataset.numero!, 10),
-        durata: btn.dataset.durata,
+        src: b.dataset.src!,
+        titolo: b.dataset.titolo!,
+        numero: parseInt(b.dataset.numero!, 10),
+        durata: b.dataset.durata,
       });
     });
   }
@@ -177,3 +248,229 @@ const next = currentIndex < audioguides.length - 1 ? audioguides[currentIndex + 
   // astro:page-load fires on the initial load and after every View Transition
   document.addEventListener('astro:page-load', initTappa);
 </script>
+
+<style>
+  .crumbs {
+    padding-top: 0.25rem;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: var(--ink-soft);
+  }
+
+  .back:hover {
+    color: var(--stamp);
+  }
+
+  .stop {
+    padding-top: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .head .num {
+    margin: 0 0 0.6rem;
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .head h1 {
+    font-size: clamp(2.4rem, 1.2rem + 5vw, 5rem);
+    letter-spacing: -0.03em;
+  }
+
+  .head .pos {
+    margin: 1rem 0 0;
+  }
+
+  .meta {
+    display: none;
+  }
+
+  @media (min-width: 62rem) {
+    .head {
+      grid-row: 1;
+    }
+
+    .meta {
+      grid-row: 1;
+      display: flex;
+      flex-direction: column;
+      align-self: end;
+      gap: 0.2rem;
+      padding-bottom: 0.2rem;
+    }
+  }
+
+  /* Azione primaria */
+  .listen {
+    width: 100%;
+    min-height: 3.75rem;
+    margin-top: 2rem;
+    justify-content: flex-start;
+    padding-inline: 1.25rem;
+    font-size: 1rem;
+  }
+
+  .listen-label {
+    flex: 1;
+    text-align: left;
+  }
+
+  .listen-dur {
+    opacity: 0.85;
+  }
+
+  .ico {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linejoin: miter;
+    flex: none;
+  }
+
+  .ico path {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .ico-pause,
+  .listen.is-playing .ico-play {
+    display: none;
+  }
+
+  .listen.is-playing .ico-pause {
+    display: block;
+  }
+
+  .listen.is-playing {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  /* Trascrizione con segnalibro di ascolto */
+  .tx {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    column-gap: 0.75rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  @media (min-width: 62rem) {
+    .tx {
+      margin-left: -2rem;
+      grid-template-columns: 1.25rem minmax(0, 1fr);
+    }
+  }
+
+  .bookmark {
+    position: relative;
+  }
+
+  .bookmark::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0.5em;
+    bottom: 0;
+    width: 1px;
+    background: var(--rule);
+  }
+
+  .bookmark-mark {
+    --f: 0;
+    position: absolute;
+    left: calc(50% - 3.5px);
+    top: calc(0.5em + var(--f) * (100% - 0.5em - 7px));
+    width: 7px;
+    height: 7px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    transition: top 0.4s linear;
+  }
+
+  .bookmark.is-on .bookmark-mark {
+    background: var(--stamp);
+    border-color: var(--stamp);
+  }
+
+  .tx-body {
+    max-width: var(--measure);
+  }
+
+  .tx-body p:first-of-type::first-letter {
+    float: left;
+    font-size: 4.1em;
+    line-height: 0.82;
+    padding: 0.06em 0.08em 0 0;
+    color: var(--stamp);
+    font-weight: 500;
+    font-variation-settings: 'opsz' 144;
+  }
+
+  /* Precedente / successiva */
+  .pn {
+    margin-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  .pn-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'k arr'
+      't arr';
+    gap: 0.2rem 1rem;
+    align-items: center;
+    padding: 1.15rem 0;
+    min-height: 4.5rem;
+    text-decoration: none;
+  }
+
+  .pn-k {
+    grid-area: k;
+    color: var(--ink-soft);
+  }
+
+  .pn-t {
+    grid-area: t;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    text-wrap: balance;
+  }
+
+  .pn-t .mono {
+    font-size: 1rem;
+    margin-right: 0.35rem;
+  }
+
+  .pn-row.is-prev .pn-t {
+    font-size: 1.2rem;
+  }
+
+  .pn-arr {
+    grid-area: arr;
+    font-size: 1.5rem;
+    color: var(--ink-soft);
+    transition: transform 0.2s ease-out, color 0.2s ease-out;
+  }
+
+  .pn-row:hover .pn-t,
+  .pn-row:hover .pn-arr {
+    color: var(--stamp);
+  }
+
+  .pn-row.is-next:hover .pn-arr {
+    transform: translateX(3px);
+  }
+
+  .pn-row.is-prev:hover .pn-arr {
+    transform: translateX(-3px);
+  }
+</style>

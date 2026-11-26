@@ -1,21 +1,27 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import AudioPlayer from '../components/AudioPlayer.astro';
+import { t, lang } from '../i18n/ui';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Testo contestuale a destra dell'header (es. "Tappa 3 di 8") */
+  context?: string;
 }
 
 const {
-  title = 'Torre Angioina — Audioguida',
-  description = 'Audioguida per la Torre Angioina di San Marco Argentano, XIII secolo.',
+  title = `${t.appName} — Audioguida della Torre Angioina`,
+  description = 'Audioguida Torre Viva per la Torre Angioina di San Marco Argentano, XIII secolo.',
+  context,
 } = Astro.props;
+
+const year = new Date().getFullYear();
 ---
 
 <!doctype html>
-<html lang="it">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -35,11 +41,13 @@ const {
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="theme-color" content="#efe9db" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content={t.appName} />
     <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icons/icon-192.png" />
     <!-- Google tag (gtag.js) - Configurazione Strictly Anonymous -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4GFKQ1B6XE"></script>
@@ -72,19 +80,40 @@ const {
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="bg-[#0A0A0A] text-[#F5F0EB] min-h-screen antialiased flex flex-col">
-    <main class="flex-1">
+  <body>
+    <a class="skip" href="#contenuto">{t.skip}</a>
+
+    <header class="hd">
+      <div class="hd-in sheet">
+        <a class="mark" href="/" aria-label={`${t.appName} — ${t.backHome}`}>
+          {t.appName}
+        </a>
+        <span class="hd-ctx mono soft">{context ?? t.org}</span>
+      </div>
+    </header>
+
+    <main id="contenuto">
       <slot />
     </main>
-    <footer class="px-5 py-6 text-center border-t" style="border-color: var(--glass-border)">
-      <p class="text-xs" style="color: var(--text-secondary)">
-        Torre Angioina di San Marco Argentano<br />
-        <span class="opacity-50">Audioguida · versione digitale</span>
-      </p>
-      <p class="text-xs text-gray-500 mt-4">© {new Date().getFullYear()} Associazione Fuori le Mura — Comune di San Marco Argentano</p>
-      <a href="/privacy/" class="text-[#E0A96D] hover:underline mt-2 inline-block text-xs transition-colors">Informativa sulla Privacy</a>
+
+    <footer class="ft">
+      <div class="ft-in sheet">
+        <p class="ft-name">{t.org}</p>
+        <div class="ft-cols">
+          <p class="ft-tag">
+            {t.appName} è l’audioguida della Torre Angioina di San Marco Argentano, gestita dall’Associazione Fuori le Mura.
+          </p>
+          <ul class="ft-links mono">
+            <li><a href="/privacy/">{t.privacy}</a></li>
+            <li><a href="#contenuto">↑ {t.backTop}</a></li>
+          </ul>
+        </div>
+        <p class="ft-legal mono">© {year} {t.credits}</p>
+      </div>
     </footer>
+
     <AudioPlayer />
+
     <script>
       import { registerSW } from 'virtual:pwa-register';
       import audioguides from '../data/audioguides.json';
@@ -97,10 +126,10 @@ const {
         window.addEventListener('load', () => {
           // Attende che la CPU sia inattiva per non bloccare il thread principale
           const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 2000));
-          
+
           idleCallback(async () => {
             if (!navigator.onLine) return; // Evita di forzare richieste se siamo già offline
-            
+
             try {
               for (const tappa of audioguides) {
                 fetch(tappa.audioSrc, { priority: 'low' }).catch(() => {});
@@ -115,3 +144,106 @@ const {
     </script>
   </body>
 </html>
+
+<style>
+  .hd {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: linear-gradient(var(--paper) 62%, rgba(239, 233, 219, 0));
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .hd-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4rem;
+  }
+
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    font-variation-settings: 'opsz' 72;
+    text-decoration: none;
+  }
+
+  .hd-ctx {
+    text-align: right;
+  }
+
+  /* Footer — tema scuro locale */
+  .ft {
+    margin-top: clamp(5rem, 12vw, 9rem);
+    background: var(--f-bg);
+    color: var(--f-ink);
+    padding-block: clamp(3rem, 7vw, 5rem) calc(2rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .ft a:hover {
+    color: var(--f-red);
+  }
+
+  .ft-in {
+    max-width: 96rem;
+    display: grid;
+    gap: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .ft-name {
+    margin: 0;
+    font-size: clamp(3rem, 1rem + 8vw, 8.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    font-weight: 450;
+    font-variation-settings: 'opsz' 144;
+    hyphens: manual;
+  }
+
+  .ft-cols {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .ft-tag {
+    max-width: 30rem;
+    margin: 0;
+    color: var(--f-soft);
+  }
+
+  .ft-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--f-line);
+  }
+
+  .ft-links li {
+    border-bottom: 1px solid var(--f-line);
+  }
+
+  .ft-links a {
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+    text-decoration: none;
+  }
+
+  .ft-legal {
+    margin: 0;
+    color: var(--f-soft);
+  }
+
+  @media (min-width: 52rem) {
+    .ft-cols {
+      grid-template-columns: minmax(0, 30rem) minmax(0, 18rem);
+      justify-content: space-between;
+      align-items: start;
+    }
+  }
+</style>

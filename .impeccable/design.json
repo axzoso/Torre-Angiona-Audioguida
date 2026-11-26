@@ -1,0 +1,415 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-25T23:40:29.630525+00:00",
+  "title": "Design System: Torre Viva",
+  "extensions": {
+    "colorMeta": {
+      "stamp": {
+        "role": "primary",
+        "displayName": "Timbro",
+        "canonical": "#b3321d",
+        "cssVar": "--stamp",
+        "tonalRamp": [
+          "#360f09",
+          "#5a190e",
+          "#7d2314",
+          "#9e2c1a",
+          "#b3321d",
+          "#c96c5d",
+          "#dea79e",
+          "#f0d8d3"
+        ]
+      },
+      "night-stamp": {
+        "role": "primary",
+        "displayName": "Timbro notte",
+        "canonical": "#ee7a5e",
+        "cssVar": "--f-red",
+        "tonalRamp": [
+          "#47251c",
+          "#773d2f",
+          "#a75542",
+          "#d16b53",
+          "#ee7a5e",
+          "#f3a08c",
+          "#f8c6ba",
+          "#fce5e0"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Carta",
+        "canonical": "#efe9db",
+        "cssVar": "--paper",
+        "tonalRamp": [
+          "#484642",
+          "#78746e",
+          "#a7a399",
+          "#d2cdc1",
+          "#efe9db",
+          "#f4efe5",
+          "#f8f6f0",
+          "#fcfbf8"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Inchiostro",
+        "canonical": "#1b1a17",
+        "cssVar": "--ink",
+        "tonalRamp": [
+          "#080807",
+          "#0e0d0c",
+          "#131210",
+          "#181714",
+          "#1b1a17",
+          "#5c5b59",
+          "#9d9d9b",
+          "#d3d3d2"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Inchiostro tenue",
+        "canonical": "#5f594d",
+        "cssVar": "--ink-soft",
+        "tonalRamp": [
+          "#1d1b17",
+          "#302c26",
+          "#423e36",
+          "#544e44",
+          "#5f594d",
+          "#8d8880",
+          "#bab8b2",
+          "#e0dfdd"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Filetto",
+        "canonical": "rgba(27, 26, 23, 0.22)",
+        "cssVar": "--rule",
+        "tonalRamp": [
+          "#080807",
+          "#0e0d0c",
+          "#131210",
+          "#181714",
+          "#1b1a17",
+          "#5c5b59",
+          "#9d9d9b",
+          "#d3d3d2"
+        ]
+      },
+      "night": {
+        "role": "neutral",
+        "displayName": "Notte",
+        "canonical": "#1d1b18",
+        "cssVar": "--f-bg",
+        "tonalRamp": [
+          "#090807",
+          "#0e0e0c",
+          "#141311",
+          "#1a1815",
+          "#1d1b18",
+          "#5d5c5a",
+          "#9e9d9c",
+          "#d3d3d3"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Carta notte",
+        "canonical": "#efe9db",
+        "cssVar": "--f-ink",
+        "tonalRamp": [
+          "#484642",
+          "#78746e",
+          "#a7a399",
+          "#d2cdc1",
+          "#efe9db",
+          "#f4efe5",
+          "#f8f6f0",
+          "#fcfbf8"
+        ]
+      },
+      "night-soft": {
+        "role": "neutral",
+        "displayName": "Tenue notte",
+        "canonical": "#b7ae9a",
+        "cssVar": "--f-soft",
+        "tonalRamp": [
+          "#37342e",
+          "#5c574d",
+          "#807a6c",
+          "#a19988",
+          "#b7ae9a",
+          "#ccc5b7",
+          "#e0dcd4",
+          "#f1efec"
+        ]
+      },
+      "night-line": {
+        "role": "neutral",
+        "displayName": "Filetto notte",
+        "canonical": "rgba(239, 233, 219, 0.2)",
+        "cssVar": "--f-line",
+        "tonalRamp": [
+          "#484642",
+          "#78746e",
+          "#a7a399",
+          "#d2cdc1",
+          "#efe9db",
+          "#f4efe5",
+          "#f8f6f0",
+          "#fcfbf8"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Solo il nome dell'audioguida in home; stesso registro per la firma Fuori le Mura nel footer."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "H1 di pagina tappa e documenti."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "H2 di sezione (Percorso)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Titoli di riga: elenco tappe, Riprendi, precedente/successiva."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Sottotitolo italic della home; lead roman nei documenti."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Trascrizioni e testo di lettura, colonna 36rem."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Numeri, durate, stati, note a margine, contesto header."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Bottoni, link di ritorno, controlli del player."
+      }
+    },
+    "shadows": [],
+    "strokes": [
+      {
+        "name": "contour-minor",
+        "value": "0.8px ink @ 0.13",
+        "purpose": "Curve di livello minori."
+      },
+      {
+        "name": "contour-major",
+        "value": "1.1px ink @ 0.26",
+        "purpose": "Curve di livello maggiori."
+      },
+      {
+        "name": "route-dashed",
+        "value": "1.2px ink, dasharray 2 7, linecap square",
+        "purpose": "Percorso da compiere."
+      },
+      {
+        "name": "route-done",
+        "value": "1.4px stamp",
+        "purpose": "Percorso ascoltato."
+      },
+      {
+        "name": "icon",
+        "value": "1.4px currentColor, non-scaling",
+        "purpose": "Icone play/pausa a tratto."
+      }
+    ],
+    "texture": {
+      "name": "paper-grain",
+      "value": "SVG feTurbulence fractalNoise baseFrequency .9, numOctaves 2, alpha 0.055, tile 240px",
+      "purpose": "Grana della carta sul body."
+    },
+    "motion": [
+      {
+        "name": "state-fast",
+        "value": "0.2s ease-out",
+        "purpose": "Colore e spostamento 3px delle frecce in hover."
+      },
+      {
+        "name": "marker",
+        "value": "0.3s ease-out",
+        "purpose": "Riempimento delle tacche del percorso."
+      },
+      {
+        "name": "bookmark",
+        "value": "top 0.4s linear",
+        "purpose": "Avanzamento del segnalibro di ascolto."
+      },
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Ingresso del player (0.35s) e tracciamento del percorso completato (0.6s)."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "durate a 0.01ms",
+        "purpose": "Tutto disattivato con prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "row-wide",
+        "value": "40rem"
+      },
+      {
+        "name": "hero-split",
+        "value": "52rem"
+      },
+      {
+        "name": "book",
+        "value": "62rem"
+      }
+    ],
+    "focus": [
+      {
+        "name": "focus-paper",
+        "value": "outline: 2px solid var(--stamp); outline-offset: 3px"
+      },
+      {
+        "name": "focus-night",
+        "value": "outline: 2px solid var(--f-red); outline-offset: 2px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bottone outline",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Azione secondaria: mono, bordo inchiostro, hover invertito.",
+      "html": "<button class=\"ds-btn\">Informativa sulla privacy</button>",
+      "css": ":host{--paper:#efe9db;--ink:#1b1a17;--ink-soft:#5f594d;--stamp:#b3321d;--rule:rgba(27,26,23,.22);--f-bg:#1d1b18;--f-ink:#efe9db;--f-soft:#b7ae9a;--f-line:rgba(239,233,219,.2);--f-red:#ee7a5e;--serif:'Fraunces Variable',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;--tap:3rem}.ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.75rem;min-height:var(--tap);padding:.8rem 1.3rem;border:1px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);font-family:var(--mono);font-size:.875rem;line-height:1.2;cursor:pointer}.ds-btn:hover{background:var(--ink);color:var(--paper)}.ds-btn:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}"
+    },
+    {
+      "name": "Bottone pieno timbro",
+      "kind": "button",
+      "refersTo": "button-solid",
+      "description": "Azione primaria su carta; hover vira all'inchiostro.",
+      "html": "<button class=\"ds-btn ds-solid\">Apri la tappa</button>",
+      "css": ":host{--paper:#efe9db;--ink:#1b1a17;--ink-soft:#5f594d;--stamp:#b3321d;--rule:rgba(27,26,23,.22);--f-bg:#1d1b18;--f-ink:#efe9db;--f-soft:#b7ae9a;--f-line:rgba(239,233,219,.2);--f-red:#ee7a5e;--serif:'Fraunces Variable',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;--tap:3rem}.ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.75rem;min-height:var(--tap);padding:.8rem 1.3rem;border:1px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);font-family:var(--mono);font-size:.875rem;line-height:1.2;cursor:pointer}.ds-btn:hover{background:var(--ink);color:var(--paper)}.ds-btn:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}.ds-solid{background:var(--stamp);border-color:var(--stamp);color:var(--paper)}.ds-solid:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}"
+    },
+    {
+      "name": "Ascolta",
+      "kind": "button",
+      "refersTo": "button-listen",
+      "description": "Azione primaria della tappa, a tutta larghezza sopra la piega, con durata mono.",
+      "html": "<button class=\"ds-btn ds-solid ds-listen\"><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"><path d=\"M4.5 3 12.5 8l-8 5z\"/></svg><span class=\"ds-l\">Ascolta</span><span class=\"ds-d\">1:38</span></button>",
+      "css": ":host{--paper:#efe9db;--ink:#1b1a17;--ink-soft:#5f594d;--stamp:#b3321d;--rule:rgba(27,26,23,.22);--f-bg:#1d1b18;--f-ink:#efe9db;--f-soft:#b7ae9a;--f-line:rgba(239,233,219,.2);--f-red:#ee7a5e;--serif:'Fraunces Variable',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;--tap:3rem}.ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.75rem;min-height:var(--tap);padding:.8rem 1.3rem;border:1px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);font-family:var(--mono);font-size:.875rem;line-height:1.2;cursor:pointer}.ds-btn:hover{background:var(--ink);color:var(--paper)}.ds-btn:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}.ds-solid{background:var(--stamp);border-color:var(--stamp);color:var(--paper)}.ds-solid:hover{background:var(--ink);border-color:var(--ink)}.ds-listen{width:100%;min-height:3.75rem;justify-content:flex-start;padding-inline:1.25rem;font-size:1rem}.ds-l{flex:1;text-align:left}.ds-d{opacity:.85}"
+    },
+    {
+      "name": "Riga tappa",
+      "kind": "card",
+      "refersTo": "entry-row",
+      "description": "Voce dell'elenco filettato: metadato mono, titolo serif, stato con marker quadrato, freccia.",
+      "html": "<ol class=\"ds-entries\"><li><a class=\"ds-row\" href=\"#\"><span class=\"ds-meta\"><span>01</span><span class=\"ds-soft\">1:38</span></span><span class=\"ds-body\"><span class=\"ds-t\">L'Ingresso</span><span class=\"ds-pos\">Scale in pietra - Ingresso principale</span><span class=\"ds-st\" data-state=\"done\">ascoltata</span></span><span class=\"ds-arr\" aria-hidden=\"true\">→</span></a></li></ol>",
+      "css": ":host{--paper:#efe9db;--ink:#1b1a17;--ink-soft:#5f594d;--stamp:#b3321d;--rule:rgba(27,26,23,.22);--f-bg:#1d1b18;--f-ink:#efe9db;--f-soft:#b7ae9a;--f-line:rgba(239,233,219,.2);--f-red:#ee7a5e;--serif:'Fraunces Variable',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;--tap:3rem}.ds-entries{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}.ds-entries>li{border-bottom:1px solid var(--rule)}.ds-row{display:grid;grid-template-columns:3.75rem minmax(0,1fr) auto;column-gap:.75rem;align-items:start;padding:1.15rem 0;min-height:4.5rem;text-decoration:none;color:var(--ink);font-family:var(--serif)}.ds-meta{display:flex;flex-direction:column;padding-top:.35rem;font-family:var(--mono);font-size:1rem;line-height:1.2;font-variant-numeric:tabular-nums}.ds-soft{color:var(--ink-soft);font-size:.8125rem}.ds-body{display:flex;flex-direction:column;gap:.3rem}.ds-t{font-size:1.5rem;line-height:1.2;font-weight:500;font-variation-settings:'opsz' 72;transition:color .2s ease-out}.ds-pos{font-size:.95rem;line-height:1.4;color:var(--ink-soft)}.ds-st{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.8125rem;color:var(--ink)}.ds-st::before{content:'';width:7px;height:7px;background:var(--stamp);border:1px solid var(--stamp)}.ds-arr{padding-top:.2rem;font-size:1.25rem;line-height:1.2;color:var(--ink-soft);transition:transform .2s ease-out,color .2s ease-out}.ds-row:hover .ds-t,.ds-row:hover .ds-arr,.ds-row:hover .ds-meta>span:first-child{color:var(--stamp)}.ds-row:hover .ds-arr{transform:translateX(3px)}.ds-row:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}"
+    },
+    {
+      "name": "Riprendi",
+      "kind": "custom",
+      "refersTo": "resume-action",
+      "description": "Unica area bordata della home: riprende l'ascolto dal punto salvato.",
+      "html": "<a class=\"ds-resume\" href=\"#\"><span class=\"ds-k\">Riprendi</span><span class=\"ds-at\">da 0:42</span><span class=\"ds-rt\">Dentro le Mura</span></a>",
+      "css": ":host{--paper:#efe9db;--ink:#1b1a17;--ink-soft:#5f594d;--stamp:#b3321d;--rule:rgba(27,26,23,.22);--f-bg:#1d1b18;--f-ink:#efe9db;--f-soft:#b7ae9a;--f-line:rgba(239,233,219,.2);--f-red:#ee7a5e;--serif:'Fraunces Variable',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;--tap:3rem}.ds-resume{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'k at' 't t';gap:.25rem 1rem;max-width:36rem;padding:1rem 1.1rem;border:1px solid var(--ink);text-decoration:none;color:var(--ink);font-family:var(--serif)}.ds-k,.ds-at{font-family:var(--mono);font-size:.8125rem}.ds-k{grid-area:k;color:var(--stamp)}.ds-at{grid-area:at;color:var(--ink-soft)}.ds-rt{grid-area:t;font-size:1.5rem;line-height:1.2;font-weight:500}.ds-resume:hover{background:var(--ink);color:var(--paper)}.ds-resume:hover .ds-k{color:var(--f-red)}.ds-resume:hover .ds-at{color:var(--f-soft)}.ds-resume:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}"
+    },
+    {
+      "name": "Header",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Header sticky in carta con dissolvenza: logotipo serif e contesto mono.",
+      "html": "<header class=\"ds-hd\"><a class=\"ds-mark\" href=\"#\">Torre Viva</a><span class=\"ds-ctx\">Tappa 03 di 08</span></header>",
+      "css": ":host{--paper:#efe9db;--ink:#1b1a17;--ink-soft:#5f594d;--stamp:#b3321d;--rule:rgba(27,26,23,.22);--f-bg:#1d1b18;--f-ink:#efe9db;--f-soft:#b7ae9a;--f-line:rgba(239,233,219,.2);--f-red:#ee7a5e;--serif:'Fraunces Variable',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;--tap:3rem}.ds-hd{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:4rem;padding-inline:1.25rem;background:linear-gradient(var(--paper) 62%,rgba(239,233,219,0))}.ds-mark{display:inline-flex;align-items:center;min-height:var(--tap);font-family:var(--serif);font-size:1.35rem;font-weight:500;letter-spacing:-.01em;color:var(--ink);text-decoration:none}.ds-mark:hover{color:var(--stamp)}.ds-mark:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}.ds-ctx{font-family:var(--mono);font-size:.8125rem;color:var(--ink-soft)}"
+    },
+    {
+      "name": "Player fisso",
+      "kind": "custom",
+      "refersTo": "player-bar",
+      "description": "Player persistente in tema notte: barra squadrata, titolo, tempi e cinque controlli mono.",
+      "html": "<div class=\"ds-pl\"><div class=\"ds-bar\"><span></span></div><div class=\"ds-info\"><span><span class=\"ds-num\">01</span> <span class=\"ds-title\">L'Ingresso</span></span><span class=\"ds-time\">0:06 / 1:37</span></div><div class=\"ds-ctrl\"><button class=\"ds-b\">1×</button><button class=\"ds-b\">−15</button><button class=\"ds-play\" aria-label=\"Pausa\"><svg viewBox=\"0 0 16 16\" width=\"18\" height=\"18\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"><path d=\"M4.5 3h2v10h-2zM9.5 3h2v10h-2z\"/></svg></button><button class=\"ds-b\">+15</button><button class=\"ds-b\">02 →</button></div></div>",
+      "css": ":host{--paper:#efe9db;--ink:#1b1a17;--ink-soft:#5f594d;--stamp:#b3321d;--rule:rgba(27,26,23,.22);--f-bg:#1d1b18;--f-ink:#efe9db;--f-soft:#b7ae9a;--f-line:rgba(239,233,219,.2);--f-red:#ee7a5e;--serif:'Fraunces Variable',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;--tap:3rem}.ds-pl{background:var(--f-bg);color:var(--f-ink);border-top:1px solid var(--f-line);padding:0 1.25rem .5rem;max-width:40rem}.ds-bar{height:2.75rem;display:flex;align-items:center}.ds-bar span{display:block;width:100%;height:2px;background:linear-gradient(to right,var(--f-red) 8%,var(--f-line) 8%)}.ds-info{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:var(--tap);margin-top:-.5rem}.ds-num{font-family:var(--mono);font-size:.875rem;color:var(--f-red)}.ds-title{font-family:var(--serif);font-size:1.05rem;font-weight:500}.ds-time{font-family:var(--mono);font-size:.8125rem;color:var(--f-soft);font-variant-numeric:tabular-nums}.ds-ctrl{display:grid;grid-template-columns:1fr 1fr auto 1fr 1fr;align-items:center;gap:.25rem}.ds-b{min-height:var(--tap);border:0;background:transparent;color:var(--f-ink);font-family:var(--mono);font-size:.875rem;cursor:pointer}.ds-b:hover{color:var(--f-red)}.ds-b:focus-visible,.ds-play:focus-visible{outline:2px solid var(--f-red);outline-offset:2px}.ds-play{display:grid;place-items:center;width:3.5rem;height:3.5rem;margin-inline:.5rem;border:1px solid var(--f-red);border-radius:0;background:var(--f-red);color:var(--f-bg);cursor:pointer}.ds-play:hover{background:var(--f-ink);border-color:var(--f-ink)}"
+    },
+    {
+      "name": "Segnalibro di ascolto",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Filetto verticale a margine della trascrizione con marker quadrato che avanza col tempo dell'audio; capolettera timbro.",
+      "html": "<div class=\"ds-tx\"><div class=\"ds-bm\"><span class=\"ds-mk\"></span></div><div class=\"ds-txb\"><p>Salute a voi, viandante. Io sono Raynaldo di Sancti Marci, fabbro e scutifer della Torre, uomo d'arme e servitore del regno.</p></div></div>",
+      "css": ":host{--paper:#efe9db;--ink:#1b1a17;--ink-soft:#5f594d;--stamp:#b3321d;--rule:rgba(27,26,23,.22);--f-bg:#1d1b18;--f-ink:#efe9db;--f-soft:#b7ae9a;--f-line:rgba(239,233,219,.2);--f-red:#ee7a5e;--serif:'Fraunces Variable',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;--tap:3rem}.ds-tx{display:grid;grid-template-columns:1.25rem minmax(0,1fr);column-gap:.75rem;font-family:var(--serif);font-size:1.15rem;line-height:1.68;color:var(--ink);background:var(--paper)}.ds-bm{position:relative}.ds-bm::before{content:'';position:absolute;left:50%;top:.5em;bottom:0;width:1px;background:var(--rule)}.ds-mk{position:absolute;left:calc(50% - 3.5px);top:40%;width:7px;height:7px;background:var(--stamp);border:1px solid var(--stamp);transition:top .4s linear}.ds-txb{max-width:36rem}.ds-txb p{margin:0}.ds-txb p:first-of-type::first-letter{float:left;font-size:4.1em;line-height:.82;padding:.06em .08em 0 0;color:var(--stamp);font-weight:500}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Il foglio d'archivio",
+    "overview": "Torre Viva è un foglio d'archivio di Fuori le Mura che si legge e si ascolta: carta grezza con grana, inchiostro caldo, un solo timbro rosso, filetti da un pixel e disegni a tratto sottile in stile rilievo. Il sistema è vincolato da `brand-guidelines.md` (identità Fuori le Mura) e lo applica a un'audioguida usata camminando, con lo smartphone in mano: le misure di lettura restano quelle di un libro, le aree toccabili quelle di un'app.\n\nLa gerarchia nasce dalla tipografia e dallo spazio, mai da contenitori. Il serif variabile Fraunces porta titoli e testo; JetBrains Mono è la voce da cartellino d'archivio per numeri di tappa, durate, stati e controlli. Le superfici sono piatte e squadrate; la profondità esiste solo come tema notte locale (footer e player fisso) e come gradiente di dissolvenza dell'header.\n\nIl movimento è solo di stato: colore, avanzamento del segnalibro, ingresso del player. Nessuna entrata decorativa; tutto si spegne con `prefers-reduced-motion`.",
+    "keyCharacteristics": [
+      "Carta `#efe9db` con rumore SVG (alpha 0.055, tile 240px), mai colore piatto, mai bianco puro.",
+      "Un solo accento: timbro rosso sulla carta, la sua versione chiara sul tema notte.",
+      "Fraunces per tutto il testo, JetBrains Mono 400 per ogni dato e controllo, tracking 0, mai maiuscolo.",
+      "Angoli vivi, bordi da 1px, nessuna ombra, nessuna card: elenchi filettati.",
+      "SVG a tratto 0.8–1.4px con `vector-effect: non-scaling-stroke`, marker quadrati 7×7.",
+      "Aree toccabili minime da 48px (`--tap`)."
+    ],
+    "rules": [
+      {
+        "name": "La regola del timbro unico",
+        "body": "Esiste un solo colore d'accento. Sulla carta è il timbro, sul tema notte il timbro notte; mai entrambi nella stessa superficie, mai un secondo colore saturo. Il rosso copre una grande area solo nel bottone primario e nel play del player.",
+        "section": "colors"
+      },
+      {
+        "name": "La regola della carta viva",
+        "body": "Lo sfondo è sempre carta con grana; nessun `#fff` o `#000` visibile.",
+        "section": "colors"
+      },
+      {
+        "name": "La regola delle due voci",
+        "body": "Il serif racconta, il mono misura. Ogni numero, durata, stato o controllo è mono; ogni frase da leggere è serif. Mai un sans-serif.",
+        "section": "typography"
+      },
+      {
+        "name": "La regola del cartellino",
+        "body": "Il mono è sempre minuscolo o in caso naturale, tracking 0, un solo peso (400). Mai maiuscoletto spaziato.",
+        "section": "typography"
+      },
+      {
+        "name": "La regola del capolettera",
+        "body": "Il primo paragrafo della trascrizione apre con un capolettera Fraunces 500 a 4.1em, opsz 144, in timbro.",
+        "section": "typography"
+      },
+      {
+        "name": "La regola del foglio piatto",
+        "body": "Niente si solleva dalla carta. Uno strato si distingue per filetto o per inversione carta/notte, mai per ombra.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** usare la carta con grana come unico sfondo chiaro e il tema notte solo per footer e player.",
+      "**Do** riservare il timbro ad azione, stato e dettaglio: bottone primario, capolettera, numero di tappa, marker, focus, hover.",
+      "**Do** scrivere ogni numero, durata, stato e controllo in JetBrains Mono 400 con cifre tabulari, tracking 0.",
+      "**Do** organizzare i contenuti in elenchi filettati da 1px con metadato mono a sinistra e titolo serif.",
+      "**Do** tenere ogni area toccabile alta almeno 3rem e l'azione di ascolto a tutta larghezza sopra la piega.",
+      "**Do** disegnare in SVG a tratto 0.8–1.4px con `vector-effect: non-scaling-stroke` e marker quadrati 7×7.",
+      "**Do** limitare il movimento a transizioni di stato brevi (0.2–0.6s) e spegnerlo con `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "**Don't** usare border-radius, pillole, ombre portate, glassmorphism o gradienti decorativi (l'unico gradiente ammesso è la dissolvenza dell'header).",
+      "**Don't** introdurre card con fondo o riquadro: l'unico riquadro bordato è un'azione (Riprendi).",
+      "**Don't** aggiungere un secondo colore d'accento né colori saturi; non stendere il rosso su grandi superfici oltre al bottone primario e al play.",
+      "**Don't** usare font sans-serif, né il mono in maiuscolo o con letter-spacing largo.",
+      "**Don't** mettere etichette mono decorative sopra i titoli: il mono sopra un titolo compare solo come numero di tappa o come etichetta di funzione dentro una riga-azione.",
+      "**Don't** usare librerie di icone piene o colorate, né `#fff` o `#000` visibili.",
+      "**Don't** disegnare piante o vedute della Torre come se fossero rilievi reali: i disegni sono schemi dichiarati."
+    ]
+  }
+}

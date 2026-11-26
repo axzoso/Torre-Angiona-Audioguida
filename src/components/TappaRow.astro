@@ -1,0 +1,139 @@
+---
+import { pad } from '../i18n/ui';
+
+interface Props {
+  id: number;
+  titolo: string;
+  durata: string;
+  posizione: string;
+}
+
+const { id, titolo, durata, posizione } = Astro.props;
+---
+
+<li>
+  <a class="row" href={`/tappa/${id}/`} data-stop-row={id}>
+    <span class="meta mono">
+      <span class="num">{pad(id)}</span>
+      <span class="dur soft">{durata}</span>
+    </span>
+    <span class="body">
+      <span class="t">{titolo}</span>
+      <span class="pos">{posizione}</span>
+      <span class="st mono" data-status hidden></span>
+    </span>
+    <span class="arr" aria-hidden="true">→</span>
+  </a>
+</li>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: 3.75rem minmax(0, 1fr) auto;
+    column-gap: 0.75rem;
+    align-items: start;
+    padding: 1.15rem 0;
+    min-height: 4.5rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  @media (min-width: 40rem) {
+    .row {
+      grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+      column-gap: 1rem;
+    }
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.35rem;
+  }
+
+  .num {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .t {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    hyphens: manual;
+    text-wrap: balance;
+    transition: color 0.2s ease-out;
+  }
+
+  .pos {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+
+  .st {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ink-soft);
+  }
+
+  .st::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border: 1px solid currentColor;
+    flex: none;
+  }
+
+  .st[hidden] {
+    display: none;
+  }
+
+  .st[data-state='done'] {
+    color: var(--ink);
+  }
+
+  .st[data-state='done']::before {
+    background: var(--stamp);
+    border-color: var(--stamp);
+  }
+
+  .st[data-state='playing'] {
+    color: var(--stamp);
+  }
+
+  .st[data-state='playing']::before {
+    background: var(--stamp);
+    border-color: var(--stamp);
+  }
+
+  .arr {
+    padding-top: 0.2rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: var(--ink-soft);
+    transition: transform 0.2s ease-out, color 0.2s ease-out;
+  }
+
+  .row:hover .t,
+  .row:hover .arr,
+  .row:hover .num {
+    color: var(--stamp);
+  }
+
+  .row:hover .arr {
+    transform: translateX(3px);
+  }
+
+  .row:active .t {
+    color: var(--stamp);
+  }
+</style>
