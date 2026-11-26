@@ -6,6 +6,13 @@ import audioguides from '../data/audioguides.json';
 import { t, parseDurata } from '../i18n/ui';
 
 const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durata), 0) / 60);
+// Solo anteprima (branch test): varianti della home da confrontare
+const anteprima = import.meta.env.PUBLIC_ANTEPRIMA === '1';
+const racconto = [
+  { at: 0, text: 'La Torre Angioina, XIII secolo.' },
+  { at: 0.35, text: 'Scorrendo, la torre si apre in sezione.' },
+  { at: 0.8, text: 'Otto tappe, dentro e intorno alla torre.' },
+];
 ---
 
 <Layout heroTitle>
@@ -27,7 +34,29 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
       <span>{t.scrollCue}</span>
       <span class="scroll-cue-line"></span>
     </p>
+    {
+      anteprima && (
+        <div class="racconto" data-racconto aria-hidden="true">
+          {racconto.map((r) => (
+            <p data-at={r.at}>{r.text}</p>
+          ))}
+        </div>
+      )
+    }
   </section>
+
+  {
+    anteprima && (
+      <nav class="varianti mono" aria-label="Varianti della home (solo anteprima)">
+        <span class="soft">variante</span>
+        {['a', 'b', 'c'].map((v) => (
+          <a href={`/?variante=${v}`} data-variante-link={v}>
+            {v}
+          </a>
+        ))}
+      </nav>
+    )
+  }
 
   <section class="list sheet book" aria-labelledby="percorso">
     <h2 id="percorso" class="list-h">{t.route}</h2>
@@ -112,16 +141,70 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
   audioStore.addEventListener('state-changed', render);
   document.addEventListener('astro:page-load', render);
 
-  // Invito allo scroll: visibile solo in cima alla pagina
+  // Invito allo scroll: visibile solo in cima alla pagina.
+  // In anteprima, su mobile: variante A lo tiene nel vuoto sotto la torre
+  // finché arriva il percorso (con il filo che si riempie); variante C mostra
+  // nel vuoto le didascalie che seguono l'animazione.
   let cueStop: AbortController | null = null;
   document.addEventListener('astro:page-load', () => {
     cueStop?.abort();
     const cue = document.querySelector<HTMLElement>('[data-scroll-cue]');
     if (!cue) return;
     cueStop = new AbortController();
-    const update = () => cue.classList.toggle('is-gone', scrollY > 24);
-    addEventListener('scroll', update, { passive: true, signal: cueStop.signal });
-    document.addEventListener('astro:before-swap', () => cueStop?.abort(), { once: true, signal: cueStop.signal });
+    const signal = cueStop.signal;
+    const variante = document.documentElement.dataset.variante;
+    const mobile = matchMedia('(max-width: 51.99rem)');
+    const fig = document.querySelector<HTMLElement>('[data-torre]');
+    const heading = document.getElementById('percorso');
+    const racconto = document.querySelector<HTMLElement>('[data-racconto]');
+    const lines = racconto ? [...racconto.querySelectorAll<HTMLElement>('[data-at]')] : [];
+    let t = 0;
+
+    const listArrived = () => !!heading && heading.getBoundingClientRect().top < innerHeight - 24;
+    const pinned = () => {
+      if (!fig) return false;
+      const pinTop = parseFloat(getComputedStyle(fig).top) || 0;
+      return getComputedStyle(fig).position === 'sticky' && fig.getBoundingClientRect().top <= pinTop + 1;
+    };
+
+    const update = () => {
+      const m = mobile.matches;
+      if (variante === 'a' && m) {
+        cue.classList.toggle('is-gone', listArrived());
+        cue.style.setProperty('--p', String(t));
+        // torre ferma: l'invito sale al centro del vuoto sotto il disegno
+        const inVoid = pinned() && !!fig;
+        cue.classList.toggle('in-void', inVoid);
+        if (inVoid) {
+          const below = innerHeight - fig!.getBoundingClientRect().bottom;
+          cue.style.bottom = `${Math.max(0, below / 2 - cue.offsetHeight / 2)}px`;
+        } else cue.style.bottom = '';
+      } else {
+        cue.classList.toggle('is-gone', scrollY > 24);
+      }
+      if (racconto) {
+        const on = variante === 'c' && m && pinned() && !listArrived();
+        racconto.classList.toggle('is-on', on);
+        if (on && fig) racconto.style.top = `${fig.getBoundingClientRect().bottom}px`;
+        let k = 0;
+        lines.forEach((l, i) => {
+          if (t >= Number(l.dataset.at)) k = i;
+        });
+        lines.forEach((l, i) => l.classList.toggle('is-now', i === k));
+      }
+    };
+
+    document.addEventListener(
+      'torre:progress',
+      (e) => {
+        t = (e as CustomEvent<number>).detail;
+        update();
+      },
+      { signal },
+    );
+    addEventListener('scroll', update, { passive: true, signal });
+    addEventListener('resize', update, { signal });
+    document.addEventListener('astro:before-swap', () => cueStop?.abort(), { once: true, signal });
     update();
   });
 </script>
@@ -289,6 +372,121 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
     100% {
       transform: translateY(100%) scaleY(0.35);
     }
+  }
+
+  /* ——— Solo anteprima: varianti della home su mobile ——— */
+
+  /* A: il filo dell'invito si riempie di timbro mentre la torre si apre */
+  .scroll-cue-line::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--stamp);
+    opacity: 0.55;
+    transform: scaleY(var(--p, 0));
+    transform-origin: top;
+  }
+
+  @media (max-width: 51.99rem) {
+    :global(:root[data-variante='a']) .scroll-cue {
+      transition:
+        opacity 0.4s ease-out,
+        transform 0.4s ease-out,
+        bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        padding 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    :global(:root[data-variante='a']) .scroll-cue.in-void {
+      padding-top: 0;
+      background: none;
+    }
+
+    :global(:root[data-variante='a']) .scroll-cue-line {
+      height: 4.5rem;
+    }
+
+    :global(:root[data-variante='a']) .scroll-cue-line::before {
+      opacity: 1;
+    }
+
+    /* B: niente sosta, la torre scorre via con la pagina e si apre da sola */
+    :global(:root[data-variante='b']) .hero-draw::after {
+      height: 0;
+    }
+
+    :global(:root[data-variante='b']) .hero-draw > :global(.torre) {
+      position: static;
+    }
+  }
+
+  /* C: didascalie nel vuoto sotto la torre ferma, una alla volta */
+  .racconto {
+    position: fixed;
+    inset-inline: 0;
+    bottom: var(--player-h);
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    padding: 0 var(--gutter) 2rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+  }
+
+  .racconto.is-on {
+    opacity: 1;
+  }
+
+  .racconto p {
+    grid-area: 1 / 1;
+    max-width: 17em;
+    margin: 0;
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.3;
+    font-variation-settings: 'opsz' 72;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(0.4rem);
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out;
+  }
+
+  .racconto p.is-now {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Selettore delle varianti (solo anteprima) */
+  .varianti {
+    position: fixed;
+    bottom: calc(var(--player-h) + 0.75rem);
+    right: 0.75rem;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.4rem 0.3rem 0.6rem;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    font-size: 0.8125rem;
+  }
+
+  .varianti a {
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  :global(:root[data-variante='a']) .varianti [data-variante-link='a'],
+  :global(:root[data-variante='b']) .varianti [data-variante-link='b'],
+  :global(:root[data-variante='c']) .varianti [data-variante-link='c'] {
+    background: var(--stamp);
+    color: var(--paper);
   }
 
   .list {

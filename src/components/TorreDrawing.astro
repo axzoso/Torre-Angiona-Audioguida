@@ -45,10 +45,37 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
       scene.innerHTML = renderScene(homeCam(t), ID);
       route.style.opacity = String(Math.max(0, Math.min(1, (t - 0.88) / 0.12)));
       shown = t;
+      // avanzamento per chi accompagna il disegno (invito allo scroll, didascalie)
+      fig.dispatchEvent(new CustomEvent('torre:progress', { detail: t, bubbles: true }));
     };
 
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       draw(1);
+      return;
+    }
+
+    stop = new AbortController();
+    document.addEventListener('astro:before-swap', () => stop?.abort(), { once: true, signal: stop.signal });
+
+    // Variante B (solo anteprima): su mobile la torre non è legata allo
+    // scroll, si apre da sola quando entra nello schermo.
+    if (document.documentElement.dataset.variante === 'b' && matchMedia('(max-width: 51.99rem)').matches) {
+      const io = new IntersectionObserver(
+        ([e]) => {
+          if (!e.isIntersecting) return;
+          io.disconnect();
+          const t0 = performance.now();
+          const step = (now: number) => {
+            const u = Math.min(1, (now - t0) / 3200);
+            draw(u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+            if (u < 1 && !stop?.signal.aborted) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        },
+        { threshold: 0.6 },
+      );
+      io.observe(fig);
+      stop.signal.addEventListener('abort', () => io.disconnect());
       return;
     }
 
@@ -82,10 +109,8 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
       if (!raf) raf = requestAnimationFrame(tick);
     };
 
-    stop = new AbortController();
     addEventListener('scroll', onScroll, { passive: true, signal: stop.signal });
     addEventListener('resize', onScroll, { signal: stop.signal });
-    document.addEventListener('astro:before-swap', () => stop?.abort(), { once: true, signal: stop.signal });
     onScroll();
   }
 
