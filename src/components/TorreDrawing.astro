@@ -70,7 +70,8 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
       const r = box.getBoundingClientRect();
       const pinTop = parseFloat(getComputedStyle(fig).top) || 0;
       const hold = probe!.offsetHeight;
-      const runway = Math.max(r.height - fig.offsetHeight - hold, innerHeight * 0.3);
+      const pad = parseFloat(getComputedStyle(box).paddingBottom) || 0; // spazio del racconto (mobile)
+      const runway = Math.max(r.height - pad - fig.offsetHeight - hold, innerHeight * 0.3);
       const end = Math.max(240, r.top + scrollY - pinTop + runway);
       target = Math.max(0, Math.min(1, scrollY / end));
     };

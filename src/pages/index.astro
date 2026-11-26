@@ -22,16 +22,23 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
     </div>
     <div class="hero-draw">
       <TorreDrawing />
+      <!-- su mobile l'introduzione si legge qui: le frasi salgono con lo scroll
+           e si fermano sotto la torre (il testo completo resta nell'intestazione
+           per gli screen reader) -->
+      <div class="racconto" data-racconto aria-hidden="true">
+        {
+          t.introParts.map((text) => (
+            <div class="frase-binario">
+              <p class="frase">{text}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
     <p class="scroll-cue mono" data-scroll-cue aria-hidden="true">
       <span>{t.scrollCue}</span>
       <span class="scroll-cue-line"></span>
     </p>
-    <!-- su mobile l'introduzione si legge qui, una frase alla volta (il testo
-         completo resta nell'intestazione per gli screen reader) -->
-    <div class="racconto" data-racconto aria-hidden="true">
-      {t.introParts.map((text) => <p>{text}</p>)}
-    </div>
   </section>
 
   <section class="list sheet book" aria-labelledby="percorso">
@@ -118,52 +125,80 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
   document.addEventListener('astro:page-load', render);
 
   // Invito allo scroll: visibile solo in cima alla pagina.
-  // Su mobile l'introduzione diventa il racconto nel vuoto sotto la torre:
-  // le frasi si susseguono con lo scroll, da quando sotto il disegno c'è
-  // spazio a quando arriva il percorso; ognuna esce prima che entri l'altra.
   let cueStop: AbortController | null = null;
   document.addEventListener('astro:page-load', () => {
     cueStop?.abort();
     const cue = document.querySelector<HTMLElement>('[data-scroll-cue]');
     if (!cue) return;
     cueStop = new AbortController();
-    const signal = cueStop.signal;
-    const mobile = matchMedia('(max-width: 51.99rem)');
-    const fig = document.querySelector<HTMLElement>('[data-torre]');
-    const heading = document.getElementById('percorso');
-    const racconto = document.querySelector<HTMLElement>('[data-racconto]');
-    const lines = racconto ? [...racconto.querySelectorAll<HTMLElement>('p')] : [];
-    const MIN_VOID = 150; // px di vuoto sotto la torre perché il racconto compaia
+    const update = () => cue.classList.toggle('is-gone', scrollY > 24);
+    addEventListener('scroll', update, { passive: true, signal: cueStop.signal });
+    document.addEventListener('astro:before-swap', () => cueStop?.abort(), { once: true, signal: cueStop.signal });
+    update();
+  });
 
-    const update = () => {
-      cue.classList.toggle('is-gone', scrollY > 24);
-      if (!racconto || !fig || !heading) return;
-      // solo su mobile e con l'animazione attiva (la torre è sticky)
-      if (!mobile.matches || getComputedStyle(fig).position !== 'sticky') {
-        racconto.classList.remove('is-on');
-        return;
-      }
-      const fr = fig.getBoundingClientRect();
-      const box = fig.parentElement ?? fig;
-      // fondo del disegno nella pagina, prima che resti fermo
-      const naturalBottom = box.getBoundingClientRect().top + scrollY + fig.offsetHeight;
-      const start = Math.max(0, naturalBottom - innerHeight + MIN_VOID);
-      const end = heading.getBoundingClientRect().top + scrollY - (innerHeight - 24);
-      const on = innerHeight - fr.bottom >= MIN_VOID && scrollY < end;
-      racconto.classList.toggle('is-on', on);
-      racconto.style.top = `${fr.bottom}px`;
-      const p = (scrollY - start) / Math.max(1, end - start);
-      const k = Math.max(0, Math.min(lines.length - 1, Math.floor(p * lines.length)));
-      lines.forEach((l, i) => {
-        l.classList.toggle('is-now', i === k);
-        l.classList.toggle('is-past', i < k);
+  // Racconto (mobile): l'introduzione, divisa in frasi, scorre con la pagina.
+  // Ogni frase entra dal basso, sale e si ferma sotto la torre ferma, sotto la
+  // precedente; quando la torre riparte, il paragrafo ricomposto va via con lei.
+  // Lo fa il browser con position: sticky: ogni frase sta in un "binario"
+  // (assoluto dentro .hero-draw) che decide dove parte, dove si ferma e quando
+  // riparte; qui si calcolano solo le misure, nessun lavoro durante lo scroll.
+  let raccStop: AbortController | null = null;
+  document.addEventListener('astro:page-load', () => {
+    raccStop?.abort();
+    const hero = document.querySelector<HTMLElement>('.hero');
+    const fig = document.querySelector<HTMLElement>('[data-torre]');
+    const box = fig?.parentElement;
+    const racconto = document.querySelector<HTMLElement>('[data-racconto]');
+    if (!hero || !fig || !box || !racconto) return;
+    const binari = [...racconto.querySelectorAll<HTMLElement>('.frase-binario')];
+    const frasi = binari.map((b) => b.querySelector<HTMLElement>('.frase')!);
+    const mobile = matchMedia('(max-width: 51.99rem)');
+    const calma = matchMedia('(prefers-reduced-motion: reduce)');
+    const GAP_TOP = 18; // px tra la torre e la prima frase
+    const GAP = 6; // px tra una frase e l'altra
+    const GAP_END = 28; // px tra il paragrafo e il percorso
+
+    const reset = () => {
+      hero.classList.remove('has-racconto');
+      box.style.removeProperty('--racconto-h');
+    };
+
+    const layout = () => {
+      if (!mobile.matches || calma.matches) return reset();
+      hero.classList.add('has-racconto');
+      const pinTop = parseFloat(getComputedStyle(fig).top) || 0;
+      const figH = fig.offsetHeight;
+      const hs = frasi.map((f) => f.offsetHeight);
+      const docks: number[] = [];
+      hs.forEach((_, i) => docks.push(i === 0 ? GAP_TOP : docks[i - 1] + hs[i - 1] + GAP));
+      const textH = docks[docks.length - 1] + hs[hs.length - 1];
+      // schermo troppo basso per il paragrafo sotto la torre: testo in alto
+      if (pinTop + figH + textH > innerHeight - 8) return reset();
+      box.style.setProperty('--racconto-h', `${textH + GAP_END}px`);
+      // altezza del contenuto di .hero-draw (torre + tratto in cui resta ferma)
+      const cs = getComputedStyle(box);
+      const content = box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const run = content - figH; // scroll con la torre ferma
+      const step = run / (frasi.length + 1);
+      binari.forEach((b, i) => {
+        const offset = (i + 1) * step; // scroll, da quando la torre si ferma, in cui la frase si ferma
+        const top = figH + docks[i] + offset;
+        const bottom = content + docks[i] + hs[i]; // riparte insieme alla torre
+        b.style.top = `${top}px`;
+        b.style.height = `${bottom - top}px`;
+        frasi[i].style.top = `${pinTop + figH + docks[i]}px`;
       });
     };
 
-    addEventListener('scroll', update, { passive: true, signal });
-    addEventListener('resize', update, { signal });
-    document.addEventListener('astro:before-swap', () => cueStop?.abort(), { once: true, signal });
-    update();
+    raccStop = new AbortController();
+    const signal = raccStop.signal;
+    addEventListener('resize', layout, { signal });
+    mobile.addEventListener('change', layout, { signal });
+    calma.addEventListener('change', layout, { signal });
+    document.fonts?.ready.then(() => !signal.aborted && layout());
+    document.addEventListener('astro:before-swap', () => raccStop?.abort(), { once: true, signal });
+    layout();
   });
 </script>
 
@@ -217,8 +252,8 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
 
   /* Scorrendo, il disegno resta fermo sotto l'intestazione: nel primo mezzo
      schermo la torre ruota e si apre (TorreDrawing), poi su mobile resta
-     ferma ancora un tratto (--torre-hold): il tempo per leggere, sotto,
-     le quattro frasi del racconto (circa un terzo di schermo ciascuna). */
+     ferma ancora un tratto (--torre-hold): il tempo perché, sotto, salgano
+     e si fermino le quattro frasi del racconto. */
   @media (prefers-reduced-motion: no-preference) {
     .hero-draw {
       --torre-hold: 90svh;
@@ -333,68 +368,57 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
     }
   }
 
-  /* Su mobile: didascalie nel vuoto sotto la torre ferma, una alla volta */
+  /* Racconto (mobile, con l'animazione): le frasi dell'introduzione salgono
+     con lo scroll e si fermano sotto la torre. Misure e posizioni dei binari
+     le calcola lo script; senza script resta l'introduzione in alto. */
   .racconto {
-    position: fixed;
-    inset-inline: 0;
-    bottom: var(--player-h);
-    z-index: 4;
-    display: grid;
-    place-items: center;
-    padding: 0 var(--gutter) 4.5rem;
+    display: none;
+  }
+
+  .hero.has-racconto .hero-draw {
+    position: relative;
+    /* padding, non contenuto: lo spazio del paragrafo non allunga la sosta */
+    padding-bottom: var(--racconto-h, 0px);
+  }
+
+  .hero.has-racconto .racconto {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    /* largo quanto la pagina, non quanto il disegno */
+    left: 50%;
+    width: calc(100vw - 2 * var(--gutter));
+    margin-left: calc((100vw - 2 * var(--gutter)) / -2);
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
   }
 
-  .racconto.is-on {
-    opacity: 1;
+  .frase-binario {
+    position: absolute;
+    inset-inline: 0;
   }
 
-  /* Le frasi stanno una sopra l'altra: quella che esce sparisce in fretta
-     (0.25s) e solo dopo entra la successiva, così non si accavallano mai.
-     Il verso segue lo scroll: avanti salgono, indietro scendono. */
-  .racconto p {
-    grid-area: 1 / 1;
+  .frase {
+    position: sticky;
     max-width: 17em;
-    margin: 0;
+    margin: 0 auto;
     font-style: italic;
-    font-size: 1.35rem;
+    font-size: 1.3rem;
     line-height: 1.3;
     font-variation-settings: 'opsz' 72;
     text-align: center;
     text-wrap: balance;
-    opacity: 0;
-    transform: translateY(0.6rem);
-    transition:
-      opacity 0.25s ease-in,
-      transform 0.25s ease-in;
   }
 
-  .racconto p.is-past {
-    transform: translateY(-0.6rem);
-  }
-
-  .racconto p.is-now {
-    opacity: 1;
-    transform: none;
-    transition:
-      opacity 0.45s ease-out 0.25s,
-      transform 0.45s ease-out 0.25s;
-  }
-
-  /* Su mobile, con l'animazione attiva, l'introduzione si legge nel racconto
-     sotto la torre: nell'intestazione resta solo per gli screen reader */
-  @media (max-width: 51.99rem) and (prefers-reduced-motion: no-preference) {
-    .intro {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-    }
+  /* l'introduzione in alto resta solo per gli screen reader */
+  .hero.has-racconto .intro {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 
   .list {
