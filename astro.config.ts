@@ -1,5 +1,24 @@
 import { defineConfig } from 'astro/config';
 import { AstroPWAIntegration } from '@vite-pwa/astro';
+import { appendFile, writeFile } from 'node:fs/promises';
+
+// Build di anteprima (branch `test`): la variabile PUBLIC_ANTEPRIMA=1 è
+// impostata solo nelle impostazioni delle anteprime di Workers Builds.
+// In produzione non c'è e il sito resta indicizzabile.
+const ANTEPRIMA = process.env.PUBLIC_ANTEPRIMA === '1';
+
+/** Anteprima fuori dai motori di ricerca: intestazione X-Robots-Tag su tutto
+ *  il sito e robots.txt che chiude tutto (oltre al meta robots in Layout). */
+const anteprimaNoindex = {
+  name: 'anteprima-noindex',
+  hooks: {
+    'astro:build:done': async ({ dir }: { dir: URL }) => {
+      if (!ANTEPRIMA) return;
+      await appendFile(new URL('_headers', dir), '\n# Solo anteprima: fuori dai motori di ricerca\n/*\n  X-Robots-Tag: noindex, nofollow\n');
+      await writeFile(new URL('robots.txt', dir), 'User-agent: *\nDisallow: /\n');
+    },
+  },
+};
 
 export default defineConfig({
   output: 'static',
@@ -12,6 +31,7 @@ export default defineConfig({
     },
   },
   integrations: [
+    anteprimaNoindex,
     AstroPWAIntegration({
       registerType: 'autoUpdate',
       // v2: il limite di dimensione è un'opzione di primo livello

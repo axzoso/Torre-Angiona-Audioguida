@@ -1,17 +1,28 @@
 // Testi dell'interfaccia. Oggi solo italiano: per aggiungere l'inglese
 // basta una chiave `en` con le stesse voci (i contenuti delle tappe
 // restano in src/data/audioguides.json).
+
+// Testo introduttivo della home, diviso nelle frasi che su mobile si
+// susseguono sotto la torre allo scroll (vedi index.astro)
+const introParts = [
+  'Otto tappe per rivivere la storia,',
+  'raccontate da Raynaldo di Sancti Marci, fabbro e scutifer della Torre.',
+  'Scansiona il QR code accanto a ogni punto di interesse,',
+  'oppure scegli una tappa qui sotto.',
+];
+
 export const ui = {
   it: {
     appName: 'Torre Viva',
     place: 'Torre Angioina · San Marco Argentano',
     org: 'Fuori le Mura',
     skip: 'Vai al contenuto',
-    intro:
-      'Otto tappe per rivivere la storia, raccontate da Raynaldo di Sancti Marci, fabbro e scutifer della Torre. Scansiona il QR code accanto a ogni punto di interesse, oppure scegli una tappa qui sotto.',
+    intro: introParts.join(' '),
+    introParts,
     route: 'Percorso',
     routeCount: (n: number) => `${n} tappe`,
     whereYouAre: (pos: string) => `Disegno della torre: dove ti trovi, ${pos}`,
+    scrollCue: 'scorri',
     resume: 'Riprendi',
     resumeFrom: (t: string) => `da ${t}`,
     stop: (n: number, total: number) => `Tappa ${String(n).padStart(2, '0')} di ${String(total).padStart(2, '0')}`,

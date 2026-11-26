@@ -154,7 +154,7 @@ Torre Viva è un foglio d'archivio di Fuori le Mura che si legge e si ascolta: c
 
 La gerarchia nasce dalla tipografia e dallo spazio, mai da contenitori. Il serif variabile Fraunces porta titoli e testo; JetBrains Mono è la voce da cartellino d'archivio per numeri di tappa, durate, stati e controlli. Le superfici sono piatte e squadrate; la profondità esiste solo come tema notte locale (footer e player fisso) e come gradiente di dissolvenza dell'header.
 
-Il movimento è di stato (colore, avanzamento del segnalibro, ingresso del player) con due eccezioni d'autore: la torre in sezione che ruota e si apre con lo scroll della home, e i titoli "forgiati" — il nome della Torre e di ogni tappa si accendono da inchiostro a timbro come ferro rovente e dopo un'accensione di 4.5s un riflesso incandescente li attraversa in 8s, con 1.5s di pausa tra un passaggio e l'altro (fermo fuori schermo); il peso 700 dà al riflesso abbastanza superficie per vedersi. Tutto si spegne con `prefers-reduced-motion`: i titoli restano timbro pieno.
+Il movimento è di stato (colore, avanzamento del segnalibro, ingresso del player) con due eccezioni d'autore: la torre in sezione che ruota e si apre con lo scroll della home, e i titoli "forgiati" — il nome della Torre e di ogni tappa si accendono da inchiostro a timbro come ferro rovente e dopo un'accensione di 4.5s un riflesso incandescente li attraversa in 8s, con 1.5s di pausa tra un passaggio e l'altro (fermo fuori schermo); il peso 700 dà al riflesso abbastanza superficie per vedersi. In cima alla home un invito allo scroll ("scorri" mono tenue su una sfumatura di carta, filo verticale lungo cui scende in loop un trattino timbro, 1.8s) compare dopo 1.2s e sparisce appena si scorre. Su mobile l'introduzione della home lascia l'intestazione (resta per gli screen reader) e diventa il racconto sotto la torre: quattro frasi in corsivo che scorrono con la pagina, entrano dal basso una alla volta e si fermano sotto la torre ferma, una sotto l'altra, fino a ricomporre il paragrafo; quando la torre riparte il paragrafo va via con lei e il percorso segue subito. È tutto `position: sticky` (ogni frase nel suo binario, misure calcolate allo script), quindi segue il dito senza ritardi. Le frasi arrivano mentre la torre si apre, a intervalli uguali: l'ultima si ferma sotto la terza nell'istante in cui l'animazione finisce (stesso tratto di scroll, la velocità dell'animazione non cambia); poi una breve sosta a torre aperta (--torre-hold 25svh) prima del percorso; se lo schermo è troppo basso per il paragrafo, l'introduzione resta in alto. Tutto si spegne con `prefers-reduced-motion`: i titoli restano timbro pieno, l'invito resta fermo.
 
 **Key Characteristics:**
 - Carta `#efe9db` con rumore SVG (alpha 0.055, tile 240px), mai colore piatto, mai bianco puro.
@@ -272,7 +272,7 @@ Tema notte, nome "Fuori le Mura" in display 450, tagline in tenue notte, link in
 A margine della trascrizione corre un filetto verticale da 1px; un marker quadrato 7×7 scende lungo di esso in proporzione al tempo dell'audio (transizione `top` 0.4s lineare). A riposo è carta bordata inchiostro, durante l'ascolto pieno timbro.
 
 ### Disegno del percorso (signature)
-Curve di livello generate, tacche di griglia sul bordo, percorso tratteggiato e otto tacche quadrate numerate in mono 11px. Le tappe ascoltate si riempiono di timbro, la tappa corrente ha bordo timbro 1.4px, il tratto completato si traccia in timbro (0.6s). Didascalia mono tenue 0.75rem: è uno schema, non una pianta.
+Curve di livello generate, tacche di griglia sul bordo, percorso tratteggiato e otto tacche quadrate numerate in mono 11px. Le tappe ascoltate si riempiono di timbro, la tappa corrente ha bordo timbro 1.4px, il tratto completato si traccia in timbro (0.6s).
 
 ## Do's and Don'ts
 
@@ -283,7 +283,7 @@ Curve di livello generate, tacche di griglia sul bordo, percorso tratteggiato e 
 - **Do** organizzare i contenuti in elenchi filettati da 1px con metadato mono a sinistra e titolo serif.
 - **Do** tenere ogni area toccabile alta almeno 3rem e l'azione di ascolto a tutta larghezza sopra la piega.
 - **Do** disegnare in SVG a tratto 0.8–1.4px con `vector-effect: non-scaling-stroke` e marker quadrati 7×7.
-- **Do** limitare il movimento a transizioni di stato brevi (0.2–0.6s), oltre alla torre allo scroll e ai titoli forgiati, e spegnerlo con `prefers-reduced-motion`.
+- **Do** limitare il movimento a transizioni di stato brevi (0.2–0.6s), oltre alla torre allo scroll, ai titoli forgiati e all'invito allo scroll, e spegnerlo con `prefers-reduced-motion`.
 
 ### Don't:
 - **Don't** usare border-radius, pillole, ombre portate, glassmorphism o gradienti decorativi (gli unici gradienti ammessi sono la dissolvenza dell'header e il calore dei titoli forgiati, ritagliato sul testo).
