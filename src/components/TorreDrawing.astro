@@ -53,12 +53,21 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
     }
 
     // t = 0 in cima alla pagina; t = 1 alla fine del tratto in cui il disegno
-    // resta fermo (il contenitore è più alto del disegno: vedi index.astro)
+    // resta fermo (il contenitore è più alto del disegno: vedi index.astro),
+    // meno la sosta finale a torre aperta (--torre-hold, solo su mobile)
     const box = fig.parentElement ?? fig;
+    let probe = box.querySelector<HTMLElement>('[data-torre-hold]');
+    if (!probe) {
+      probe = document.createElement('div');
+      probe.dataset.torreHold = '';
+      probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;height:var(--torre-hold, 0px)';
+      box.append(probe);
+    }
     const measure = () => {
       const r = box.getBoundingClientRect();
       const pinTop = parseFloat(getComputedStyle(fig).top) || 0;
-      const runway = Math.max(r.height - fig.offsetHeight, innerHeight * 0.3);
+      const hold = probe!.offsetHeight;
+      const runway = Math.max(r.height - fig.offsetHeight - hold, innerHeight * 0.3);
       const end = Math.max(240, r.top + scrollY - pinTop + runway);
       target = Math.max(0, Math.min(1, scrollY / end));
     };

@@ -157,14 +157,19 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
     }
   }
 
-  /* Scorrendo, il disegno resta fermo sotto l'intestazione per mezzo schermo:
-     in quello spazio la torre ruota e si apre (TorreDrawing). */
+  /* Scorrendo, il disegno resta fermo sotto l'intestazione: nel primo mezzo
+     schermo la torre ruota e si apre (TorreDrawing), poi su mobile resta
+     ferma ancora un tratto (--torre-hold) mentre sotto sale il percorso. */
   @media (prefers-reduced-motion: no-preference) {
+    .hero-draw {
+      --torre-hold: 30svh;
+    }
+
     /* spaziatore (non padding: lo sticky si muove solo nell'area del contenuto) */
     .hero-draw::after {
       content: '';
       display: block;
-      height: 55svh;
+      height: calc(55svh + var(--torre-hold));
     }
 
     .hero-draw > :global(.torre) {
@@ -179,6 +184,10 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
     @media (min-width: 52rem) {
       .hero {
         align-items: start;
+      }
+
+      .hero-draw {
+        --torre-hold: 0px;
       }
 
       .hero-text {
