@@ -22,6 +22,7 @@ const {
 } = Astro.props;
 
 const year = new Date().getFullYear();
+const anteprima = import.meta.env.PUBLIC_ANTEPRIMA === '1';
 ---
 
 <!doctype html>
@@ -45,6 +46,7 @@ const year = new Date().getFullYear();
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="description" content={description} />
+    {anteprima && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#efe9db" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
