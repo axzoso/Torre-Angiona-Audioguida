@@ -7,11 +7,12 @@
 PWA **completamente statica** (Astro `output: 'static'`) che funge da audioguida offline-first per la Torre Angioina di San Marco Argentano: 8 tappe con audio, player persistente e trascrizione sincronizzata. Nessun backend, nessun database, nessun input utente, nessuna autenticazione.
 
 ## Stack
-- **Astro 6.x** + TypeScript (strict), output statico.
-- **Tailwind CSS 4** via `@tailwindcss/vite`.
+- **Astro 7.x** + TypeScript (strict), output statico.
+- CSS custom con token Fuori le Mura (`src/styles/global.css`); font Fraunces + JetBrains Mono via Fontsource. Tailwind rimosso (2026-11-26).
 - **@vite-pwa/astro** (Workbox) — `registerType: 'autoUpdate'`.
 - **Vitest** + jsdom per i test.
-- Node ≥ 22.12.0.
+- Node ≥ 22.23.4 (richiesto da Astro 7); build su Node 24 (`.node-version`).
+- `overrides` in package.json: `@vite-pwa/astro` 1.x dichiara astro ≤5 come peer; l'override evita ERESOLVE. Rimuoverlo passando a `@vite-pwa/astro` 2.x.
 
 ## Struttura essenziale
 ```
@@ -44,7 +45,7 @@ nginx.conf              # config del container nginx:alpine in produzione
 - View Transitions via `<ClientRouter/>`: la logica si ri-inizializza su `astro:page-load` e `astro:after-swap` (il player persiste, il body viene swappato).
 
 ## Deployment
-- VPS Oracle Always Free (ARM) → **Coolify** → build con **Nixpacks** (`npm run build`) → `dist/` servito da **nginx:alpine** (usa `nginx.conf` del repo).
+- VPS Oracle Always Free (ARM) → **Coolify** → build con **Railpack** (`npm run build`; Nixpacks è deprecato) → `dist/` servito da nginx. ⚠️ `nginx.conf` del repo NON viene applicato da solo: va incollato in Coolify → Custom Nginx Configuration (verificato 2026-11-26: in produzione mancavano Cache-Control e header di sicurezza).
 - **Cloudflare** in front (proxy/DNS).
 - ⚠️ Vincoli operativi critici per l'offline:
   - `sw.js` NON deve essere cachato dalla CDN → Cloudflare Cache Rule: `URI Path == /sw.js` → **Bypass**.

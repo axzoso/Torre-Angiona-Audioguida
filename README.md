@@ -32,11 +32,12 @@ Applicazione web interattiva che trasforma la visita al sito storico in un perco
 
 ✅ **PWA-Ready**: Installabile su home screen, offline-first  
 ✅ **Responsive Design**: Ottimizzato per tutti gli schermi mobile  
-✅ **Audio Player Custom**: Controlli intuitivi con skip ±15 secondi  
+✅ **Audio Player Custom**: ±15 secondi, velocità, tappa successiva, comandi da schermata di blocco  
+✅ **Stato di ascolto**: tappe ascoltate e punto di ripresa salvati solo sul dispositivo  
 ✅ **Trascrizione sincronizzata**: Il testo scorre con l'audio e cede il controllo allo scroll manuale  
 ✅ **Privacy-First**: Nessuna raccolta dati identificativi, Google Analytics anonimo  
 ✅ **Accessibilità**: Attributi ARIA, semantica HTML corretta  
-✅ **Styling Moderno**: Tailwind CSS, glassmorphism, tema scuro  
+✅ **Identità Fuori le Mura**: carta e inchiostro, Fraunces + JetBrains Mono (vedi `DESIGN.md`)  
 
 ---
 
@@ -44,11 +45,11 @@ Applicazione web interattiva che trasforma la visita al sito storico in un perco
 
 | Layer | Tecnologie |
 |-------|-----------|
-| **Framework** | [Astro](https://astro.build) 6.3.8 |
-| **Styling** | [Tailwind CSS](https://tailwindcss.com) 4.3.0 + CSS custom |
+| **Framework** | [Astro](https://astro.build) 7.4 |
+| **Styling** | CSS custom con token (`src/styles/global.css`), font self-hosted via Fontsource |
 | **PWA** | [@vite-pwa/astro](https://vite-pwa-org.netlify.app/frameworks/astro.html) 1.2.0 |
-| **Runtime** | Node.js ≥22.12.0 |
-| **Testing** | Vitest 4.1.7 |
+| **Runtime** | Node.js ≥22.23.4 (build su Node 24, vedi `.node-version`) |
+| **Testing** | Vitest 4.1 |
 | **TypeScript** | Strict mode |
 
 **Composizione linguistica del progetto:**
@@ -86,7 +87,7 @@ audioguida-torre/
 │   │   └── icon-512.png
 │   └── audio/
 │       └── *.mp3                 # File audio tappe
-├── astro.config.ts              # Config Astro + PWA (Tailwind via @tailwindcss/vite)
+├── astro.config.ts              # Config Astro + PWA
 ├── tsconfig.json               # Config TypeScript
 ├── vitest.config.ts            # Config testing
 └── package.json
@@ -97,7 +98,7 @@ audioguida-torre/
 ## 🚀 Quick Start
 
 ### Prerequisiti
-- Node.js ≥ 22.12.0
+- Node.js ≥ 22.23.4 (consigliato 24, vedi `.node-version`)
 - npm 10+
 
 ### Installazione
@@ -168,21 +169,21 @@ coincidono con le chiavi della cache del service worker e la navigazione funzion
 
 ## 🎨 Tema & Styling
 
-### Colori Tema
+### Colori Tema (sistema Fuori le Mura)
 ```css
---accent: #8B2635              /* Rosso wine */
---accent-hover: #A02D40
---text-primary: #F5F0EB        /* Beige chiaro */
---text-secondary: #9A8F87      /* Grigio-beige */
---glass-bg: rgba(255, 255, 255, 0.05)
---glass-border: rgba(255, 255, 255, 0.08)
+--paper: #efe9db      /* sfondo carta, con grana SVG */
+--ink: #1b1a17        /* testo */
+--ink-soft: #5f594d   /* testo secondario */
+--rule: rgba(27,26,23,0.22)  /* filetti */
+--stamp: #b3321d      /* unico accento, rosso timbro */
+/* tema scuro solo per footer e player: --f-bg #1d1b18, --f-red #ee7a5e */
 ```
 
 ### Design System
-- **Font Serif**: Georgia (headings)
-- **Font Mono**: Monospace (numeri, metadati)
-- **Spacing**: Sistema Tailwind (4px base)
-- **Glassmorphism**: Backdrop blur + border trasparente
+- **Serif**: Fraunces Variable (titoli e testo, optical sizing)
+- **Mono**: JetBrains Mono 400 (numeri, durate, controlli, metadati)
+- Angoli vivi, nessuna ombra, nessuna card: elenchi filettati e SVG a tratto sottile
+- Riferimenti completi: `brand-guidelines.md` e `DESIGN.md`
 
 ---
 
@@ -281,11 +282,11 @@ Struttura `src/data/audioguides.json`:
 ### Coolify su VPS (Oracle Cloud Always Free, ARM)
 
 L'app è ospitata su una VPS Oracle Always Free (Ampere A1, architettura ARM) e
-gestita da [Coolify](https://coolify.io). La build avviene con **Nixpacks**, e i
-file statici vengono serviti da un container **nginx:alpine**.
+gestita da [Coolify](https://coolify.io). La build avviene con **Railpack**
+(Nixpacks è deprecato in Coolify), e i file statici vengono serviti da nginx.
 
 ```bash
-# Build statico (eseguita da Nixpacks in fase di deploy)
+# Build statico (eseguita da Railpack in fase di deploy)
 npm run build
 
 # Output: dist/  → servito da nginx:alpine
@@ -294,8 +295,10 @@ npm run build
 **Flusso di deploy:**
 1. Push su `main`
 2. Il webhook di Coolify avvia il deploy
-3. Nixpacks installa le dipendenze e builda il sito (`npm run build`)
-4. Il container nginx:alpine serve `dist/` usando `nginx.conf` nel root del repo
+3. Railpack installa le dipendenze (`npm ci`, Node da `.node-version`) e builda il sito (`npm run build`)
+4. nginx serve `dist/`. ⚠️ Le intestazioni di cache e sicurezza di `nginx.conf` vanno
+   incollate in Coolify → Configuration → **Custom Nginx Configuration**: il file nel
+   repo da solo non viene applicato.
 5. Il service worker aggiorna la cache offline-first lato client
 
 **Tempi:** con il webhook attivo, dal push ai nuovi file online passano circa
@@ -358,7 +361,7 @@ Questo progetto è privato. Per informazioni contatta il maintainer.
 Realizzato con ❤️ per la Torre Angioina di San Marco Argentano.
 
 - Framework: [Astro](https://astro.build)
-- Styling: [Tailwind CSS](https://tailwindcss.com)
+- Font: [Fraunces](https://fonts.google.com/specimen/Fraunces) e [JetBrains Mono](https://www.jetbrains.com/lp/mono/) via [Fontsource](https://fontsource.org)
 - PWA: [Vite PWA](https://vite-pwa-org.netlify.app/)
 
 ---
