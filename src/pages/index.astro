@@ -57,6 +57,7 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
   import { getAll } from '../lib/listenState';
   import audioguides from '../data/audioguides.json';
   import { t, pad, fmtTime } from '../i18n/ui';
+  import { holdHeight } from '../lib/torre/hold';
 
   function currentId(): number | null {
     return audioStore.current ? audioStore.current.numero : null;
@@ -181,16 +182,9 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
       const content = box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
       // Le frasi arrivano mentre la torre si apre: l'ultima si ferma sotto la
       // terza esattamente quando finisce l'animazione, cioè alla fine del
-      // tratto fermo meno la sosta finale (--torre-hold, la stessa sonda che
-      // usa TorreDrawing per calcolare l'animazione).
-      let probe = box.querySelector<HTMLElement>('[data-torre-hold]');
-      if (!probe) {
-        probe = document.createElement('div');
-        probe.dataset.torreHold = '';
-        probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;height:var(--torre-hold, 0px)';
-        box.append(probe);
-      }
-      const anim = content - figH - probe.offsetHeight; // scroll dell'animazione a torre ferma
+      // tratto fermo meno la sosta finale (--torre-hold, misurata come fa
+      // TorreDrawing per calcolare l'animazione).
+      const anim = content - figH - holdHeight(box); // scroll dell'animazione a torre ferma
       const step = anim / frasi.length;
       binari.forEach((b, i) => {
         const offset = (i + 1) * step; // scroll, da quando la torre si ferma, in cui la frase si ferma

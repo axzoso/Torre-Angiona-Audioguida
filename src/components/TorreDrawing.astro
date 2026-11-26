@@ -24,6 +24,7 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
 
 <script>
   import { homeCam, renderScene } from '../lib/torre/scene';
+  import { holdHeight } from '../lib/torre/hold';
 
   const ID = 'tv-home';
   let stop: AbortController | null = null;
@@ -59,17 +60,10 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
     // resta fermo (il contenitore è più alto del disegno: vedi index.astro),
     // meno la sosta finale a torre aperta (--torre-hold, solo su mobile)
     const box = fig.parentElement ?? fig;
-    let probe = box.querySelector<HTMLElement>('[data-torre-hold]');
-    if (!probe) {
-      probe = document.createElement('div');
-      probe.dataset.torreHold = '';
-      probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;height:var(--torre-hold, 0px)';
-      box.append(probe);
-    }
     const measure = () => {
       const r = box.getBoundingClientRect();
       const pinTop = parseFloat(getComputedStyle(fig).top) || 0;
-      const hold = probe!.offsetHeight;
+      const hold = holdHeight(box);
       const pad = parseFloat(getComputedStyle(box).paddingBottom) || 0; // spazio del racconto (mobile)
       const runway = Math.max(r.height - pad - fig.offsetHeight - hold, innerHeight * 0.3);
       const end = Math.max(240, r.top + scrollY - pinTop + runway);

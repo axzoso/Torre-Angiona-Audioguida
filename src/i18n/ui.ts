@@ -1,6 +1,7 @@
 // Testi dell'interfaccia. Oggi solo italiano: per aggiungere l'inglese
 // basta una chiave `en` con le stesse voci (i contenuti delle tappe
 // restano in src/data/audioguides.json).
+
 // Testo introduttivo della home, diviso nelle frasi che su mobile si
 // susseguono sotto la torre allo scroll (vedi index.astro)
 const introParts = [

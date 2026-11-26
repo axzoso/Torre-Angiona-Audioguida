@@ -272,7 +272,7 @@ Tema notte, nome "Fuori le Mura" in display 450, tagline in tenue notte, link in
 A margine della trascrizione corre un filetto verticale da 1px; un marker quadrato 7×7 scende lungo di esso in proporzione al tempo dell'audio (transizione `top` 0.4s lineare). A riposo è carta bordata inchiostro, durante l'ascolto pieno timbro.
 
 ### Disegno del percorso (signature)
-Curve di livello generate, tacche di griglia sul bordo, percorso tratteggiato e otto tacche quadrate numerate in mono 11px. Le tappe ascoltate si riempiono di timbro, la tappa corrente ha bordo timbro 1.4px, il tratto completato si traccia in timbro (0.6s). Didascalia mono tenue 0.75rem: è uno schema, non una pianta.
+Curve di livello generate, tacche di griglia sul bordo, percorso tratteggiato e otto tacche quadrate numerate in mono 11px. Le tappe ascoltate si riempiono di timbro, la tappa corrente ha bordo timbro 1.4px, il tratto completato si traccia in timbro (0.6s).
 
 ## Do's and Don'ts
 
