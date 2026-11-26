@@ -4,6 +4,13 @@ import { AstroPWAIntegration } from '@vite-pwa/astro';
 export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
+  vite: {
+    build: {
+      // I font non vanno mai inlined come data: (la CSP ha font-src 'self'):
+      // restano file .woff2 in /_astro/, precaricati dal service worker.
+      assetsInlineLimit: (file) => (/\.woff2?$/.test(file) ? false : undefined),
+    },
+  },
   integrations: [
     AstroPWAIntegration({
       registerType: 'autoUpdate',
