@@ -13,6 +13,8 @@ export default defineConfig({
       generateSW: {
         // le icone del manifest (png) sono già incluse in automatico dalla v2
         globPatterns: ['**/*.{html,css,js,ico,svg,woff2}'],
+        // la 404 non serve offline e su Cloudflare /404/ reindirizza: fuori dal precache
+        globIgnores: ['404.html'],
         navigateFallback: null,
         runtimeCaching: [
           {

@@ -281,7 +281,31 @@ Struttura `src/data/audioguides.json`:
 
 ## 🌐 Deployment
 
-### Coolify su VPS (Oracle Cloud Always Free, ARM)
+### Cloudflare Workers (static assets) — in migrazione
+
+Il sito è un insieme di file statici serviti da Cloudflare Workers (nessun
+codice Worker). Configurazione nel repo:
+
+- `wrangler.jsonc` — nome del Worker, cartella `dist/`, gestione degli slash
+  finali (`auto-trailing-slash`) e pagina 404.
+- `public/_headers` — intestazioni di cache e sicurezza (sostituisce `nginx.conf`):
+  `sw.js` mai in cache, asset in `_astro/` immutabili, audio 1 giorno,
+  `frame-ancestors 'self'` + X-Frame-Options, nosniff, Referrer/Permissions-Policy.
+- `.node-version` — Node 24 per la build.
+
+**Workers Builds (collegamento a GitHub):**
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy`
+- Non-production branch deploy command: `npx wrangler versions upload`
+  (ogni branch ottiene un URL di anteprima)
+
+Prova in locale con il runtime di Cloudflare:
+
+```bash
+npm run build && npx wrangler dev
+```
+
+### Coolify su VPS (Oracle Cloud Always Free, ARM) — da dismettere dopo la migrazione
 
 L'app è ospitata su una VPS Oracle Always Free (Ampere A1, architettura ARM) e
 gestita da [Coolify](https://coolify.io). La build avviene con **Railpack**

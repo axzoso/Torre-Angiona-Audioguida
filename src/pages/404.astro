@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { t } from '../i18n/ui';
+---
+
+<Layout title={`Pagina non trovata — ${t.appName}`} description="La pagina richiesta non esiste." context="404">
+  <section class="nf sheet book">
+    <p class="margin mono soft">404</p>
+    <h1>Questa pagina non esiste</h1>
+    <p class="lead">
+      Forse il QR code o il link è incompleto. Le tappe dell’audioguida sono tutte nel percorso.
+    </p>
+    <p>
+      <a class="btn solid" href="/">← {t.backHome}</a>
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .nf {
+    padding-top: clamp(2rem, 8vw, 6rem);
+  }
+
+  .margin {
+    display: none;
+  }
+
+  @media (min-width: 62rem) {
+    .margin {
+      display: block;
+      margin: 0.9rem 0 0;
+    }
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 1.2rem + 5vw, 5rem);
+    letter-spacing: -0.03em;
+  }
+
+  .lead {
+    margin: 1.6rem 0 2rem;
+    font-size: 1.25em;
+    line-height: 1.5;
+    font-variation-settings: 'opsz' 36;
+  }
+</style>

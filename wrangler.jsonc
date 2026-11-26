@@ -1,0 +1,19 @@
+// Cloudflare Workers — solo asset statici (nessun codice Worker).
+// Build: `npm run build` → dist/. Deploy: `npx wrangler deploy`
+// (sui branch non di produzione: `npx wrangler versions upload` → URL di anteprima).
+{
+  "name": "torreviva",
+  "compatibility_date": "2026-11-26",
+  "assets": {
+    "directory": "./dist",
+    // Astro usa trailingSlash: 'always' → /tappa/1/ serve /tappa/1/index.html
+    // e /tappa/1 viene reindirizzato a /tappa/1/ (stesse chiavi del service worker)
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": {
+    "enabled": true
+  }
+}

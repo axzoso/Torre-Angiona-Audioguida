@@ -45,6 +45,7 @@ nginx.conf              # config del container nginx:alpine in produzione
 - View Transitions via `<ClientRouter/>`: la logica si ri-inizializza su `astro:page-load` e `astro:after-swap` (il player persiste, il body viene swappato).
 
 ## Deployment
+- **In migrazione (2026-11-26) a Cloudflare Workers static assets**: `wrangler.jsonc` + `public/_headers` (cache/sicurezza, sostituisce nginx.conf). Workers Builds: build `npm run build`, deploy `npx wrangler deploy`, branch non di produzione `npx wrangler versions upload`. Il precache esclude `404.html` (su Workers `/404/` reindirizza e farebbe fallire l'install del SW). Range request sugli mp3: wrangler dev risponde 200 invece di 206 → verificare la riproduzione su iOS Safari nell'anteprima.
 - VPS Oracle Always Free (ARM) → **Coolify** → build con **Railpack** (`npm run build`; Nixpacks è deprecato) → `dist/` servito da nginx. ⚠️ `nginx.conf` del repo NON viene applicato da solo: va incollato in Coolify → Custom Nginx Configuration (verificato 2026-11-26: in produzione mancavano Cache-Control e header di sicurezza).
 - **Cloudflare** in front (proxy/DNS).
 - ⚠️ Vincoli operativi critici per l'offline:

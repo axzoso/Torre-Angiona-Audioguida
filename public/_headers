@@ -1,0 +1,39 @@
+# Intestazioni HTTP per Cloudflare Workers (static assets).
+# Sostituisce nginx.conf. Le regole che corrispondono allo stesso URL si
+# sommano: per questo Cache-Control NON è su /* ma solo sui percorsi specifici
+# (le pagine usano il default di Cloudflare: max-age=0, must-revalidate).
+
+# Sicurezza su tutto il sito. La CSP completa resta nel <meta> di Layout.astro;
+# qui c'è frame-ancestors, che il <meta> non può esprimere (anti-clickjacking).
+/*
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Service worker e runtime Workbox: mai in cache HTTP, altrimenti
+# l'aggiornamento offline non arriva ai visitatori.
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/workbox-*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+
+# Asset con hash nel nome (JS, CSS, font): immutabili per un anno.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Audio: un giorno. Per sostituire un audio va RINOMINATO il file
+# (vedi PROJECT_CONTEXT.md): il service worker lo tiene in cache per sempre.
+/audio/*
+  Cache-Control: public, max-age=86400
+
+/icons/*
+  Cache-Control: public, max-age=604800
+
+/favicon.*
+  Cache-Control: public, max-age=604800
