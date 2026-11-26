@@ -45,7 +45,7 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
       scene.innerHTML = renderScene(homeCam(t), ID);
       route.style.opacity = String(Math.max(0, Math.min(1, (t - 0.88) / 0.12)));
       shown = t;
-      // avanzamento per chi accompagna il disegno (invito allo scroll, didascalie)
+      // avanzamento per chi accompagna il disegno (didascalie)
       fig.dispatchEvent(new CustomEvent('torre:progress', { detail: t, bubbles: true }));
     };
 
@@ -56,40 +56,6 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
 
     stop = new AbortController();
     document.addEventListener('astro:before-swap', () => stop?.abort(), { once: true, signal: stop.signal });
-
-    // Variante B (solo anteprima): su mobile la torre non resta ferma.
-    // Appena si scorre si apre da sola; tornando in cima si richiude
-    // (giro contrario) e scendendo di nuovo riparte. Se si cambia verso a
-    // metà, riparte da dove si trova.
-    if (document.documentElement.dataset.variante === 'b' && matchMedia('(max-width: 51.99rem)').matches) {
-      const FULL = 3200; // ms per il giro completo
-      const ease = (u: number) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
-      let goal = 0;
-      let from = 0;
-      let t0 = 0;
-      let dur = 0;
-      let anim = 0;
-      let now = 0; // valore disegnato
-      const step = (ts: number) => {
-        const u = dur ? Math.min(1, (ts - t0) / dur) : 1;
-        now = from + (goal - from) * ease(u);
-        draw(now);
-        anim = u < 1 && !stop?.signal.aborted ? requestAnimationFrame(step) : 0;
-      };
-      const go = (g: number) => {
-        if (g === goal) return;
-        goal = g;
-        from = now;
-        dur = FULL * Math.abs(goal - from);
-        t0 = performance.now();
-        if (!anim) anim = requestAnimationFrame(step);
-      };
-      const onScrollB = () => go(scrollY > 24 ? 1 : 0);
-      addEventListener('scroll', onScrollB, { passive: true, signal: stop.signal });
-      stop.signal.addEventListener('abort', () => cancelAnimationFrame(anim));
-      onScrollB();
-      return;
-    }
 
     // t = 0 in cima alla pagina; t = 1 alla fine del tratto in cui il disegno
     // resta fermo (il contenitore è più alto del disegno: vedi index.astro),

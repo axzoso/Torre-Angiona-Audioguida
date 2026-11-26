@@ -47,28 +47,6 @@ const anteprima = import.meta.env.PUBLIC_ANTEPRIMA === '1';
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="description" content={description} />
     {anteprima && <meta name="robots" content="noindex, nofollow" />}
-    {
-      anteprima && (
-        <script is:inline>
-          // Solo anteprima: variante della home scelta con ?variante=a|b|c (ricordata)
-          (function () {
-            function apply() {
-              var v = new URLSearchParams(location.search).get('variante');
-              try {
-                v = v || localStorage.getItem('tv-variante');
-              } catch (e) {}
-              if (!/^[abc]$/.test(v || '')) v = 'a';
-              try {
-                localStorage.setItem('tv-variante', v);
-              } catch (e) {}
-              document.documentElement.dataset.variante = v;
-            }
-            apply();
-            document.addEventListener('astro:after-swap', apply);
-          })();
-        </script>
-      )
-    }
     <meta name="theme-color" content="#efe9db" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
