@@ -12,7 +12,7 @@ PWA **completamente statica** (Astro `output: 'static'`) che funge da audioguida
 - **@vite-pwa/astro** (Workbox) — `registerType: 'autoUpdate'`.
 - **Vitest** + jsdom per i test.
 - Node ≥ 22.23.4 (richiesto da Astro 7); build su Node 24 (`.node-version`).
-- `overrides` in package.json: `@vite-pwa/astro` 1.x dichiara astro ≤5 come peer; l'override evita ERESOLVE. Rimuoverlo passando a `@vite-pwa/astro` 2.x.
+- **@vite-pwa/astro 2.x** (basato su `@unplugin-pwa`): import nominato `AstroPWAIntegration`, opzioni Workbox sotto `generateSW` (non più `workbox`), `maximumFileSizeToCacheInBytes` al primo livello, tipi client da `@unplugin-pwa/core/vanillajs`. Il manifest e le sue icone entrano nel precache in automatico: non aggiungerli a `globPatterns`.
 
 ## Struttura essenziale
 ```

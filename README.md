@@ -47,7 +47,7 @@ Applicazione web interattiva che trasforma la visita al sito storico in un perco
 |-------|-----------|
 | **Framework** | [Astro](https://astro.build) 7.4 |
 | **Styling** | CSS custom con token (`src/styles/global.css`), font self-hosted via Fontsource |
-| **PWA** | [@vite-pwa/astro](https://vite-pwa-org.netlify.app/frameworks/astro.html) 1.2.0 |
+| **PWA** | [@vite-pwa/astro](https://unplugin-pwa.netlify.app/frameworks/astro) 2.x (Workbox 8) |
 | **Runtime** | Node.js ≥22.23.4 (build su Node 24, vedi `.node-version`) |
 | **Testing** | Vitest 4.1 |
 | **TypeScript** | Strict mode |
@@ -206,9 +206,11 @@ Vedi [Privacy Policy](src/pages/privacy.astro) per dettagli completi.
 ```javascript
 // astro.config.ts
 trailingSlash: 'always',
-workbox: {
-  globPatterns: ['**/*.{html,css,js,ico,png,svg,webmanifest}'],
-  maximumFileSizeToCacheInBytes: 15_000_000,
+// @vite-pwa/astro 2.x: AstroPWAIntegration({ ... })
+maximumFileSizeToCacheInBytes: 15_000_000,
+generateSW: {
+  // manifest e icone del manifest sono inclusi in automatico dalla v2
+  globPatterns: ['**/*.{html,css,js,ico,svg,woff2}'],
   navigateFallback: null,
   // Gli mp3 NON sono nel precache: sono gestiti a runtime con strategia
   // CacheFirst (cacheName: 'audio-cache', ignoreSearch: true).
@@ -225,11 +227,11 @@ workbox: {
 ### Manifest
 ```json
 {
-  "name": "Torre Angioina — Audioguide",
-  "short_name": "Torre Angioina",
+  "name": "Torre Viva — Audioguida della Torre Angioina",
+  "short_name": "Torre Viva",
   "display": "standalone",
   "start_url": "/",
-  "theme_color": "#0A0A0A"
+  "theme_color": "#efe9db"
 }
 ```
 

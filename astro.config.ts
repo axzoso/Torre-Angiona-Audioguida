@@ -1,15 +1,18 @@
 import { defineConfig } from 'astro/config';
-import AstroPWA from '@vite-pwa/astro';
+import { AstroPWAIntegration } from '@vite-pwa/astro';
 
 export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   integrations: [
-    AstroPWA({
+    AstroPWAIntegration({
       registerType: 'autoUpdate',
-      workbox: {
-        globPatterns: ['**/*.{html,css,js,ico,png,svg,webmanifest,woff2}'],
-        maximumFileSizeToCacheInBytes: 15_000_000,
+      // v2: il limite di dimensione è un'opzione di primo livello
+      maximumFileSizeToCacheInBytes: 15_000_000,
+      // v2: le opzioni Workbox di generateSW stanno sotto `generateSW` (era `workbox`)
+      generateSW: {
+        // le icone del manifest (png) sono già incluse in automatico dalla v2
+        globPatterns: ['**/*.{html,css,js,ico,svg,woff2}'],
         navigateFallback: null,
         runtimeCaching: [
           {
