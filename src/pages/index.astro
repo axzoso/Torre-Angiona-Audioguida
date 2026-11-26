@@ -179,8 +179,19 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
       // altezza del contenuto di .hero-draw (torre + tratto in cui resta ferma)
       const cs = getComputedStyle(box);
       const content = box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-      const run = content - figH; // scroll con la torre ferma
-      const step = run / (frasi.length + 1);
+      // Le frasi arrivano mentre la torre si apre: l'ultima si ferma sotto la
+      // terza esattamente quando finisce l'animazione, cioè alla fine del
+      // tratto fermo meno la sosta finale (--torre-hold, la stessa sonda che
+      // usa TorreDrawing per calcolare l'animazione).
+      let probe = box.querySelector<HTMLElement>('[data-torre-hold]');
+      if (!probe) {
+        probe = document.createElement('div');
+        probe.dataset.torreHold = '';
+        probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;height:var(--torre-hold, 0px)';
+        box.append(probe);
+      }
+      const anim = content - figH - probe.offsetHeight; // scroll dell'animazione a torre ferma
+      const step = anim / frasi.length;
       binari.forEach((b, i) => {
         const offset = (i + 1) * step; // scroll, da quando la torre si ferma, in cui la frase si ferma
         const top = figH + docks[i] + offset;
@@ -252,11 +263,11 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
 
   /* Scorrendo, il disegno resta fermo sotto l'intestazione: nel primo mezzo
      schermo la torre ruota e si apre (TorreDrawing), poi su mobile resta
-     ferma ancora un tratto (--torre-hold): il tempo perché, sotto, salgano
-     e si fermino le quattro frasi del racconto. */
+     ferma ancora un tratto (--torre-hold) a torre aperta e paragrafo
+     ricomposto, prima che arrivi il percorso. */
   @media (prefers-reduced-motion: no-preference) {
     .hero-draw {
-      --torre-hold: 90svh;
+      --torre-hold: 25svh;
     }
 
     /* spaziatore (non padding: lo sticky si muove solo nell'area del contenuto) */
