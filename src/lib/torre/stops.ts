@@ -1,6 +1,6 @@
 // Inquadrature di dettaglio per le pagine delle tappe: stesso disegno della
 // home, con camera e riquadro scelti per mostrare il luogo in cui ci si trova.
-import { type Cam, halls, frame, renderContours, renderDefs, renderScene, stopPoint, STOPS } from './scene.ts';
+import { type Cam, approachPoint, halls, frame, renderContours, renderDefs, renderScene, stopPoint, STOPS } from './scene.ts';
 
 type W3 = [number, number, number];
 interface View {
@@ -21,7 +21,7 @@ const hallBox = (k: keyof typeof halls, below = 1, above = 1.4): W3[] => [
 // le 4–8 sono nelle sale (sezione aperta).
 const VIEWS: View[] = [
   // 1 · primo ponte di legno, davanti alla torretta
-  { cam: { phi: 66, D: 14 }, around: [[-24, 0.4, 5.4], [-12.4, 9.2, 5.4], [-12.4, -5, 5.4], [-5.2, 7.5, 0.6]] },
+  { cam: { phi: 66, D: 14 }, around: [approachPoint(24.6, -2.4), approachPoint(21.5, -8.2), approachPoint(13.2, 7.6)] },
   // 2 · nel cortile del rivellino (fronte del rivellino asportato)
   { cam: { phi: 4, D: 6.4 }, around: [[-9.4, 6.2, 2], [-3.6, 7, 3], [-11.5, -2.4, 1], [-12.4, 8.6, 5.4]] },
   // 3 · ponte alto verso la porta sopraelevata

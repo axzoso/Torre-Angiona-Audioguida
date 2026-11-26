@@ -63,9 +63,11 @@ const ST_IN = 9.0;
 const ST_TOP = 5.2;
 const N_STEPS = 13;
 const DOOR_A = 174;
-const B1_H = 0.45;
-const B1_Z = 5.4;
-const B1_X0 = -24.5;
+const B1_H = 0.45; // quota della porta della torretta e del ponte di legno
+// Accesso dal paese, lungo l'asse della torretta (s = distanza dall'asse della torre):
+// terrapieno della strada → scala in pietra → pianerottolo su pilastro in muratura
+// (tutto fondato sul pendio) → campata corta in legno fino alla porta della torretta.
+const AP = { door: T_R + T_HALF, land0: 18.6, land1: 20.2, stair1: 25.2, end: 30.5, street: -2.4, nSteps: 9, w: 0.75, wStreet: 1.8 };
 
 // curve di livello della motta: [raggio, quota]
 const LEVELS: V2[] = [
@@ -280,22 +282,25 @@ export function renderScene(cam: Cam, id: string): string {
     }
     faces.sort((p, q) => q[2] - p[2]);
     let s = '';
-    // pali e impalcato del ponte 1
-    const [bx0, bz0] = rot(B1_X0, B1_Z, phi);
-    const [bx1, bz1] = rot(-T_R + T_HALF * 0.1, B1_Z, phi);
-    const posts = [-22.8, -18.6].map((px) => rot(px, B1_Z, phi));
-    const bridge = deck(bx0, bz0, bx1, bz1, B1_H, posts);
-    const bridgeFirst = (bz0 + bz1) / 2 > c0z; // il ponte sta dietro la torretta?
-    if (bridgeFirst) s += bridge;
+    const ap = approach(phi);
+    const bridgeFirst = ap.z > c0z; // l'accesso sta dietro la torretta?
+    if (bridgeFirst) s += ap.svg;
     for (const [a, b] of faces) {
       s += cls('face', pth([P(a[0], FOOT_H, a[1]), P(b[0], FOOT_H, b[1]), P(b[0], T_TOP, b[1]), P(a[0], T_TOP, a[1])], true));
       for (let h = FOOT_H + 1.5; h < T_TOP - 0.4; h += 1.5) s += cls('thin', pth([P(a[0], h, a[1]), P(b[0], h, b[1])]));
       const mx = (a[0] + b[0]) / 2;
       const mz = (a[1] + b[1]) / 2;
-      s += cls('slit', pth([P(mx, 4.6, mz), P(mx, 5.6, mz)]));
+      const outer = (mx - c0x) * ux + (mz - c0z) * uz > 0.5; // faccia verso il paese
+      if (outer) {
+        // porta d'ingresso della torretta, all'arrivo del ponte
+        const ex = (b[0] - a[0]) / (2 * T_HALF);
+        const ez = (b[1] - a[1]) / (2 * T_HALF);
+        const q = (o: number, h: number) => P(mx + ex * o, h, mz + ez * o);
+        s += cls('open', pth([q(-0.55, B1_H), q(-0.55, B1_H + 2.0), q(-0.3, B1_H + 2.35), q(0, B1_H + 2.45), q(0.3, B1_H + 2.35), q(0.55, B1_H + 2.0), q(0.55, B1_H)], true));
+      } else s += cls('slit', pth([P(mx, 4.6, mz), P(mx, 5.6, mz)]));
     }
     if (kz(T_TOP) > 0.004) s += cls('face', pth(quad.map(([x, z]) => P(x, T_TOP, z)), true));
-    if (!bridgeFirst) s += bridge;
+    if (!bridgeFirst) s += ap.svg;
     objs.push({ z: c0z, inside: false, svg: s });
   }
   // scala aragonese nel cortile
@@ -521,6 +526,116 @@ function crenelArc(rr: number, a0: number, a1: number, phi: number): V2[] {
   return pts;
 }
 
+/** Punto dell'accesso: s lungo l'asse della torretta, v di lato. */
+function apAt(s: number, v: number, phi: number): V2 {
+  const a = rad(T_A + phi);
+  return [s * Math.cos(a) - v * Math.sin(a), s * Math.sin(a) + v * Math.cos(a)];
+}
+
+/** Massa in muratura con profilo superiore prof (s,h) e base sul pendio. */
+function masonry(prof: V2[], w: number, phi: number, endFace: boolean): { z: number; svg: string }[] {
+  const a = rad(T_A + phi);
+  const uz = Math.sin(a);
+  const pz = Math.cos(a); // componente z della normale laterale (+v)
+  const Pw = (s: number, v: number, h: number) => {
+    const [x, z] = apAt(s, v, phi);
+    return P(x, h, z);
+  };
+  const g = (s: number, v: number) => groundA(Math.hypot(s, v));
+  const s0 = prof[0][0];
+  const s1 = prof[prof.length - 1][0];
+  const parts: { z: number; svg: string }[] = [];
+  const zAt = (s: number, v: number) => apAt(s, v, phi)[1];
+  // fianchi
+  for (const v of [-w, w]) {
+    const nz = v > 0 ? pz : -pz;
+    if (nz >= 0) continue;
+    const base: V2[] = [];
+    for (let s = s1; s >= s0 - 0.01; s -= 0.5) base.push(Pw(s, v, g(s, v)));
+    base.push(Pw(s0, v, g(s0, v)));
+    let d = cls('face', pth([...prof.map(([s, h]) => Pw(s, v, h)), ...base], true));
+    // corsi di pietra: fino al punto in cui il profilo scende sotto la quota
+    const gTop = Math.max(g(s0, v), g(s1, v));
+    for (let hL = Math.ceil((gTop + 0.5) / 1.1) * 1.1; hL < prof[0][1] - 0.1; hL += 1.1) {
+      let sEnd = s0;
+      for (let i = 1; i < prof.length; i++) if (prof[i][1] >= hL && prof[i - 1][1] >= hL) sEnd = prof[i][0];
+      if (sEnd > s0) d += cls('thin', pth([Pw(s0, v, hL), Pw(sEnd, v, hL)]));
+    }
+    parts.push({ z: zAt((s0 + s1) / 2, v), svg: d });
+  }
+  // testata verso la torretta
+  if (endFace && -uz < 0) {
+    const h = prof[0][1];
+    let d = cls('face', pth([Pw(s0, -w, h), Pw(s0, w, h), Pw(s0, w, g(s0, w)), Pw(s0, -w, g(s0, -w))], true));
+    for (let hL = Math.ceil((g(s0, 0) + 0.5) / 1.1) * 1.1; hL < h - 0.1; hL += 1.1) d += cls('thin', pth([Pw(s0, -w, hL), Pw(s0, w, hL)]));
+    parts.push({ z: zAt(s0, 0), svg: d });
+  }
+  // superfici orizzontali (pedate, pianerottolo, strada) e alzate visibili
+  for (let i = 1; i < prof.length; i++) {
+    const [sa, ha] = prof[i - 1];
+    const [sb, hb] = prof[i];
+    if (Math.abs(ha - hb) < 1e-6 && sb > sa) {
+      parts.push({ z: zAt((sa + sb) / 2, 0), svg: cls('face', pth([Pw(sa, -w, ha), Pw(sb, -w, ha), Pw(sb, w, ha), Pw(sa, w, ha)], true)) });
+    } else if (Math.abs(sa - sb) < 1e-6 && uz < 0) {
+      parts.push({ z: zAt(sa, 0), svg: cls('face', pth([Pw(sa, -w, ha), Pw(sa, w, ha), Pw(sa, w, hb), Pw(sa, -w, hb)], true)) });
+    }
+  }
+  return parts;
+}
+
+/** Strada, scala in pietra, pilastro e ponte di legno verso la torretta. */
+function approach(phi: number): { z: number; svg: string } {
+  const { door, land0, land1, stair1, end, street, nSteps, w, wStreet } = AP;
+  const rise = (B1_H - street) / nSteps;
+  const run = (stair1 - land1) / nSteps;
+  const prof: V2[] = [[land0, B1_H], [land1, B1_H]];
+  let h = B1_H;
+  let s = land1;
+  for (let i = 0; i < nSteps; i++) {
+    h -= rise;
+    prof.push([s, h]);
+    s += run;
+    prof.push([s, h]);
+  }
+  const parts = [
+    ...masonry([[stair1, street], [end, street]], wStreet, phi, true),
+    ...masonry(prof, w, phi, true),
+  ];
+  const [x0, z0] = apAt(land0, 0, phi);
+  const [x1, z1] = apAt(door, 0, phi);
+  parts.push({ z: (z0 + z1) / 2, svg: deck(x0, z0, x1, z1, B1_H, []) });
+  parts.sort((p, q) => q.z - p.z);
+  return { z: apAt((land0 + stair1) / 2, 0, phi)[1], svg: parts.map((p) => p.svg).join('') + approachGround(phi) };
+}
+
+/** Punto dell'accesso nello spazio (a phi = 0): per inquadrature e percorso. */
+export function approachPoint(s: number, h: number): [number, number, number] {
+  const [x, z] = apAt(s, 0, 0);
+  return [x, h, z];
+}
+
+/** Quota del terreno sotto l'accesso: il pendio della collina e, oltre
+ *  l'ultima curva, la spalla che risale verso la strada del paese. */
+const A_SHOULDER = AP.land0;
+function groundA(rho: number): number {
+  const h0 = groundH(A_SHOULDER);
+  if (rho <= A_SHOULDER) return groundH(rho);
+  const t = Math.min(1, (rho - A_SHOULDER) / (AP.end - 0.6 - A_SHOULDER));
+  return lerp(h0, AP.street - 0.5, t * t * (3 - 2 * t));
+}
+
+/** Profilo del terreno lungo il fianco visibile dell'accesso (linea di sezione). */
+function approachGround(phi: number): string {
+  const a = rad(T_A + phi);
+  const v = Math.cos(a) > 0 ? -AP.wStreet : AP.wStreet;
+  const pts: V2[] = [];
+  for (let s = AP.land0 - 1.2; s <= AP.end + 2.2; s += 0.4) {
+    const [x, z] = apAt(s, v, phi);
+    pts.push(P(x, groundA(Math.hypot(s, v)), z));
+  }
+  return cls('ground', pth(pts));
+}
+
 /** Quota del pendio a una certa distanza dall'asse (interpolando le curve). */
 function groundH(rho: number): number {
   if (rho <= LEVELS[0][0]) return LEVELS[0][1];
@@ -647,7 +762,7 @@ const tc: V2 = [T_R * Math.cos(rad(T_A)), T_R * Math.sin(rad(T_A))];
 
 /** Punti delle 8 tappe nello spazio (a phi = 0), nell'ordine della visita. */
 export const STOPS: W3[] = [
-  [-20.6, B1_H + 0.3, B1_Z],
+  approachPoint(16.9, B1_H + 0.3),
   [-7.2, 0.3, 2.6],
   [-7.3, ST_TOP + 0.35, (land[1] + door[1]) / 2 + 0.05],
   [0, F('guarnigione'), 0],
@@ -658,7 +773,7 @@ export const STOPS: W3[] = [
 ];
 const ROUTE: W3[] = [
   STOPS[0],
-  [tc[0] - T_HALF, B1_H + 0.3, B1_Z],
+  approachPoint(AP.door, B1_H + 0.3),
   [tc[0] + T_HALF * 0.2, 0.3, tc[1] - 0.6],
   STOPS[1],
   ...[0, 0.25, 0.5, 0.75, 1].map(stairPt),
