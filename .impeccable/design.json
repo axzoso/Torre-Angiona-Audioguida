@@ -352,7 +352,7 @@
   ],
   "narrative": {
     "northStar": "Il foglio d'archivio",
-    "overview": "Torre Viva è un foglio d'archivio di Fuori le Mura che si legge e si ascolta: carta grezza con grana, inchiostro caldo, un solo timbro rosso, filetti da un pixel e disegni a tratto sottile in stile rilievo. Il sistema è vincolato da `brand-guidelines.md` (identità Fuori le Mura) e lo applica a un'audioguida usata camminando, con lo smartphone in mano: le misure di lettura restano quelle di un libro, le aree toccabili quelle di un'app.\n\nLa gerarchia nasce dalla tipografia e dallo spazio, mai da contenitori. Il serif variabile Fraunces porta titoli e testo; JetBrains Mono è la voce da cartellino d'archivio per numeri di tappa, durate, stati e controlli. Le superfici sono piatte e squadrate; la profondità esiste solo come tema notte locale (footer e player fisso) e come gradiente di dissolvenza dell'header.\n\nIl movimento è solo di stato: colore, avanzamento del segnalibro, ingresso del player. Nessuna entrata decorativa; tutto si spegne con `prefers-reduced-motion`.",
+    "overview": "Torre Viva è un foglio d'archivio di Fuori le Mura che si legge e si ascolta: carta grezza con grana, inchiostro caldo, un solo timbro rosso, filetti da un pixel e disegni a tratto sottile in stile rilievo. Il sistema è vincolato da `brand-guidelines.md` (identità Fuori le Mura) e lo applica a un'audioguida usata camminando, con lo smartphone in mano: le misure di lettura restano quelle di un libro, le aree toccabili quelle di un'app.\n\nLa gerarchia nasce dalla tipografia e dallo spazio, mai da contenitori. Il serif variabile Fraunces porta titoli e testo; JetBrains Mono è la voce da cartellino d'archivio per numeri di tappa, durate, stati e controlli. Le superfici sono piatte e squadrate; la profondità esiste solo come tema notte locale (footer e player fisso) e come gradiente di dissolvenza dell'header.\n\nIl movimento è di stato (colore, avanzamento del segnalibro, ingresso del player) con due eccezioni d'autore: la torre in sezione che ruota e si apre con lo scroll della home, e i titoli \"forgiati\" — il nome della Torre e di ogni tappa si accendono da inchiostro a timbro come ferro rovente e dopo un'accensione di 4.5s un riflesso incandescente li attraversa in 8s, con 1.5s di pausa tra un passaggio e l'altro (fermo fuori schermo); il peso 700 dà al riflesso abbastanza superficie per vedersi. Tutto si spegne con `prefers-reduced-motion`: i titoli restano timbro pieno.",
     "keyCharacteristics": [
       "Carta `#efe9db` con rumore SVG (alpha 0.055, tile 240px), mai colore piatto, mai bianco puro.",
       "Un solo accento: timbro rosso sulla carta, la sua versione chiara sul tema notte.",
@@ -400,10 +400,10 @@
       "**Do** organizzare i contenuti in elenchi filettati da 1px con metadato mono a sinistra e titolo serif.",
       "**Do** tenere ogni area toccabile alta almeno 3rem e l'azione di ascolto a tutta larghezza sopra la piega.",
       "**Do** disegnare in SVG a tratto 0.8–1.4px con `vector-effect: non-scaling-stroke` e marker quadrati 7×7.",
-      "**Do** limitare il movimento a transizioni di stato brevi (0.2–0.6s) e spegnerlo con `prefers-reduced-motion`."
+      "**Do** limitare il movimento a transizioni di stato brevi (0.2–0.6s), oltre alla torre allo scroll e ai titoli forgiati, e spegnerlo con `prefers-reduced-motion`."
     ],
     "donts": [
-      "**Don't** usare border-radius, pillole, ombre portate, glassmorphism o gradienti decorativi (l'unico gradiente ammesso è la dissolvenza dell'header).",
+      "**Don't** usare border-radius, pillole, ombre portate, glassmorphism o gradienti decorativi (gli unici gradienti ammessi sono la dissolvenza dell'header e il calore dei titoli forgiati, ritagliato sul testo).",
       "**Don't** introdurre card di contenuto con fondo o riquadro: i riquadri bordati sono solo azioni (Riprendi, Precedente/Successiva) e solo la \"Successiva\" porta il velo timbro.",
       "**Don't** aggiungere un secondo colore d'accento né colori saturi; non stendere il rosso su grandi superfici oltre al bottone primario e al play.",
       "**Don't** usare font sans-serif, né il mono in maiuscolo o con letter-spacing largo.",

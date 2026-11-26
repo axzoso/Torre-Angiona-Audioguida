@@ -184,6 +184,81 @@ svg {
   padding-inline: var(--gutter);
 }
 
+/* Titoli "forgiati" (home e tappe): il nome della Torre e di ogni tappa è
+   ferro rovente. All'apertura il colore passa da inchiostro a timbro come un
+   fronte di calore da sinistra a destra; poi, con una pausa di 1.5 secondi, un riflesso
+   incandescente ripercorre il titolo. Senza animazioni resta timbro pieno. */
+@property --heat {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --glint {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
+.forge {
+  /* largo quanto il testo: il riflesso attraversa le lettere, non il vuoto */
+  width: fit-content;
+  max-width: 100%;
+  color: var(--stamp);
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .forge {
+    /* lo spazio sotto le discendenti evita che il ritaglio tagli g, p, q */
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+    color: transparent;
+    background-image:
+      linear-gradient(100deg, rgba(240, 150, 80, 0) 42%, rgba(240, 150, 80, 0.7) 47%, #f4b06a 50%, rgba(240, 150, 80, 0.7) 53%, rgba(240, 150, 80, 0) 58%),
+      linear-gradient(100deg, var(--stamp) 44%, #d0562b 49%, var(--ink) 56%);
+    background-size: 320% 100%, 300% 100%;
+    background-repeat: no-repeat;
+    background-position: var(--glint) 0, var(--heat) 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .forge {
+      /* accensione 4.5s; poi un riflesso che dura 8s, con 1.5s di pausa */
+      animation:
+        forge-heat 4.5s cubic-bezier(0.45, 0, 0.2, 1) 0.15s both,
+        forge-glint 9.5s cubic-bezier(0.45, 0, 0.3, 1) 4.2s infinite;
+    }
+
+    .forge.is-off {
+      animation-play-state: paused;
+    }
+  }
+}
+
+@keyframes forge-heat {
+  from {
+    --heat: 100%;
+  }
+
+  to {
+    --heat: 0%;
+  }
+}
+
+@keyframes forge-glint {
+  0% {
+    --glint: 100%;
+  }
+
+  84%,
+  100% {
+    --glint: 0%;
+  }
+}
+
 /* Pattern "pagina-libro": nota a margine + colonna di testo */
 @media (min-width: 62rem) {
   .book {

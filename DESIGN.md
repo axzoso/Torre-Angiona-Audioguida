@@ -16,9 +16,9 @@ typography:
   display:
     fontFamily: "'Fraunces Variable', Georgia, serif"
     fontSize: "clamp(3.4rem, 1rem + 7.4vw, 7.4rem)"
-    fontWeight: 450
+    fontWeight: 700
     lineHeight: 0.98
-    letterSpacing: "-0.03em"
+    letterSpacing: "-0.02em"
     fontVariation: "'opsz' 144"
   headline:
     fontFamily: "'Fraunces Variable', Georgia, serif"
@@ -154,7 +154,7 @@ Torre Viva è un foglio d'archivio di Fuori le Mura che si legge e si ascolta: c
 
 La gerarchia nasce dalla tipografia e dallo spazio, mai da contenitori. Il serif variabile Fraunces porta titoli e testo; JetBrains Mono è la voce da cartellino d'archivio per numeri di tappa, durate, stati e controlli. Le superfici sono piatte e squadrate; la profondità esiste solo come tema notte locale (footer e player fisso) e come gradiente di dissolvenza dell'header.
 
-Il movimento è solo di stato: colore, avanzamento del segnalibro, ingresso del player. Nessuna entrata decorativa; tutto si spegne con `prefers-reduced-motion`.
+Il movimento è di stato (colore, avanzamento del segnalibro, ingresso del player) con due eccezioni d'autore: la torre in sezione che ruota e si apre con lo scroll della home, e i titoli "forgiati" — il nome della Torre e di ogni tappa si accendono da inchiostro a timbro come ferro rovente e dopo un'accensione di 4.5s un riflesso incandescente li attraversa in 8s, con 1.5s di pausa tra un passaggio e l'altro (fermo fuori schermo); il peso 700 dà al riflesso abbastanza superficie per vedersi. Tutto si spegne con `prefers-reduced-motion`: i titoli restano timbro pieno.
 
 **Key Characteristics:**
 - Carta `#efe9db` con rumore SVG (alpha 0.055, tile 240px), mai colore piatto, mai bianco puro.
@@ -169,7 +169,7 @@ Il movimento è solo di stato: colore, avanzamento del segnalibro, ingresso del 
 Palette quasi monocroma calda, carta e inchiostro, con un timbro rosso che segna azione e stato.
 
 ### Primary
-- **Timbro** (stamp): l'unico accento sulla carta. Bottone primario pieno "Ascolta", capolettera della trascrizione, numero della tappa in testata, hover di link e righe, focus ring (2px), selezione del testo, marker di stato ascoltato/in ascolto, tratto percorso completato nel disegno, bordo, velo al 7% ed etichetta della card "Successiva" (piena timbro all'hover).
+- **Timbro** (stamp): l'unico accento sulla carta. Titoli forgiati (H1 della home e delle tappe, con il riflesso incandescente #f4b06a che li attraversa), bottone primario pieno "Ascolta", capolettera della trascrizione, numero della tappa in testata, hover di link e righe, focus ring (2px), selezione del testo, marker di stato ascoltato/in ascolto, tratto percorso completato nel disegno, bordo, velo al 7% ed etichetta della card "Successiva" (piena timbro all'hover).
 - **Timbro notte** (night-stamp): la versione chiara del timbro sul tema scuro. Bottone play del player, barra di avanzamento, numero di tappa nel player, hover nel footer, bordo della "tappa successiva" a fine traccia.
 
 ### Neutral
@@ -196,8 +196,8 @@ Palette quasi monocroma calda, carta e inchiostro, con un timbro rosso che segna
 **Character:** Un serif editoriale a dimensione ottica che passa dal titolo monumentale (opsz 144) al testo di lettura calmo (opsz 14), accompagnato da un mono asciutto che parla come l'etichetta di un reperto.
 
 ### Hierarchy
-- **Display** (450, clamp 3.4–7.4rem, 0.98, -0.03em, opsz 144): solo il nome dell'audioguida in home; lo stesso registro (450, fino a 8.5rem, 0.95, -0.035em) firma "Fuori le Mura" nel footer.
-- **Headline** (500, clamp 2.4–5rem, 1.08, -0.03em, opsz 144): H1 della pagina tappa e delle pagine documento.
+- **Display** (700 in home, clamp 3.4–7.4rem, 0.98, -0.02em, opsz 144, in timbro forgiato): il nome dell'audioguida in home; lo stesso registro, ma a 450 (fino a 8.5rem, 0.95, -0.035em) firma "Fuori le Mura" nel footer.
+- **Headline** (clamp 2.4–5rem, 1.08, -0.03em, opsz 144): H1 della pagina tappa a 700 in timbro forgiato (tracking -0.015em, word-spacing 0.04em); H1 delle pagine documento a 500 in inchiostro.
 - **Section** (500, clamp 2–3.2rem, 1.08, -0.015em): H2 di sezione, es. "Percorso"; H2 interni ai documenti scendono a clamp 1.5–2.1rem.
 - **Title** (500, 1.5rem, 1.2, opsz 72): titolo nelle righe dell'elenco, nell'azione "Riprendi" e nelle card precedente/successiva (sotto i 40rem, dove le card sono strette, scende alla misura del corpo); logotipo header a 1.35rem, titolo nel player a 1.05rem (opsz 36).
 - **Lead** (400 italic, 1.25em, 1.35, opsz 100): sottotitolo della home; nei documenti il lead è roman, 1.5 di interlinea, opsz 36.
@@ -258,7 +258,7 @@ Due card affiancate in fondo alla tappa, sempre sulla stessa riga (griglia a due
 L'unica area bordata della home, perché è un'azione: bordo 1px inchiostro, padding 1rem 1.1rem, larga al massimo 36rem. Etichetta mono timbro e tempo mono tenue sulla prima riga, titolo della tappa sotto. Hover inverte su inchiostro, con etichetta in timbro notte e tempo in tenue notte. Nascosta quando non c'è un punto di ripresa.
 
 ### Navigation
-- **Header:** sticky, carta con dissolvenza verso il basso, alto 4rem; logotipo testuale Fraunces 500 1.35rem a sinistra, contesto mono tenue a destra ("Fuori le Mura" in home, "Tappa 03 di 08" in tappa).
+- **Header:** sticky, carta con dissolvenza verso il basso, alto 4rem; logotipo testuale Fraunces 500 1.35rem a sinistra, contesto mono tenue a destra ("Fuori le Mura" in home, "Tappa 03 di 08" in tappa). In home il logotipo è nascosto finché si vede il titolo "Torre Viva" e compare (0.3s) quando questo esce dallo schermo, per non ripetere il nome due volte.
 - **Ritorno:** link mono "← Percorso" in inchiostro tenue, alto 3rem, hover timbro.
 - **Skip link:** blocco inchiostro con testo carta mono, visibile solo al focus.
 
@@ -283,10 +283,10 @@ Curve di livello generate, tacche di griglia sul bordo, percorso tratteggiato e 
 - **Do** organizzare i contenuti in elenchi filettati da 1px con metadato mono a sinistra e titolo serif.
 - **Do** tenere ogni area toccabile alta almeno 3rem e l'azione di ascolto a tutta larghezza sopra la piega.
 - **Do** disegnare in SVG a tratto 0.8–1.4px con `vector-effect: non-scaling-stroke` e marker quadrati 7×7.
-- **Do** limitare il movimento a transizioni di stato brevi (0.2–0.6s) e spegnerlo con `prefers-reduced-motion`.
+- **Do** limitare il movimento a transizioni di stato brevi (0.2–0.6s), oltre alla torre allo scroll e ai titoli forgiati, e spegnerlo con `prefers-reduced-motion`.
 
 ### Don't:
-- **Don't** usare border-radius, pillole, ombre portate, glassmorphism o gradienti decorativi (l'unico gradiente ammesso è la dissolvenza dell'header).
+- **Don't** usare border-radius, pillole, ombre portate, glassmorphism o gradienti decorativi (gli unici gradienti ammessi sono la dissolvenza dell'header e il calore dei titoli forgiati, ritagliato sul testo).
 - **Don't** introdurre card di contenuto con fondo o riquadro: i riquadri bordati sono solo azioni (Riprendi, Precedente/Successiva) e solo la "Successiva" porta il velo timbro.
 - **Don't** aggiungere un secondo colore d'accento né colori saturi; non stendere il rosso su grandi superfici oltre al bottone primario e al play.
 - **Don't** usare font sans-serif, né il mono in maiuscolo o con letter-spacing largo.

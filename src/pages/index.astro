@@ -8,10 +8,10 @@ import { t, parseDurata } from '../i18n/ui';
 const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durata), 0) / 60);
 ---
 
-<Layout>
+<Layout heroTitle>
   <section class="hero sheet">
     <div class="hero-text">
-      <h1 class="title">{t.appName}</h1>
+      <h1 class="title forge" data-hero-title>{t.appName}</h1>
       <p class="sub">Torre Angioina di San Marco Argentano, XIII secolo</p>
       <p class="intro">{t.intro}</p>
       <a class="resume" href="/" data-resume hidden>
@@ -120,8 +120,8 @@ const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durat
   .title {
     font-size: clamp(3.4rem, 1rem + 7.4vw, 7.4rem);
     line-height: 0.98;
-    letter-spacing: -0.03em;
-    font-weight: 450;
+    letter-spacing: -0.02em;
+    font-weight: 700;
   }
 
   .sub {

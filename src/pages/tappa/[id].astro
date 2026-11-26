@@ -37,7 +37,7 @@ const stopLabel = t.stop(currentIndex + 1, total);
   <article class="stop sheet book" data-stop={tappa.id}>
     <header class="head">
       <p class="num mono stamp" aria-hidden="true">{pad(tappa.id)}</p>
-      <h1>{tappa.titolo}</h1>
+      <h1 class="forge">{tappa.titolo}</h1>
       <p class="pos mono soft">{tappa.posizione}</p>
       <TorreStop index={currentIndex} label={t.whereYouAre(tappa.posizione)} caption={t.whereCaption} />
     </header>
@@ -279,7 +279,9 @@ const stopLabel = t.stop(currentIndex + 1, total);
 
   .head h1 {
     font-size: clamp(2.4rem, 1.2rem + 5vw, 5rem);
-    letter-spacing: -0.03em;
+    letter-spacing: -0.015em;
+    word-spacing: 0.04em;
+    font-weight: 700;
   }
 
   .head .pos {

@@ -9,12 +9,16 @@ interface Props {
   description?: string;
   /** Testo contestuale a destra dell'header (es. "Tappa 3 di 8") */
   context?: string;
+  /** La pagina apre con il titolo "Torre Viva": il logotipo dell'header
+   *  compare solo quando quel titolo esce dallo schermo (niente doppione). */
+  heroTitle?: boolean;
 }
 
 const {
   title = `${t.appName} — Audioguida della Torre Angioina`,
   description = 'Audioguida Torre Viva per la Torre Angioina di San Marco Argentano, XIII secolo.',
   context,
+  heroTitle = false,
 } = Astro.props;
 
 const year = new Date().getFullYear();
@@ -83,7 +87,7 @@ const year = new Date().getFullYear();
   <body>
     <a class="skip" href="#contenuto">{t.skip}</a>
 
-    <header class="hd">
+    <header class="hd" data-tuck={heroTitle ? '' : undefined}>
       <div class="hd-in sheet">
         <a class="mark" href="/" aria-label={`${t.appName} — ${t.backHome}`}>
           {t.appName}
@@ -113,6 +117,31 @@ const year = new Date().getFullYear();
     </footer>
 
     <AudioPlayer />
+
+    <script>
+      // Titoli "forgiati": il riflesso che scorre si ferma quando il titolo è
+      // fuori dallo schermo. In home il logotipo dell'header compare solo
+      // quando il titolo "Torre Viva" è uscito dalla vista.
+      let stopForge: (() => void) | null = null;
+
+      document.addEventListener('astro:page-load', () => {
+        stopForge?.();
+        const titles = document.querySelectorAll<HTMLElement>('.forge');
+        const header = document.querySelector<HTMLElement>('.hd[data-tuck]');
+        const hero = header ? document.querySelector<HTMLElement>('[data-hero-title]') : null;
+        if (!titles.length && !hero) return;
+
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (e.target.classList.contains('forge')) e.target.classList.toggle('is-off', !e.isIntersecting);
+            if (header && e.target === hero) header.classList.toggle('is-past', !e.isIntersecting);
+          }
+        }, { rootMargin: '-64px 0px 0px 0px' });
+        titles.forEach((el) => io.observe(el));
+        if (hero && !hero.classList.contains('forge')) io.observe(hero);
+        stopForge = () => io.disconnect();
+      });
+    </script>
 
     <script>
       import { registerSW } from 'virtual:pwa-register';
@@ -187,6 +216,21 @@ const year = new Date().getFullYear();
     letter-spacing: -0.01em;
     font-variation-settings: 'opsz' 72;
     text-decoration: none;
+  }
+
+  /* In home il logotipo resta nascosto finché si vede il titolo grande */
+  .hd[data-tuck] .mark {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.35rem);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0s linear 0.3s;
+  }
+
+  .hd[data-tuck].is-past .mark {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0s;
   }
 
   .hd-ctx {
