@@ -1,16 +1,23 @@
 ---
-// Home: la torre intera che, scorrendo la pagina, ruota e si apre in sezione.
+// La torre intera che ruota e si apre in sezione. In home segue lo scroll;
+// con `auto` (pagina 404) si apre da sola al caricamento.
 // Il disegno è generato da src/lib/torre/scene.ts: lato server il primo
 // fotogramma (torre intera), nel browser i successivi.
 import '../styles/torre.css';
 import { W, H, homeCam, renderContours, renderDefs, renderScene, routePath, stopPoint, STOPS } from '../lib/torre/scene';
 
+interface Props {
+  /** si apre da sola al caricamento, senza scroll */
+  auto?: boolean;
+}
+
+const { auto = false } = Astro.props;
 const ID = 'tv-home';
 const final = homeCam(1);
 const dots = STOPS.map((_, i) => stopPoint(i, final));
 ---
 
-<figure class="torre" data-torre aria-hidden="true">
+<figure class="torre" data-torre data-torre-auto={auto ? '' : undefined} aria-hidden="true">
   <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" role="presentation" focusable="false">
     <defs set:html={renderDefs(ID)} />
     <g set:html={renderContours()} />
@@ -55,6 +62,24 @@ const dots = STOPS.map((_, i) => stopPoint(i, final));
 
     stop = new AbortController();
     document.addEventListener('astro:before-swap', () => stop?.abort(), { once: true, signal: stop.signal });
+
+    // Apertura automatica (404): dopo un attimo la torre ruota e si apre da
+    // sola, una volta, con lo stesso passo dell'apertura allo scroll.
+    if (fig.hasAttribute('data-torre-auto')) {
+      const DELAY = 600;
+      const FULL = 3200;
+      const ease = (u: number) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+      let t0 = 0;
+      const step = (ts: number) => {
+        if (stop?.signal.aborted) return;
+        t0 ||= ts;
+        const u = Math.max(0, Math.min(1, (ts - t0 - DELAY) / FULL));
+        draw(ease(u));
+        if (u < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      return;
+    }
 
     // t = 0 in cima alla pagina; t = 1 alla fine del tratto in cui il disegno
     // resta fermo (il contenitore è più alto del disegno: vedi index.astro),

@@ -1,46 +1,92 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import TorreDrawing from '../components/TorreDrawing.astro';
 import { t } from '../i18n/ui';
 ---
 
-<Layout title={`Pagina non trovata — ${t.appName}`} description="La pagina richiesta non esiste." context="404">
-  <section class="nf sheet book">
-    <p class="margin mono soft">404</p>
-    <h1>Questa pagina non esiste</h1>
-    <p class="lead">
-      Forse il QR code o il link è incompleto. Le tappe dell’audioguida sono tutte nel percorso.
-    </p>
-    <p>
-      <a class="btn solid" href="/">← {t.backHome}</a>
-    </p>
+<Layout title={`Pagina non trovata — ${t.appName}`} description="La pagina richiesta non esiste.">
+  <section class="nf sheet">
+    <div class="nf-text">
+      <p class="nf-code forge">404</p>
+      <h1>Questa pagina non esiste</h1>
+      <p class="lead">
+        Forse il QR code o il link è incompleto. Le tappe dell’audioguida sono tutte nel percorso.
+      </p>
+      <p>
+        <a class="btn solid" href="/">← {t.backHome}</a>
+      </p>
+    </div>
+    <div class="nf-draw">
+      <TorreDrawing auto />
+    </div>
   </section>
 </Layout>
 
 <style>
+  /* Una schermata intera: il footer si vede solo scorrendo */
   .nf {
-    padding-top: clamp(2rem, 8vw, 6rem);
+    display: grid;
+    align-content: center;
+    gap: clamp(1.5rem, 5vw, 3rem);
+    min-height: calc(100svh - 4rem - env(safe-area-inset-top, 0px));
+    padding-block: clamp(1rem, 4vw, 3rem);
   }
 
-  .margin {
-    display: none;
-  }
-
-  @media (min-width: 62rem) {
-    .margin {
-      display: block;
-      margin: 0.9rem 0 0;
-    }
+  /* Il codice è un titolo forgiato, come "Torre Viva" in home */
+  .nf-code {
+    margin: 0 0 0.6rem;
+    font-size: clamp(5.5rem, 2.5rem + 13vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    font-variation-settings: 'opsz' 144;
+    font-variant-numeric: lining-nums;
   }
 
   h1 {
-    font-size: clamp(2.4rem, 1.2rem + 5vw, 5rem);
-    letter-spacing: -0.03em;
+    font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.2rem);
+    letter-spacing: -0.02em;
   }
 
   .lead {
-    margin: 1.6rem 0 2rem;
-    font-size: 1.25em;
+    margin: 1.2rem 0 1.8rem;
+    max-width: var(--measure);
+    font-size: 1.2em;
     line-height: 1.5;
     font-variation-settings: 'opsz' 36;
+  }
+
+  /* Mobile: la torre prende lo spazio che resta sotto il testo, intera
+     su qualsiasi altezza di schermo */
+  @media (max-width: 51.99rem) {
+    .nf {
+      grid-template-rows: auto minmax(10rem, 1fr);
+      align-content: stretch;
+    }
+
+    .nf-draw {
+      position: relative;
+    }
+
+    .nf-draw > :global(.torre) {
+      position: absolute;
+      inset: 0;
+    }
+
+    .nf-draw > :global(.torre) :global(svg) {
+      height: 100%;
+    }
+  }
+
+  @media (min-width: 52rem) {
+    .nf {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      align-items: center;
+      column-gap: 3rem;
+    }
+
+    .nf-draw > :global(.torre) :global(svg) {
+      max-height: calc(100svh - 9rem);
+    }
   }
 </style>
