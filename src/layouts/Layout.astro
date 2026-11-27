@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import AudioPlayer from '../components/AudioPlayer.astro';
 import { t, lang } from '../i18n/ui';
+import { SITE, abs, OG_IMAGE } from '../lib/seo';
 import '../styles/global.css';
 
 interface Props {
@@ -12,14 +13,24 @@ interface Props {
   /** La pagina apre con il titolo "Torre Viva": il logotipo dell'header
    *  compare solo quando quel titolo esce dallo schermo (niente doppione). */
   heroTitle?: boolean;
+  /** Dati strutturati schema.org (vedi src/lib/seo.ts) */
+  jsonLd?: object;
+  /** Pagina fuori dai motori di ricerca (es. 404) */
+  noindex?: boolean;
 }
 
 const {
-  title = `${t.appName} — Audioguida della Torre Angioina`,
-  description = 'Audioguida Torre Viva per la Torre Angioina di San Marco Argentano, XIII secolo.',
+  title = `${t.appName} — Audioguida della Torre Angioina di San Marco Argentano`,
+  description = 'Torre Viva è l’audioguida della Torre Angioina di San Marco Argentano, a lungo nota come Torre Normanna: otto tappe raccontate da Raynaldo, scutifer della Torre.',
   context,
   heroTitle = false,
+  jsonLd,
+  noindex = false,
 } = Astro.props;
+
+// Canonico sempre sul dominio di produzione, anche nelle anteprime
+const canonical = abs(Astro.url.pathname);
+const ogImage = new URL(OG_IMAGE.path, SITE).href;
 
 const year = new Date().getFullYear();
 const anteprima = import.meta.env.PUBLIC_ANTEPRIMA === '1';
@@ -46,7 +57,20 @@ const anteprima = import.meta.env.PUBLIC_ANTEPRIMA === '1';
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="description" content={description} />
-    {anteprima && <meta name="robots" content="noindex, nofollow" />}
+    {(anteprima || noindex) && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.appName} />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(OG_IMAGE.width)} />
+    <meta property="og:image:height" content={String(OG_IMAGE.height)} />
+    <meta property="og:image:alt" content={OG_IMAGE.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />}
     <meta name="theme-color" content="#efe9db" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />

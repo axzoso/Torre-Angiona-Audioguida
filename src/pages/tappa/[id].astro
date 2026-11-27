@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import audioguides from '../../data/audioguides.json';
 import { t, pad, paragraphs } from '../../i18n/ui';
 import TorreStop from '../../components/TorreStop.astro';
+import { summary, tappaJsonLd } from '../../lib/seo';
 
 export const getStaticPaths = (() => {
   return audioguides.map((tappa) => ({
@@ -26,8 +27,9 @@ const stopLabel = t.stop(currentIndex + 1, total);
 ---
 
 <Layout
-  title={`${pad(tappa.id)} ${tappa.titolo} — ${t.appName}`}
-  description={tappa.descrizione.slice(0, 160)}
+  title={`${tappa.titolo} · Tappa ${pad(tappa.id)} — ${t.appName}, Torre Angioina`}
+  description={summary(`Tappa ${currentIndex + 1} dell’audioguida della Torre Angioina di San Marco Argentano: ${tappa.posizione}. ${tappa.descrizione}`, 160)}
+  jsonLd={tappaJsonLd(tappa)}
   context={stopLabel}
 >
   <nav class="crumbs sheet" aria-label="Navigazione tappe">

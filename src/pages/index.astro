@@ -4,11 +4,12 @@ import TappaRow from '../components/TappaRow.astro';
 import TorreDrawing from '../components/TorreDrawing.astro';
 import audioguides from '../data/audioguides.json';
 import { t, parseDurata } from '../i18n/ui';
+import { homeJsonLd } from '../lib/seo';
 
 const totalMin = Math.round(audioguides.reduce((a, s) => a + parseDurata(s.durata), 0) / 60);
 ---
 
-<Layout heroTitle>
+<Layout heroTitle jsonLd={homeJsonLd(audioguides)}>
   <section class="hero sheet">
     <div class="hero-text">
       <h1 class="title forge" data-hero-title>{t.appName}</h1>
