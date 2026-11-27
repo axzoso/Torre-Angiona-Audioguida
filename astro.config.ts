@@ -21,6 +21,7 @@ const anteprimaNoindex = {
 };
 
 export default defineConfig({
+  site: 'https://torreviva.fuorilemura.org',
   output: 'static',
   trailingSlash: 'always',
   vite: {
